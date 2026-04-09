@@ -1,0 +1,19 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{Summary of related work and research gap.}
+    \label{tab:related_work}
+    \begin{tabular}{p{3.5cm} p{1.5cm} p{1.8cm} p{2.2cm} p{1.8cm} p{1.3cm} p{1.3cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Study} & \textbf{Algorithm} & \textbf{Sensor} & \textbf{Environment} & \textbf{Sim-to-Real} & \textbf{Forest} & \textbf{Density} \\\hline
+        Kabas (2022) \cite{Kabas2022} & PPO & RGB+Depth & AirSim & No & No & No \\
+        \rowcolor{lightlightgray} Vizzotto et al.\ (2025) \cite{Vizzotto2025} & PPO & LiDAR & 2D sim & No & No & No \\
+        Tayar et al.\ (2025) \cite{Tayar2025} & PPO, SAC & LiDAR & Ducts & No & No & No \\
+        \rowcolor{lightlightgray} Kalidas et al.\ (2023) \cite{Kalidas2023} & DQN/DDPG & RGB & Generic 3D & No & No & No \\
+        Loquercio et al.\ (2019) \cite{Loquercio2019} & CNN & RGB & Race gates & Yes & No & No \\
+        \rowcolor{lightlightgray} Azzam et al.\ (2024) \cite{Azzam2024} & RL+MRFT & Depth & In/outdoor & Yes & No & No \\
+        Jang et al.\ (2024) \cite{Jang2024} & RL & State & Sim+real & Yes & No & No \\
+        \rowcolor{lightgray} \textbf{This thesis} & \textbf{PPO} & \textbf{RGB only} & \textbf{Forest} & \textbf{Yes} & \textbf{Yes} & \textbf{Yes} \\
+        \hline
+    \end{tabular}
+\end{table}

@@ -1,0 +1,19 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{Physical drone hardware components.}
+    \label{tab:hardware}
+    \begin{tabular}{p{4cm} p{9cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Component} & \textbf{Specification} \\\hline
+        Frame & Holybro S500 V2 (500\,mm wheelbase) \\
+        \rowcolor{lightlightgray} Flight controller & Pixhawk 6C, PX4 firmware v1.14+ \\
+        Companion computer & NVIDIA Jetson Orin Nano (8\,GB) \\
+        \rowcolor{lightlightgray} Camera & Arducam IMX477, 100\textdegree{} FOV, 128$\times$128 @ 60\,fps (tuned to 30\,fps) \\
+        GPS & Holybro M10 GPS module \\
+        \rowcolor{lightlightgray} Telemetry & 433\,MHz SiK radio \\
+        Battery & 4S 5000\,mAh LiPo (5--10\,min flight time) \\
+        \rowcolor{lightlightgray} Communication & MAVLink via UART \\
+        \hline
+    \end{tabular}
+\end{table}

@@ -1,0 +1,19 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{Software stack for training and real-world deployment.}
+    \label{tab:software}
+    \begin{tabular}{p{4cm} p{4cm} p{5.5cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Component} & \textbf{Tool} & \textbf{Role} \\\hline
+        Simulation environment & Cosys-AirSim + UE 5.5 & Physics, rendering, sensor simulation \\
+        \rowcolor{lightlightgray} RL framework & Stable-Baselines3 + PyTorch & PPO training \\
+        Image processing & OpenCV & CLAHE preprocessing, image capture \\
+        \rowcolor{lightlightgray} Camera interface & ROS2 & Arducam frame streaming to Jetson \\
+        Sensor interface & MAVROS & Pixhawk IMU/GPS data to Jetson \\
+        \rowcolor{lightlightgray} Flight commands & MAVSDK-Python + MAVLink & Velocity commands to Pixhawk \\
+        Inference optimisation & TensorRT & Real-time policy inference on Jetson \\
+        \rowcolor{lightlightgray} Ground station & QGroundControl & Telemetry monitoring, safety override \\
+        \hline
+    \end{tabular}
+\end{table}

@@ -1,0 +1,53 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\raggedright\textbf{Authors}\\
+Danielis Maizelis, Elina Rosato\vspace{5mm}
+
+\raggedright\textbf{Title}\\
+Autonomous Drone Navigation in Forest Environment Using Proximal Policy Optimization Reinforcement Learning\vspace{5mm}
+
+\raggedright\textbf{Supervisor}\\
+Ali Hassan Sodhro\vspace{5mm}
+
+\raggedright\textbf{Examiner}\\
+\AA ke Arvidsson\vspace{5mm}
+
+\raggedright\textbf{Abstract}\\
+\justifying\noindent
+Autonomous drone navigation in forest environments faces significant challenges due to dense obstacles and the expensive cost of traditional sensing systems (LiDAR: \$1,000--10,000+; stereoscopic cameras: \$300--800), limiting scalable adoption for forest health monitoring applications such as bark beetle detection. This study investigates whether Proximal Policy Optimization (PPO) reinforcement learning can enable effective tree obstacle avoidance using only low-cost RGB camera input, with quantitative evaluation of sim-to-real transfer efficiency.
+
+\justifying\noindent
+We developed a PPO-based navigation policy trained in AirSim forest simulations and deployed it on a Holybro S500 V2 quadcopter equipped with an NVIDIA Jetson Orin Nano companion computer and Arducam IMX477 RGB camera. The system was evaluated across three tree density configurations (sparse: 6\,m spacing, medium: 4\,m, dense: 2\,m) in both simulation and real-world field trials.
+
+\justifying\noindent
+Results demonstrated X\% obstacle avoidance success in sparse simulation environments and X\% in real-world deployment, achieving X\% sim-to-real transfer efficiency. Performance degraded predictably with increasing tree density, with collision rates rising from X\% (sparse) to X\% (dense) in real-world trials.
+
+\justifying\noindent
+The findings confirm that PPO-based RGB-only navigation enables cost-effective autonomous forest flight under controlled conditions, providing a practical foundation for scalable forest monitoring systems while highlighting the importance of reward design and environmental complexity in sim-to-real deployment.\vspace{5mm}
+
+\raggedright\textbf{Keywords}\\
+\noindent
+Proximal Policy Optimization, Autonomous Drone Navigation, Forest Environment Simulation, Reinforcement Learning, Sim-to-Real Transfer\vspace{5mm}
+
+\raggedright\textbf{Acknowledgements}\\
+\justifying\noindent
+We would like to express our sincere gratitude to our supervisor, Ali Hassan Sodhro, for providing invaluable guidance, constructive feedback, and continuous support throughout this research project. Their expertise in reinforcement learning and autonomous systems significantly shaped the direction and quality of this work.
+
+\justifying\noindent
+We are grateful to \AA ke Arvidsson for his thorough review and insightful suggestions that helped strengthen the thesis structure and experimental design.
+
+\justifying\noindent
+We would like to thank Kristianstad University and the Department of Computer Science for providing access to computational resources and research facilities that made this study possible. Special thanks to the technical staff for their assistance with hardware setup and testing equipment.
+
+\justifying\noindent
+Our appreciation extends to Kristianstad municipality authorities for granting permissions to conduct drone flight testing.
+
+\justifying\noindent
+We acknowledge the open-source communities behind PyTorch, Cosys-Airsim, and PX4 Autopilot and OpenAI Gymnasium, whose tools and documentation formed the technical foundation of our implementation.
+
+\justifying\noindent
+Finally, we thank our families and friends for their patience, encouragement, and understanding during the intensive periods of this research.
+
+\end{document}

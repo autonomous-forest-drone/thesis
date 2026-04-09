@@ -1,0 +1,18 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{The model's reward system used in the curriculum.}
+    \label{tab:reward}
+    \begin{tabular}{p{4.5cm} p{5cm} p{3cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Component} & \textbf{Condition} & \textbf{Value} \\\hline
+        Progress reward & Per metre closed to goal & $+$25 \\
+        \rowcolor{lightlightgray} Time penalty & Per timestep & $-$0.2 \\
+        Lateral offset penalty & Offset $>$ 0.5\,m from path & Proportional ($-$0.3/m) \\
+        \rowcolor{lightlightgray} Goal bonus & Goal waypoint reached & $+$100 \\
+        Efficiency bonus & Goal reached quickly & Up to $+$20 \\
+        \rowcolor{lightlightgray} Collision & Physical contact with tree & $-$50 \\
+        Timeout & Max steps exceeded & $-$20 \\
+        \hline
+    \end{tabular}
+\end{table}

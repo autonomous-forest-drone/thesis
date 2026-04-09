@@ -1,0 +1,17 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{Comparison of sensors for drone obstacle avoidance \cite{Butt2024,Hrabar2012,Kumar2023,Sastry2025}.}
+    \label{tab:sensors}
+    \begin{tabular}{p{4cm} p{2cm} p{2cm} p{2cm} p{2.5cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Criteria} & \textbf{Ultrasonic} & \textbf{LiDAR} & \textbf{Radar} & \textbf{RGB Camera} \\\hline
+        Typical cost & \$5--30 & \$1k--\$10k+ & \$200--\$2k & \textbf{\$10--\$80} \\
+        \rowcolor{lightlightgray} 3D perception & No & Yes & Partial & \textbf{With ML} \\
+        Works in low light & Yes & Yes & Yes & \textbf{No} \\
+        \rowcolor{lightlightgray} Weight & V.\ light & Heavy & Medium & \textbf{V.\ light} \\
+        Object classification & No & Limited & Limited & \textbf{Yes (CNN)} \\
+        \rowcolor{lightlightgray} Forest suitability & Poor & Good & Moderate & \textbf{Good w/ ML} \\
+        \hline
+    \end{tabular}
+\end{table}

@@ -1,0 +1,20 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{Real-world and simulation testing data structure, one row per flight.}
+    \label{tab:data_structure}
+    \begin{tabular}{p{3.5cm} p{2.5cm} p{7cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Column} & \textbf{Type} & \textbf{Description} \\\hline
+        episode\_id & String & Unique identifier \\
+        \rowcolor{lightlightgray} environment & Categorical & Real\_world or Simulation \\
+        tree\_distance & Integer & Measured average tree distance before session (2\,m, 4\,m, 6\,m) \\
+        \rowcolor{lightlightgray} brightness\_lux & Integer & Measured at flight time with a light meter in lux (Real\_world); approximate lighting in lux (Simulation) \\
+        trees\_avoided & Integer & Trees passed without physical contact (Simulation and Real\_world) or without requiring RC failsafe operation (Real\_world) \\
+        \rowcolor{lightlightgray} collision\_occurred & Boolean & True if IMU accelerometer spike exceeds threshold (Real\_world) or drone crashed and episode terminated (Simulation) \\
+        goal\_reached & Boolean & True if the intended goal waypoint was reached \\
+        \rowcolor{lightlightgray} time & Float & Flight time before collision\_occurred or goal\_reached \\
+        success & Boolean & goal\_reached AND NOT collision\_occurred \\
+        \hline
+    \end{tabular}
+\end{table}

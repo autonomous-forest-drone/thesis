@@ -1,0 +1,23 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{The model's hyperparameters used in the curriculum.}
+    \label{tab:hyperparameters}
+    \begin{tabular}{p{6cm} p{6cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Hyperparameter} & \textbf{Value} \\\hline
+        Algorithm & PPO \\
+        \rowcolor{lightlightgray} Learning rate & $1\times10^{-4}$ \\
+        Rollout steps (n\_steps) & 8192 \\
+        \rowcolor{lightlightgray} Minibatch size & 256 \\
+        Epochs per update & 8 \\
+        \rowcolor{lightlightgray} Discount factor ($\gamma$) & 0.97 \\
+        GAE lambda ($\lambda$) & 0.95 \\
+        \rowcolor{lightlightgray} Entropy coefficient & 0.01 \\
+        Value function coefficient & 0.75 \\
+        \rowcolor{lightlightgray} Max gradient norm & 0.5 \\
+        Reward normalisation & VecNormalize (online) \\
+        \rowcolor{lightlightgray} Device & CUDA (GPU) \\
+        \hline
+    \end{tabular}
+\end{table}

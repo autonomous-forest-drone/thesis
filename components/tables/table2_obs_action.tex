@@ -1,0 +1,15 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{Observation and action space.}
+    \label{tab:obs_action}
+    \begin{tabular}{p{3cm} p{3cm} p{5cm} p{3.5cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Space} & \textbf{Component} & \textbf{Description} & \textbf{Range / Shape} \\\hline
+        Observation Space & Visual input & 8-frame grayscale stack & 8 $\times$ 128 $\times$ 128 pixels \\
+        \rowcolor{lightlightgray} & State vector & Goal distance, lateral offset, forward speed, lateral speed & 4 scalar values \\
+        Action Space & Lateral velocity & Left/right dodge & $\pm$1.5\,m/s \\
+        \rowcolor{lightlightgray} & Forward velocity & Forward flight speed & 0.4 -- 0.75\,m/s \\
+        \hline
+    \end{tabular}
+\end{table}

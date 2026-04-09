@@ -38,14 +38,14 @@ thesis/
 ├── references.bib              # BibTeX bibliography (shared)
 │
 ├── chapters/                   # Thesis chapters (one file per chapter)
-│   ├── 01_introduction.tex
-│   ├── 02_background.tex
-│   ├── 03_related_work.tex
-│   ├── 04_methodology.tex
-│   ├── 05_implementation.tex
-│   ├── 06_results.tex
-│   ├── 07_discussion.tex
-│   └── 08_conclusions.tex
+│   ├── 1_introduction.tex
+│   ├── 2_background.tex
+│   ├── 3_related_work.tex
+│   ├── 4_methodology.tex
+│   ├── 5_implementation.tex
+│   ├── 6_results.tex
+│   ├── 7_discussion.tex
+│   └── 8_conclusions.tex
 │
 ├── figures/                    # All images, diagrams, plots
 │

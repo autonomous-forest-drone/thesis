@@ -1,0 +1,18 @@
+\begin{table}[H]
+    \small
+    \centering
+    \caption{Comparison of obstacle avoidance methods \cite{Butt2024,Ghambari2024,Merei2025,Debnath2024}.}
+    \label{tab:avoidance_methods}
+    \begin{tabular}{p{4cm} p{2cm} p{2cm} p{2.5cm} p{2cm}}
+        \hline\hline
+        \rowcolor{lightgray}\textbf{Criteria} & \textbf{Gap-based} & \textbf{Geometric} & \textbf{Repulsive Force} & \textbf{RL-based} \\\hline
+        Memory of past states & No & No & No & \textbf{Yes} \\
+        \rowcolor{lightlightgray} Handles dynamic obstacles & Poor & Good & Poor & \textbf{Good} \\
+        Works in dense environments & Poor & Moderate & Poor & \textbf{Good} \\
+        \rowcolor{lightlightgray} Recovery from mistakes & None & Limited & None & \textbf{Yes} \\
+        Adapts to new situations & No & No & No & \textbf{Yes} \\
+        \rowcolor{lightlightgray} Suitable for forests & Poor & Moderate & Poor & \textbf{Good} \\
+        Requires training & No & No & No & \textbf{Yes} \\
+        \hline
+    \end{tabular}
+\end{table}

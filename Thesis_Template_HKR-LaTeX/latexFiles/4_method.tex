@@ -1,0 +1,47 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\section{Method}
+\justify
+This is the method section. You might want to have tables in the method section, like Table \ref{tab:activityDistribution}.\par\vspace{5mm}
+
+\begin{table}[H]
+    \small
+    \centering
+    \caption{Distribution of the different activities among the different subjects.}
+    \label{tab:activityDistribution}
+    \begin{tabular}{c c c}
+        \hline\hline
+        \rowcolor{lightgray}\hspace{6mm}\textbf{Activity}\hspace{6mm} & \hspace{6mm}\textbf{Number Recordings}\hspace{6mm} & \hspace{6mm}\textbf{Number Subjects}\hspace{6mm} \\\hline
+        Walking & 6 & 6 \\
+        \rowcolor{lightlightgray} Running & 5 & 5\\
+        Cycling & 8 & 5\\
+       \hline
+    \end{tabular}
+\end{table}
+
+\noindent
+Equations are also frequently used in the method section. You can use equations with numbering as shown in Eq. \ref{eq:normalization}.
+
+\begin{equation}\label{eq:normalization}
+    x^{Normalized}_{i} = \frac{x_i-min(x)}{max(x)-min(x)}
+\end{equation}
+
+\noindent
+Where $x_i$ is each data point in the dataset to be normalized and $x$ is the entire dataset.\par\vspace{5mm}
+
+\noindent
+You might want to use equations without numbering, then you do it as shown in Eq. \ref{eq:nonumbering}.
+
+\begin{equation*}\label{eq:nonumbering}
+    x_{i} = [PPG\hspace{2mm}Accel_{_{X}}\hspace{2mm}Accel_{_{Y}}\hspace{2mm}Accel_{_{Z}}\hspace{2mm}Gyro_{_{X}}\hspace{2mm}Gyro_{_{Y}}\hspace{2mm}Gyro_{_{Z}}]   
+\end{equation*}
+
+\noindent
+You can also write math commands within the dollar sign:
+
+\noindent
+$x = \frac{2}{4} \cdot \pi$\par
+
+
+\end{document}

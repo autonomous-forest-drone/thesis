@@ -1,0 +1,101 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\section{Introduction}
+\justify
+
+\subsection{Background}
+
+\subsubsection{The bark beetle crisis}
+
+The European spruce bark beetle (\textit{Ips typographus}) is among the most destructive threats to coniferous forests in the Northern Hemisphere. The beetle has been responsible for the loss of over 150 million cubic metres of timber across Europe in recent decades, with particularly severe outbreaks recorded in Central and Northern Europe following drought years that weaken tree defences \cite{Klousek2019,Bozzini2024}. Sweden alone has seen infestations accelerate sharply since 2018, with the Swedish Forest Agency reporting damage on a scale not seen in modern forestry history \cite{Bozzini2024}. This is further shown in a map in Figure \ref{fig:beetle_europe}.
+
+Infestations kill trees at scale, causing significant economic losses to the timber industry and disrupting forest ecosystems through impacts on the water cycle, carbon storage, and biodiversity \cite{Klousek2019,Bozzini2024}. The danger is compounded by the biology of the infestation: attacked trees pass through a green-attack stage in which the crown appears entirely healthy despite active colonisation beneath the bark. By the time visible symptoms appear in the yellow, red, and grey stages, the beetles have already dispersed to surrounding trees \cite{Klousek2019,Bozzini2024,Bijou2025}. The green-attack stage is therefore the only critical window for effective intervention, yet it is also the hardest to detect \cite{Bozzini2024,Bijou2025}. (Figure \ref{fig:infestation_stages}) (Figure \ref{fig:beetle_attack})
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figures/fig01_beetle_europe.png}
+    \caption{Bark beetle infestations in Europe. Source: \url{https://link.springer.com/article/10.1007/s40725-021-00142-x}}
+    \label{fig:beetle_europe}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figures/fig02_infestation_stages.png}
+    \caption{Bark beetle infestation stages. Source: \url{https://www.sciencedirect.com/science/article/pii/S0034425721002807}}
+    \label{fig:infestation_stages}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figures/fig03_beetle_attack.png}
+    \caption{Bark beetle attacks on a tree. Source: \url{https://forest.fi/article/natural-enemies-may-prevent-damage-by-spruce-bark-beetle-researcher-explains-how/}}
+    \label{fig:beetle_attack}
+\end{figure}
+
+\subsubsection{The limits of traditional monitoring}
+
+Traditional detection relies on ground surveys by trained forestry personnel, which are labour-intensive, costly, and physically limited in the area that can be covered, which is a serious constraint when monitoring forests spanning hundreds or thousands of hectares \cite{Klousek2019,Butt2024}. UAVs equipped with multispectral or hyperspectral sensors offer a practical alternative, enabling large areas to be surveyed quickly and repeatedly with detection accuracies of 88--96\% depending on sensor type and infestation stage \cite{Klousek2019,Turkulainen2023,Bozzini2024}. However, effective early detection requires flights at weekly intervals \cite{Bozzini2024,Bijou2025}, making manual piloting impractical at the required frequency and scale.
+
+\subsubsection{The need for autonomous navigation}
+
+Fully autonomous drone navigation is therefore essential for scalable bark beetle monitoring \cite{Bozzini2024,Bijou2025}. This introduces a key technical challenge: the drone must navigate through complex, unstructured forest environments, avoiding irregular obstacles such as tree trunks without human intervention \cite{Butt2024,Merei2025,Debnath2024}. Existing autonomous navigation solutions capable of handling such environments typically rely on expensive sensor arrays, stereoscopic cameras costing \$300--\$800, or LiDAR systems costing \$1,000--\$10,000 or more \cite{Butt2024,Hrabar2012}, creating a cost barrier that makes widespread deployment impractical. This thesis is developed in collaboration with BeetleSense, a forest monitoring company building bark beetle detection systems, whose operational requirements directly motivate the need for a low-cost autonomous navigation solution.
+
+\subsection{Problem Statement}
+
+\subsubsection{The research gap}
+
+Recent advances in deep reinforcement learning, and in Proximal Policy Optimization (PPO) in particular \cite{Schulman2017}, have demonstrated strong results for vision-based drone navigation in indoor and structured environments \cite{Khanzada2025,Vizzotto2025,Tayar2025,Kabas2022}. Monocular RGB cameras have been shown to provide sufficient visual information for obstacle avoidance without depth sensors \cite{Kumar2023,Kalidas2023,Kabas2022}. Sim-to-real transfer via domain randomisation has been validated for drone control tasks \cite{Zhao2020,Salvato2021,Loquercio2019,Jang2024}. However, to the best of the authors' knowledge, no existing work combines all of these elements in a forest-specific context.
+
+\subsubsection{Practical consequence}
+
+This gap has direct consequences for bark beetle monitoring. A navigation system that requires expensive LiDAR \cite{Butt2024,Hrabar2012}, or that cannot leave simulation \cite{Zhao2020,Salvato2021}, is not deployable at the scale or cost required for weekly forest inspections \cite{Bozzini2024,Bijou2025}. The contribution of this thesis is to build and evaluate exactly the system that is missing: a low-cost, camera-only, PPO-trained drone that navigates a real forest after being trained entirely in simulation.
+
+\subsection{Research Questions}
+
+\subsubsection{Primary research question}
+
+How can Proximal Policy Optimization reinforcement learning enable autonomous drone navigation around trees through effective obstacle avoidance using a standard RGB camera?
+
+\subsubsection{Sub-questions}
+
+The following sub-questions were derived from the primary question into measurable experimental objectives:
+
+\begin{itemize}
+    \item Can a PPO agent learn to avoid tree-trunk obstacles using only monocular camera input in a simulated forest environment?
+    \item How does the agent's performance change across different tree densities (sparse: 6\,m, medium: 4\,m, dense: 2\,m spacing) and flight speeds within range from 0\,m/s to 3\,m/s?
+    \item How well does the learned policy transfer from simulation to a real quadrotor, and what is the sim-to-real transfer efficiency?
+\end{itemize}
+
+\subsection{Scope and Limitations}
+
+\subsubsection{Scope}
+
+This thesis focuses specifically on the obstacle avoidance component of autonomous forest navigation. Evaluation is conducted on cylindrical tree trunks without branches, under controlled weather conditions (wind below 3\,m/s, daylight, no precipitation). The physical platform is the Holybro S500 V2 quadrotor. Navigation is restricted to a fixed cruise altitude of 1.5\,m within a defined lateral corridor. The study does not address bark beetle detection itself, only the autonomous navigation capability that would enable repeated detection flights. The research idea was originally proposed in collaboration with BeetleSense, a forest monitoring company developing bark beetle detection systems.
+
+\subsubsection{Limitations}
+
+The controlled tree geometry does not capture the full complexity of a real forest \cite{Butt2024,Merei2025,Debnath2024}. Results may not generalise directly to denser or more structurally varied environments, dynamic obstacles, or significantly different weather conditions \cite{Zhao2020,Salvato2021}.
+
+The sim-to-real transfer is evaluated on a single physical platform and a limited set of real-world configurations.
+
+Since evaluation will be done on trunks the test will be performed on a limited thickness of the trunks 0.3--0.8\,m.
+
+The branches will not be used; the drone avoids naked trunks only.
+
+Birch trees will be excluded from the testing with their distinct white colour in this thesis.
+
+The test will be mostly done on any type of tree containing a naked trunk without containing any substantial branches coming out of it. The naked trunk is minimum 3--5\,m tall.
+
+PPO-specific findings may not extend to other RL algorithms without additional validation \cite{Fu2024,Khanzada2025}.
+
+\subsection{Thesis Structure}
+
+This thesis is organised as follows. Section 1 introduces the background, problem statement, research questions, and scope. Section 2 describes the methodology, covering the simulation environment, PPO implementation, hardware platform, and evaluation protocol. Section 3 presents the results, beginning with the systematic literature review of prior work on bark beetle detection, obstacle avoidance methods, drone sensors, reinforcement learning for UAV control, and sim-to-real transfer, followed by the experimental results from both simulation and real-world trials. Section 4 discusses the findings in relation to the research questions, and Section 5 states the conclusions and directions for future work.
+
+\subsection{Thesis Authorship Statement}
+
+We hereby confirm that this thesis is our own original work. Both authors share equal responsibility for all aspects of the project including literature review, simulation setup, PPO implementation, hardware integration, real-world testing, data analysis, and thesis writing. AI tools were utilised solely for grammar checking and language refinement, without contributing to the research, analysis, or conceptual development of the content.
+
+\end{document}
