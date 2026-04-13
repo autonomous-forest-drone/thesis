@@ -9,7 +9,7 @@
 \usepackage{geometry} % Used to manage layout
 \usepackage{fancyhdr} % Used to manage header and footer
 \usepackage{amsmath}  % Numberswithin and math
-\usepackage[style=ieee,  dashed=false]{biblatex} %referencing system
+\usepackage[style=ieee, dashed=false]{biblatex} %referencing system
 \usepackage{listings} % to use inline unformatted text
 \usepackage{csvsimple}
 \usepackage{epstopdf} % converts .eps to .pdf
@@ -112,6 +112,7 @@
 
 
 \addbibresource{components/references.bib}
+\graphicspath{{./components/figures/}}
 
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}} %Centering table text
 \definecolor{Gray}{gray}{0.85} %Table colour
@@ -133,10 +134,10 @@
 \fancypagestyle{plain}{
     \lhead[c]{
         \vspace{3cm}
-        \includegraphics[width=30mm]{figures/hkr201108.png}}
+        \includegraphics[width=30mm]{components/figures/hkr201108.png}}
         \cfoot[c]{
             \raggedright\Large\bfseries\textcolor{gray}{Faculty of Natural Science}\vspace{5mm}\\
-        \makebox[\textwidth]{\includegraphics[width=1.01\pdfpagewidth]{figures/HKR201108_footnote.png}}
+        \makebox[\textwidth]{\includegraphics[width=1.01\pdfpagewidth]{components/figures/HKR201108_footnote.png}}
     }
 }
 

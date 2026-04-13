@@ -8,3 +8,7 @@
 *.fdb_latexmk
 *.fls
 *.pdf
+*.bcf
+*.run.xml
+*-blx.bib
+.DS_Store

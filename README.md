@@ -68,57 +68,37 @@ thesis/
 ### Prerequisites
 
 **LaTeX Distribution:**
+- **macOS:** [MacTeX](https://www.tug.org/mactex/) — includes pdflatex and latexmk
 - **Windows:** [MiKTeX](https://miktex.org/) or [TeX Live](https://www.tug.org/texlive/)
-- **macOS:** [MacTeX](https://www.tug.org/mactex/)
 - **Linux:** TeX Live (install via package manager)
 
-**Recommended Editors:**
-- [Overleaf](https://www.overleaf.com/) (online, collaborative)
-- [TeXstudio](https://www.texstudio.org/) (offline, cross-platform)
-- [VS Code](https://code.visualstudio.com/) with [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop) extension
+**Biber** (bibliography processor — required):
+```bash
+# macOS
+brew install biber
 
-**Required LaTeX Packages:**
-- `natbib` - Bibliography management
-- `graphicx` - Figure inclusion
-- `hyperref` - Hyperlinks and cross-references
-- `amsmath` - Mathematical typesetting
-- `booktabs` - Professional tables
-- `listings` - Code snippets
-- `algorithm2e` - Algorithm pseudocode
+# Linux
+sudo apt install biber
+```
+
+**Recommended Editor:**
+- [VS Code](https://code.visualstudio.com/) with [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop) extension (project settings already configured in `.vscode/`)
 
 ### Compilation
 
+**Using VS Code (recommended):**
+1. Open the `thesis/` folder in VS Code
+2. Open `main.tex`
+3. Press `Ctrl+Alt+B` (or click the green play button in LaTeX Workshop)
+4. The build recipe (`latexmk`) handles everything automatically
+
 **Command Line:**
 ```bash
-# Compile LaTeX
-pdflatex main.tex
-
-# Generate bibliography
-bibtex main
-
-# Compile again (twice for cross-references)
-pdflatex main.tex
-pdflatex main.tex
+# Full build (handles pdflatex + biber + reruns automatically)
+latexmk -pdf main.tex
 
 # Output: main.pdf
 ```
-
-**Using Makefile (if provided):**
-```bash
-make          # Compile thesis
-make clean    # Remove auxiliary files
-make view     # Open PDF viewer
-```
-
-**Using TeXstudio:**
-1. Open `main.tex`
-2. Press `F5` (Build & View)
-3. Bibliography automatically handled
-
-**Using Overleaf:**
-1. Import this repository to Overleaf
-2. Click "Recompile"
-3. Download PDF
 
 ---
 
@@ -223,9 +203,7 @@ According to \citet{schulman_proximal_2017}, the clipped objective function...
 
 **Compile bibliography:**
 ```bash
-bibtex main
-pdflatex main.tex
-pdflatex main.tex
+latexmk -pdf main.tex
 ```
 
 ### Cross-References
