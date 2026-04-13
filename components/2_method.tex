@@ -31,14 +31,14 @@ The forest environment is built from Unreal Engine static mesh trees textured wi
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/fig04_airsim_env.png}
+    \includegraphics[width=0.75\textwidth]{figures/airsim_env.png}
     \caption{Demonstration of the Cosys-AirSim simulation environment used for training and evaluation. Source: \url{https://www.researchgate.net/figure/Airsim-Simulator-images-with-a-drone12_fig3_363486862}}
     \label{fig:airsim_env}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/fig05_texture_pack.png}
+    \includegraphics[width=0.75\textwidth]{figures/texture_pack.png}
     \caption{Example image of the redwood forest texture pack used in the simulation. Source: \url{https://www.fab.com/listings/a9135a3b-ce12-4648-88df-b84b1445de8a}}
     \label{fig:texture_pack}
 \end{figure}
@@ -71,28 +71,28 @@ The stages and all other details mentioned in this section are shown in Figures 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/fig06_lighting_variation.png}
+    \includegraphics[width=0.75\textwidth]{figures/lighting_variation.png}
     \caption{The drone operates under different random lighting positions.}
     \label{fig:lighting_variation}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/fig07_goal_view.png}
+    \includegraphics[width=0.75\textwidth]{figures/goal_view.png}
     \caption{View below the drone with a marked yellow square as the goal, the green line is the optimal path and the orange circle is the area where the goal can be randomly placed.}
     \label{fig:goal_view}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/fig08_spawn_clearance.png}
+    \includegraphics[width=0.75\textwidth]{figures/spawn_clearance.png}
     \caption{The trees are spawned while maintaining a 2\,m clearance for the spawned drone to start manoeuvring.}
     \label{fig:spawn_clearance}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/fig09_stage_views.png}
+    \includegraphics[width=0.95\textwidth]{figures/stage_views.png}
     \caption{The simulated drone's view of Stage 1 (6\,m average tree spacing, left), Stage 2 (4\,m average tree spacing, centre), and Stage 3 (2\,m average tree spacing, right).}
     \label{fig:stage_views}
 \end{figure}
@@ -111,21 +111,21 @@ Third, a small amount of Gaussian noise is added to replicate the sensor noise p
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/fig10_grayscale.png}
+    \includegraphics[width=0.75\textwidth]{figures/grayscale.png}
     \caption{Raw colour image captured by the simulated camera and the grayscale conversion of the raw camera frame.}
     \label{fig:grayscale}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.60\textwidth]{figures/fig11_clahe.png}
+    \includegraphics[width=0.60\textwidth]{figures/clahe.png}
     \caption{Frame after CLAHE preprocessing, showing enhanced local contrast.}
     \label{fig:clahe}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.60\textwidth]{figures/fig12_gaussian_noise.png}
+    \includegraphics[width=0.60\textwidth]{figures/gaussian_noise.png}
     \caption{Frame after CLAHE preprocessing plus added Gaussian noise.}
     \label{fig:gaussian_noise}
 \end{figure}
@@ -192,7 +192,7 @@ The physical drone used for real-world evaluation was a \textit{Holybro S500 V2}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\textwidth]{figures/fig13_drone_hardware.png}
+    \includegraphics[width=0.65\textwidth]{figures/drone_hardware.png}
     \caption{The Holybro S500 V2 quadrotor used for real-world evaluation, equipped with the Arducam IMX477 camera, Pixhawk 6C flight controller, and NVIDIA Jetson Orin Nano companion computer.}
     \label{fig:drone_hardware}
 \end{figure}
@@ -213,7 +213,7 @@ The ROS2 middleware architecture is shown in Figure \ref{fig:ros2_pipeline}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{figures/fig14_ros2_pipeline.png}
+    \includegraphics[width=0.85\textwidth]{figures/ros2_pipeline.png}
     \caption{ROS2 onboard data pipeline. The camera stream and Pixhawk sensor data are combined by the inference node, which runs the PPO policy and publishes velocity commands back to the Pixhawk via MAVLink.}
     \label{fig:ros2_pipeline}
 \end{figure}
