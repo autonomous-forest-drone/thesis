@@ -61,11 +61,11 @@
 
 %Used to set space between sections and text + dot after numbering sections:
 \titlespacing*{\section}
-{0pt}{0ex}{-2ex}
+{0pt}{2ex}{-2ex}
 \titlespacing*{\subsection}
-{0pt}{-2ex}{-2ex}
+{0pt}{2ex}{-2ex}
 \titlespacing*{\subsubsection}
-{0pt}{-2ex}{-2ex}
+{0pt}{2ex}{-2ex}
 \titlespacing*{\itemize}
 {0pt}{-2ex}{-2ex}
 \titlespacing*{\equation}
@@ -144,6 +144,10 @@
 
 
 \pagestyle{plain}
+
+% Generate word counts before document starts
+\immediate\write18{bash scripts/wordcount.sh}
+\input{components/wordcounts.tex}
 
 %---------------------------------------------------------------------------------
 % Document
