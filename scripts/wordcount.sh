@@ -10,18 +10,24 @@ count() {
 
 WC_ABSTRACT=$(count abstract.tex)
 WC_INTRO=$(count 1_introduction.tex)
-WC_METHOD=$(count 2_method.tex)
-WC_RESULT=$(count 3_result.tex)
-WC_DISCUSSION=$(count 4_discussion.tex)
-WC_CONCLUSION=$(count 5_conclusion.tex)
-WC_TOTAL=$((WC_ABSTRACT + WC_INTRO + WC_METHOD + WC_RESULT + WC_DISCUSSION + WC_CONCLUSION))
+WC_RELATED=$(count 2_related_work.tex)
+WC_METHOD=$(count 3_methods_approach.tex)
+WC_METHODOLOGY=$(count 4_methodology.tex)
+WC_RESULT=$(count 5_result.tex)
+WC_DISCUSSION=$(count 6_discussion.tex)
+WC_CONCLUSION=$(count 7_conclusion.tex)
+WC_FUTURE=$(count 8_future_work.tex)
+WC_TOTAL=$((WC_ABSTRACT + WC_INTRO + WC_RELATED + WC_METHOD + WC_METHODOLOGY + WC_RESULT + WC_DISCUSSION + WC_CONCLUSION + WC_FUTURE))
 
 cat > "$DIR/wordcounts.tex" << EOF
 \newcommand{\wcAbstract}{$WC_ABSTRACT}
 \newcommand{\wcIntro}{$WC_INTRO}
+\newcommand{\wcRelated}{$WC_RELATED}
 \newcommand{\wcMethod}{$WC_METHOD}
+\newcommand{\wcMethodology}{$WC_METHODOLOGY}
 \newcommand{\wcResult}{$WC_RESULT}
 \newcommand{\wcDiscussion}{$WC_DISCUSSION}
 \newcommand{\wcConclusion}{$WC_CONCLUSION}
+\newcommand{\wcFuture}{$WC_FUTURE}
 \newcommand{\wcTotal}{$WC_TOTAL}
 EOF
