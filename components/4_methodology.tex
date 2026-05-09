@@ -140,13 +140,13 @@ With this observation space, the drone outputs two values: how much to dodge lef
 
 \subsubsection{Training in a simulation --- Reward system}
 
-The reward function combines dense shaping terms that guide the agent continuously with sparse terminal signals that mark clear success or failure. Table \ref{tab:reward} lists every component.
+The reward function implementation is as follows. Table \ref{tab:reward} lists every component with its value.
 
-The progress term (+25 per metre) provides dense feedback that continuously incentivises forward movement toward the goal.
+The progress term awards $+$25 per metre of forward progress toward the goal.
 
-The time penalty ($-$0.2 per step) discourages hovering and inefficient paths.
+The time penalty applies $-$0.2 per step.
 
-A soft lateral offset penalty is applied proportionally when the drone drifts more than 0.5\,m perpendicular to the spawn-to-goal axis, encouraging the policy to stay on course.
+A soft lateral offset penalty is applied proportionally when the drone drifts more than 0.5\,m perpendicular to the spawn-to-goal axis.
 
 A goal bonus of $+$100 is awarded on successful arrival, supplemented by an efficiency bonus of up to $+$20 that scales with how quickly the episode was completed relative to the step budget.
 
@@ -160,15 +160,15 @@ All rewards are normalised online using VecNormalize to keep the signal stable a
 
 \subsubsection{Training in a simulation --- The model network}
 
-The actor uses a dual-stream network that processes the two inputs separately before combining them.
+The actor uses a dual-stream network as described in the Methods/Approach section. The implementation details are as follows.
 
-The visual stream uses a CNN to process the 8-frame grayscale stack, as mentioned in Section 2.2.4, producing a compact visual summary.
+The visual stream applies a CNN to the 8-frame grayscale stack (128$\times$128 per frame), producing a compact visual feature vector.
 
-The state stream uses a small 4-element state vector to process the scalar flight values.
+The state stream applies a small fully connected network to the 4-element scalar vector.
 
 Both outputs are concatenated and fed into policy and value heads trained end-to-end using PPO \cite{Schulman2017}.
 
-The critic network uses a larger value head of two fully connected layers of 128 units, giving it more capacity than the policy head to estimate returns across the varied difficulty stages.
+The critic uses two fully connected layers of 128 units each. Specific layer sizes and all hyperparameters are listed in Table \ref{tab:hyperparameters}.
 
 \subsubsection{Preparation --- The model hyperparameters}
 
@@ -176,7 +176,7 @@ The model's network consists of the hyperparameters shown in Table \ref{tab:hype
 
 \input{components/tables/table4_hyperparameters.tex}
 
-\subsubsection{Testing in a simulation --- Results}
+\subsubsection{Testing in a simulation --- Evaluation protocol}
 
 Evaluation is conducted separately under fixed, controlled conditions identical between simulation and the real world, allowing direct performance comparison. The curriculum and its randomisation are not active during evaluation.
 

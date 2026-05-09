@@ -5,6 +5,30 @@
 \section{Methods/Approach}
 \justify
 
-\textit{This section will cover the rationale behind the chosen algorithm stack (Reinforcement Learning, PPO, CNN) and the reward system design.}
+\textit{This section will cover the rationale behind the chosen algorithm stack (Reinforcement Learning, PPO, CNN). The following subsections on the reward system and network architecture explain why these designs were chosen; the specific implementation values are detailed in the Methodology/Experimental Setup section.}
+
+\subsection{Reward System Design}
+
+The reward function is designed around a core tension in obstacle avoidance training: the agent must be guided continuously toward the goal while being clearly penalised for unsafe behaviour, without either signal overwhelming the other.
+
+A dense progress term is used rather than a purely sparse reward because early in training the agent has no prior knowledge of navigation. A purely sparse reward (only a goal bonus) would provide no learning signal for the vast majority of episodes, making convergence extremely slow or impossible \cite{Schulman2017}. The progress term rewards forward movement continuously, giving the agent a gradient to follow from the very first episode.
+
+A time penalty complements the progress term by preventing the agent from learning a hovering or stalling strategy that accumulates progress reward without actually advancing.
+
+A lateral offset penalty is included to keep the agent on a direct path to the goal. Without it, the agent could learn to avoid trees by drifting far off-course, which would not generalise to real forest corridors.
+
+Terminal signals are kept asymmetric: the goal bonus (+100) is larger than the collision penalty (-50) to ensure the agent is primarily motivated to reach the goal, not merely to avoid crashing. An efficiency bonus adds a secondary incentive to complete episodes quickly rather than navigating slowly and safely.
+
+All rewards are normalised online using VecNormalize to keep the signal magnitude stable as the curriculum difficulty increases across stages.
+
+\subsection{Network Architecture}
+
+A dual-stream architecture is chosen because the agent receives two fundamentally different types of input that benefit from separate processing before being combined.
+
+The visual stream uses a CNN to process the stacked grayscale camera frames. CNNs are well suited to spatial feature extraction from image data and have been validated for vision-based drone navigation in prior work \cite{Kabas2022,Kalidas2023}. Stacking 8 frames rather than using a single image gives the network implicit motion information --- the agent can infer the direction and speed of approaching obstacles --- without requiring an explicit optical flow computation.
+
+The state stream uses a small fully connected network to process the 4-element scalar vector (goal distance, lateral offset, forward speed, lateral speed). Keeping this separate from the image stream avoids the scalar values being lost or overwhelmed when concatenated directly with high-dimensional image features.
+
+The critic network is given a larger value head (two fully connected layers of 128 units each) than the policy head. This asymmetry follows established practice in PPO implementations \cite{Schulman2017}: the critic needs more capacity to accurately estimate returns across the three curriculum stages with varying obstacle densities, while the policy head benefits from a simpler structure that is less prone to overfitting.
 
 \end{document}
