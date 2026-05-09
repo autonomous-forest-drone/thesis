@@ -5,6 +5,30 @@
 \section{Analysis and Discussions}
 \justify
 
-\textit{Discussion will be added here once experimental results are complete.}
+\subsection{Sparse vs.\ Dense Performance}
+
+The agent consistently achieved higher success rates in sparse conditions than in dense conditions across both simulation and real-world trials. In simulation, episode-level success dropped from 93.88\% (sparse) to 84.31\% (dense), and in real-world trials from 74.00\% to 70.00\%. This pattern is expected: with 3 trees in the corridor instead of 2, the agent faces a higher probability of consecutive avoidance decisions with less lateral recovery space between them. A single failed avoidance causes a collision and ends the episode regardless of how well the agent handles all other trees.
+
+The per-obstacle success rates tell a complementary story. In dense real-world trials the agent avoided 78.52\% of individual trees, yet only completed 70.00\% of full episodes. This gap between per-obstacle and episode-level performance indicates that most failures are not caused by the agent being unable to avoid trees in general, but by the cumulative difficulty of avoiding all trees in sequence without any single error. The agent's avoidance capability degrades less with density than its episode completion rate suggests.
+
+\subsection{Sim-to-Real Transfer}
+
+The overall episode-level transfer efficiency of 81.11\% and per-obstacle transfer of 84.02\% represent a strong zero-shot sim-to-real result, meaning the policy was deployed on the physical drone without any real-world fine-tuning or adaptation. This is consistent with the best results reported in the sim-to-real literature for vision-based drone navigation \cite{Loquercio2019,Jang2024,Azzam2024}.
+
+We attribute this to the domain randomisation strategy applied during training. By varying lighting conditions across different times of day, introducing fog and wind effects, randomising tree sizes and rotations, varying cruise altitude, and applying image-level augmentations including CLAHE, random blur, and simulated lens artefacts to mimic dirty optics and sun glare, the agent was exposed to a wide distribution of visual and physical conditions. This prevented overfitting to simulation-specific visual patterns and encouraged the policy to generalise to the real-world environment, where lighting, bark texture, and background vary in ways that cannot be fully anticipated in simulation.
+
+Despite this, the remaining 18.89\% episode-level gap between simulation and real-world performance reflects residual sources of reality gap that domain randomisation did not fully bridge. The most likely contributors are: aerodynamic differences between the simulated and physical Holybro S500 V2 platform, actuation latency between the moment a velocity command is sent to the PX4 flight controller and the moment the motors physically execute it, and minor camera calibration differences between the simulated sensor and the physical Arducam IMX219. The per-obstacle transfer rate of 84.02\% being higher than the episode-level rate suggests that the gap is not primarily a perception failure but a control precision issue: the agent sees the obstacles correctly but occasionally mistimes the avoidance manoeuvre in the real world due to physical dynamics the simulation did not perfectly capture.
+
+\subsection{Dense Conditions Show Higher Transfer Efficiency}
+
+A notable finding is that transfer efficiency was slightly higher for dense conditions (83.03\%) than for sparse (78.82\%) at the episode level. This is counterintuitive at first glance, since dense environments are harder. One plausible explanation is that the agent's learned policy in dense conditions relies more heavily on reactive, close-range avoidance behaviour that is less sensitive to small differences in flight dynamics between simulation and reality. In sparse conditions, the agent has more time and space to build up lateral velocity, meaning small differences in physical response can result in a wider trajectory deviation by the time the next tree is reached. In dense conditions, the shorter inter-tree spacing keeps the agent's corrections smaller and more frequent, making the policy more robust to individual control errors.
+
+\subsection{Limitations Observed in Results}
+
+The evaluation was conducted on cylindrical trunks under controlled conditions. The agent was not tested on branching trees, mixed species, or environments with ground cover that could occlude the lower trunk region. Performance in a genuine forest with greater visual complexity would likely be lower than reported here, and the current results should be interpreted as an upper bound for these controlled conditions rather than a direct estimate of deployment performance in operational bark beetle monitoring.
+
+The dataset is also limited to sparse and dense configurations (2 and 3 trees in the corridor). A more complete evaluation would include a wider range of densities and longer corridors to better characterise how performance scales with environmental complexity.
+
+The domain randomisation suite used in this thesis, while broad, leaves room for improvement. More aggressive randomisation (including dynamic obstacles, rain effects, motion blur, and a wider range of trunk textures) could further close the sim-to-real gap. Whether the additional training complexity would yield proportional gains is an open question that motivates future work.
 
 \end{document}
