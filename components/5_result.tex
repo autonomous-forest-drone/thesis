@@ -5,140 +5,229 @@
 \section{Results}
 \justify
 
-\subsection{Literature Study}
+This section presents the experimental results from both the simulation evaluation and the real-world flight trials. Results are reported at two levels: episode-level success rate (the drone completes the full 15\,m corridor without any collision) and per-obstacle success rate (individual trees successfully avoided out of total trees encountered). All conditions were evaluated over 50 episodes per density configuration. The full episode-by-episode datasets for both simulation and real-world trials are available in Appendix A.
 
-This thesis explores the possibility of using drones to autonomously navigate around trees in a forested environment, with the broader goal of contributing to the fight against bark beetle infestations spreading across Europe \cite{Klousek2019,Bozzini2024,Bijou2025}. To achieve this, it brings together a combination of methods that, to the best of the authors' knowledge, have not been explored together in this specific context. The approach centres around a relatively affordable RGB camera as the primary sensor \cite{Kumar2023,Kalidas2023,Kabas2022}, keeping the overall system accessible and practical rather than relying on expensive specialised sensor hardware \cite{Butt2024,Hrabar2012}.
+\subsection{Training Stability}
 
-\subsection{Understanding the Thesis}
-
-To understand how this system was built and why these choices were made, this section first examines the scale and impact of bark beetle infestations and why autonomous drone-based detection is needed. It then reviews how drones currently navigate and avoid obstacles, what sensors are typically used and why RGB cameras are a viable option, how reinforcement learning and specifically Proximal Policy Optimisation can train a drone to navigate through experience, and finally what existing systems look like and where the gaps in current research remain. Together these themes build the foundation for the practical experiment presented later in this work.
-
-\subsection{Literature Research}
-
-A systematic literature research was conducted across Google Scholar, IEEE Xplore, and Semantic Scholar. The search was organised around six thematic areas: bark beetle detection with UAVs, autonomous drone navigation and obstacle avoidance, drone sensors and sensor comparison, reinforcement learning algorithms for UAV control, vision-based RL for drones, and sim-to-real transfer in robotics.
-
-Initial broad queries were iteratively refined and supplemented by forward and backward citation chaining (snowballing) from the most relevant papers identified in the first pass. Papers were retained if they were published from 2019 onwards, with exceptions made for foundational works (Hrabar, 2012; Schulman et al., 2017). A total of 24 papers were selected for detailed review and are referenced throughout this thesis.
-
-\subsubsection{Bark Beetle Infestation and the Need for Autonomous Monitoring}
-
-As outlined in Section 1, traditional ground-based detection for bark beetles is costly and limited in coverage, and while UAVs offer a practical alternative with detection accuracies of 88--96\% \cite{Klousek2019,Turkulainen2023,Bozzini2024}, the required weekly flight frequency makes manual piloting impractical \cite{Bozzini2024,Bijou2025}.
-
-This necessity for full autonomy introduces the core technical challenge this thesis addresses: navigating through unstructured forest environments while avoiding irregular obstacles such as tree trunks and branches \cite{Butt2024,Merei2025,Debnath2024}, with a motivation of applying this for bark beetle detection.
-
-A growing body of work has validated the use of UAVs for bark beetle monitoring. Klou\v{s}ek et al.\ \cite{Klousek2019} demonstrated that multispectral UAV imagery can distinguish all infestation stages, achieving detection accuracies of up to 96\% for the later red and grey stages.
-
-Turkulainen et al.\ \cite{Turkulainen2023} compared several deep neural network architectures for classifying bark beetle damage from UAV imagery and found that detection accuracy varied substantially with the choice of model and training data volume.
-
-Bozzini et al.\ \cite{Bozzini2024} focused specifically on early-stage detection, reporting that hyperspectral sensors can identify green-attack trees before any visible crown symptoms appear, though the short intervention window requires monitoring flights to be conducted at weekly intervals.
-
-Bijou et al.\ \cite{Bijou2025} extended this work using multitemporal hyperspectral imagery, showing that temporal change detection across sequential flights improves early-stage classification accuracy.
-
-Collectively, this literature establishes that UAV-based monitoring is both technically feasible and practically valuable, but that the required flight frequency makes manual piloting impractical, motivating the autonomous navigation system developed in this thesis.
-
-\subsubsection{Autonomous Drone Obstacle Avoidance}
-
-Several classes of obstacle avoidance methods have been applied to autonomous drone navigation \cite{Butt2024,Ghambari2024,Merei2025,Debnath2024}.
-
-\textit{Gap-based} methods react to immediate sensor readings by identifying open spaces between obstacles and steering through them. While computationally lightweight and effective in sparse, structured environments, these methods have no memory of past states and no mechanism to recognise or recover from a committed mistake --- the drone simply keeps reacting to whatever appears directly in front of it \cite{Merei2025,Debnath2024}.
-
-\textit{Geometric} methods use the shape, position, and relative velocity of obstacles to compute a safe path mathematically, but depend on accurate state estimation that is rarely guaranteed in an unstructured forest \cite{Ghambari2024,Debnath2024}.
-
-\textit{Repulsive-force} methods treat obstacles as repulsive forces and the goal as an attractive force, but can trap the drone in local minima when obstacles surround it from multiple directions \cite{Merei2025}.
-
-What all three approaches share is that their behaviour is entirely pre-programmed and fixed --- they cannot adapt to configurations their designers did not anticipate. This is a significant limitation in a forest, where obstacle layouts are essentially infinite and unpredictable \cite{Butt2024,Debnath2024}.
-
-It is this gap in capability that motivates the use of learning-based methods, and reinforcement learning in particular, which can develop navigation behaviour through experience rather than explicit rules \cite{Fu2024,Schulman2017}.
-
-Survey papers by Butt et al.\ \cite{Butt2024}, Ghambari et al.\ \cite{Ghambari2024}, Merei et al.\ \cite{Merei2025}, and Debnath et al.\ \cite{Debnath2024} consistently identify reinforcement learning as the most promising direction for environments where obstacle configurations cannot be anticipated at design time. (Table \ref{tab:avoidance_methods})
-
-\input{components/tables/table8_avoidance_methods.tex}
-
-\subsubsection{Sensors for Drone Navigation}
-
-For a drone to avoid obstacles autonomously it must perceive its surroundings through onboard sensors. The most commonly used options are LiDAR, stereo cameras, radar, ultrasonic sensors, and monocular RGB cameras, each with different trade-offs in cost, weight, power consumption, and detection capability \cite{Butt2024,Hrabar2012}.
-
-LiDAR sensors provide accurate three-dimensional point clouds and long range, but typically cost between \$1,000 and \$10,000 and add considerable weight to the airframe \cite{Butt2024,Hrabar2012}. Stereo cameras estimate depth from two offset lenses and range from \$300 to \$800, requiring substantial onboard compute to process images in real time \cite{Hrabar2012}. Radar operates in adverse weather and at long range but has poor resolution for small objects such as tree trunks \cite{Butt2024}. Ultrasonic sensors are extremely cheap but limited to ranges of only a few metres \cite{Butt2024}.
-
-Hrabar \cite{Hrabar2012} conducted one of the few direct comparisons between stereo vision and laser range sensing for tree avoidance on a rotorcraft UAV, concluding that stereo cameras offered better range and field of view while the laser scanner was more robust under changing lighting conditions. Both met the payload requirements of a small rotorcraft, but neither was cheap enough for widespread cost-sensitive deployment. Butt et al.\ \cite{Butt2024} confirm that LiDAR and stereo cameras dominate the autonomous UAV navigation literature but note that their cost and weight are significant barriers for small platforms.
-
-A monocular RGB camera avoids most of these drawbacks. Costing under \$80 and weighing only a few grams, it imposes minimal payload and power demands. The main challenge is that a single image contains no direct depth information. However, recent advances in deep learning have made it possible to estimate depth from a single RGB image, and several studies have shown this is sufficient for effective navigation \cite{Kumar2023,Sastry2025,Kalidas2023}. Kumar et al.\ \cite{Kumar2023} demonstrated that a drone can navigate autonomously using only a monocular camera and a lightweight embedded computer. Sastry et al.\ \cite{Sastry2025} compared LiDAR and camera-based depth estimation as inputs to a deep reinforcement learning obstacle avoidance system, finding that while LiDAR provided better real-time precision, RGB-based depth estimation provided richer spatial context in environments with complex obstacle layouts.
-
-Table \ref{tab:sensors} summarises the differences, strengths and weaknesses for each type of sensor that can be used in a drone.
-
-\input{components/tables/table9_sensors.tex}
-
-\subsubsection{Reinforcement Learning for Drone Navigation}
-
-Reinforcement learning (RL) is a branch of machine learning in which an agent learns a policy --- a mapping from observations to actions --- by interacting with an environment and receiving scalar reward signals \cite{Fu2024,Schulman2017}. In the context of drone navigation, the drone acts as the agent: it takes actions, receives rewards or penalties based on the outcome, and gradually learns a policy that maximises its total reward over time. This framework is well suited to drone navigation because the agent can learn to handle obstacle configurations that are difficult to anticipate and program manually \cite{Butt2024,Fu2024}. RL has been applied to a wide range of UAV tasks including obstacle avoidance, path planning, cooperative swarm control, and adversarial decision-making \cite{Fu2024}. (Figure \ref{fig:rl_loop})
+Figure \ref{fig:tensorboard_placeholder} shows the PPO training curves recorded in TensorBoard over the full training run. The reward curve demonstrates the characteristic steady improvement and convergence behaviour of PPO \cite{Schulman2017}, with no catastrophic policy collapse observed across the three curriculum stages. Episode length stabilises as the agent learns to reach the goal efficiently rather than timing out.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/rl_loop.png}
-    \caption{Reinforcement learning loop: the agent observes state, takes action, receives reward, and updates its policy. Source: \url{https://gordicaleksa.medium.com/how-to-get-started-with-reinforcement-learning-rl-4922fafeaf8c}}
-    \label{fig:rl_loop}
+    \fbox{\parbox{0.85\textwidth}{\centering\vspace{2cm}
+    \textit{[TensorBoard training graphs will be inserted here.}\\
+    \textit{Graphs to include: mean episode reward over timesteps,}\\
+    \textit{episode length mean, policy loss, value loss, entropy.]}
+    \vspace{2cm}}}
+    \caption{PPO training curves from TensorBoard showing reward, episode length, and loss metrics over the full training run.}
+    \label{fig:tensorboard_placeholder}
 \end{figure}
 
-Several RL algorithms can be used to teach a drone to navigate \cite{Fu2024,Khanzada2025,Vizzotto2025,Tayar2025}.
+\subsection{Simulation Results}
 
-DQN was one of the first but can only choose from a fixed set of movements, making flight jerky.
+The trained policy was evaluated over 100 episodes in simulation: 50 sparse (2 trees in corridor) and 50 dense (3 trees in corridor). Table \ref{tab:sim_results} summarises the results. Figure \ref{fig:sim_bar} visualises the episode-level and per-obstacle success rates across both density conditions.
 
-DDPG can handle smooth continuous movement but is unstable to train.
-
-TD3 fixes some of DDPG's instability but adds more complexity.
-
-SAC explores well but needs more computing power.
-
-PPO \cite{Schulman2017} is the most balanced option. It learns steadily without making changes that are too large at once, which makes training more reliable.
-
-Recent studies back this up. Khanzada et al.\ \cite{Khanzada2025}, though testing on fixed-wing drones, found PPO converged most reliably compared to other algorithms. Vizzotto et al.\ \cite{Vizzotto2025} found PPO outperformed DQN, DDPG, and the classical A* planner when obstacles were moving.
-
-Tayar et al.\ \cite{Tayar2025} found PPO completed all test flights without collision while SAC got stuck in a suboptimal strategy.
-
-These results support using PPO in this work.
-
-Most of these studies used depth sensors or LiDAR to sense obstacles, but some have shown a regular camera is enough \cite{Kalidas2023,Kabas2022}. Kalidas et al.\ \cite{Kalidas2023} trained a drone to avoid both stationary and moving obstacles using only camera images fed through a CNN. Kabas \cite{Kabas2022} combined a CNN with PPO in AirSim using only RGB input and achieved a 96\% success rate, which is the closest existing work to what this thesis does. (Table \ref{tab:kabas_comparison})
-
-\input{components/tables/table10_kabas_comparison.tex}
-
-\subsubsection{Sim-to-Real Transfer}
-
-Training an RL agent for obstacle avoidance requires thousands of episodes, many of which involve crashes.
-
-Doing this with a real drone would be expensive, dangerous, and slow \cite{Zhao2020,Salvato2021}.
-
-The standard approach is therefore to train entirely in a physics simulator and subsequently deploy the learned policy on a real drone \cite{Zhao2020,Salvato2021,Loquercio2019}.
-
-This process is complicated by the reality gap: differences in visual appearance, aerodynamic response, and sensor noise between simulation and the physical world can cause a policy that performs well in simulation to fail on the real platform \cite{Zhao2020,Salvato2021}. (Figure \ref{fig:sim_vs_real})
+\vspace{6pt}
+\begin{table}[H]
+\centering
+\caption{Simulation evaluation results across density conditions.}
+\label{tab:sim_results}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Condition} & \textbf{Episodes} & \textbf{Episode Success Rate} & \textbf{Per-Obstacle Success Rate} \\
+\hline
+Sparse (2 trees) & 50 & 93.88\% & 96.94\% \\
+Dense (3 trees) & 50 & 84.31\% & 94.74\% \\
+\hline
+\textbf{Total} & \textbf{100} & \textbf{89.11\%} & \textbf{95.60\%} \\
+\hline
+\end{tabular}
+\end{table}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{figures/sim_vs_real.png}
-    \caption{Example of a simulated forest environment used for RL training (left) vs.\ the real world (right).}
-    \label{fig:sim_vs_real}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=28pt,
+    width=\textwidth,
+    height=9cm,
+    ylabel={Success Rate (\%)},
+    ymin=0, ymax=130,
+    ytick={0,20,40,60,80,100},
+    xtick=data,
+    symbolic x coords={Sparse, Dense, Total},
+    legend style={at={(0.98,0.98)}, anchor=north east},
+    nodes near coords,
+    nodes near coords align={vertical},
+    every node near coord/.append style={font=\small, text=black},
+    enlarge x limits=0.25,
+    grid=major,
+    grid style={dashed,gray!40},
+]
+\addplot+[fill=lightblue, draw=black] coordinates {
+    (Sparse, 93.88) (Dense, 84.31) (Total, 89.11)
+};
+\addplot+[fill=lavenderpurple, draw=black] coordinates {
+    (Sparse, 96.94) (Dense, 94.74) (Total, 95.60)
+};
+\legend{Episode Success, Per-Obstacle Success}
+\end{axis}
+\end{tikzpicture}
+\caption{Simulation episode-level and per-obstacle success rates by tree density.}
+\label{fig:sim_bar}
 \end{figure}
 
-The most widely used mitigation strategy is domain randomisation, in which visual and physical properties of the simulation are varied randomly during training so the agent learns to generalise rather than memorise specific visual details \cite{Zhao2020,Salvato2021,Loquercio2019,Jang2024}.
+The agent achieved a 93.88\% episode success rate in sparse conditions and 84.31\% in dense conditions. The per-obstacle success rates were consistently higher than the episode-level rates in both conditions, reflecting that the agent frequently avoided most trees in an episode even when one collision ultimately terminated the run.
 
-Loquercio et al.\ \cite{Loquercio2019} demonstrated zero-shot transfer for drone racing without any real-world fine-tuning.
+\subsection{Real-World Results}
 
-Azzam et al.\ \cite{Azzam2024} reduced the reality gap by keeping the RL agent at a high abstraction level.
+The same policy was deployed without fine-tuning on the physical Holybro S500 V2 platform. A total of 100 real-world flights were conducted: 50 sparse and 50 dense. Table \ref{tab:real_results} summarises the results. Figure \ref{fig:real_bar} shows the success rates by condition.
 
-Jang et al.\ \cite{Jang2024} confirmed generalisation to unseen real-world configurations.
+\vspace{6pt}
+\begin{table}[H]
+\centering
+\caption{Real-world flight results across density conditions.}
+\label{tab:real_results}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Condition} & \textbf{Episodes} & \textbf{Episode Success Rate} & \textbf{Per-Obstacle Success Rate} \\
+\hline
+Sparse (2 trees) & 50 & 74.00\% & 83.00\% \\
+Dense (3 trees) & 50 & 70.00\% & 78.52\% \\
+\hline
+\textbf{Total} & \textbf{100} & \textbf{72.28\%} & \textbf{80.32\%} \\
+\hline
+\end{tabular}
+\end{table}
 
-Qin et al.\ \cite{Qin2025} improved transfer efficiency further by combining domain randomisation with a small amount of real-world adaptation data.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=28pt,
+    width=\textwidth,
+    height=9cm,
+    ylabel={Success Rate (\%)},
+    ymin=0, ymax=120,
+    ytick={0,20,40,60,80,100},
+    xtick=data,
+    symbolic x coords={Sparse, Dense, Total},
+    legend style={at={(0.98,0.98)}, anchor=north east},
+    nodes near coords,
+    nodes near coords align={vertical},
+    every node near coord/.append style={font=\small, text=black},
+    enlarge x limits=0.25,
+    grid=major,
+    grid style={dashed,gray!40},
+]
+\addplot+[fill=lightblue, draw=black] coordinates {
+    (Sparse, 74.00) (Dense, 70.00) (Total, 72.28)
+};
+\addplot+[fill=lavenderpurple, draw=black] coordinates {
+    (Sparse, 83.00) (Dense, 78.52) (Total, 80.32)
+};
+\legend{Episode Success, Per-Obstacle Success}
+\end{axis}
+\end{tikzpicture}
+\caption{Real-world episode-level and per-obstacle success rates by tree density.}
+\label{fig:real_bar}
+\end{figure}
 
-In this thesis, domain randomisation is the primary strategy \cite{Zhao2020,Salvato2021,Loquercio2019} --- tree trunk textures, lighting, and background elements are randomly varied in AirSim so the agent does not overfit to simulation visuals.
+\subsection{Simulation vs.\ Real-World Comparison}
 
-Transfer efficiency is then quantified as the real-world success rate divided by the simulation success rate, directly measuring how much performance is lost when moving from simulation to the real drone \cite{Zhao2020,Salvato2021}.
+Figure \ref{fig:comparison_bar} directly compares episode-level success rates between simulation and real-world for each density condition.
 
-The individual building blocks required for this thesis have each been demonstrated in isolation. PPO has been applied to drone navigation \cite{Khanzada2025,Vizzotto2025,Tayar2025}. Monocular RGB cameras have been used as the sole sensor for RL-based obstacle avoidance \cite{Kumar2023,Kalidas2023,Kabas2022}. Sim-to-real transfer via domain randomisation has been validated for drones \cite{Loquercio2019,Azzam2024,Jang2024}. However, no existing work combines all of these elements: PPO with RGB-only input, trained in a forest-specific environment, systematically evaluated across tree densities, and transferred to a real quadrotor. (Table \ref{tab:related_work})
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=28pt,
+    width=\textwidth,
+    height=6.5cm,
+    ylabel={Episode Success Rate (\%)},
+    ymin=0, ymax=140,
+    ytick={0,20,40,60,80,100},
+    xtick=data,
+    symbolic x coords={Sparse, Dense, Total},
+    legend style={at={(0.98,0.98)}, anchor=north east},
+    nodes near coords,
+    nodes near coords align={vertical},
+    every node near coord/.append style={font=\small, text=black},
+    enlarge x limits=0.25,
+    grid=major,
+    grid style={dashed,gray!40},
+]
+\addplot+[fill=blue-green, draw=black] coordinates {
+    (Sparse, 93.88) (Dense, 84.31) (Total, 89.11)
+};
+\addplot+[fill=lightgray, draw=black] coordinates {
+    (Sparse, 74.00) (Dense, 70.00) (Total, 72.28)
+};
+\legend{Simulation, Real-World}
+\end{axis}
+\end{tikzpicture}
+\caption{Episode-level success rate comparison between simulation and real-world across density conditions.}
+\label{fig:comparison_bar}
+\end{figure}
 
-\input{components/tables/table11_related_work.tex}
+\subsection{Sim-to-Real Transfer Efficiency}
 
-This gap is not just an academic observation --- it has practical consequences for bark beetle monitoring \cite{Bozzini2024,Bijou2025}, where a system requiring expensive LiDAR or that cannot leave simulation is not deployable. The contribution of this thesis is to build and evaluate exactly the system that is missing: a low-cost, RGB-only, PPO-trained drone that navigates a real forest environment after being trained entirely in simulation.
+Transfer efficiency is computed as the real-world success rate divided by the simulation success rate for each matched condition \cite{Zhao2020,Salvato2021}. Table \ref{tab:transfer} reports transfer efficiency at both the episode and per-obstacle levels. Figure \ref{fig:transfer_bar} visualises the transfer efficiency across conditions.
 
-\subsection{Experimental Results}
+\vspace{6pt}
+\begin{table}[H]
+\centering
+\caption{Sim-to-real transfer efficiency by density condition.}
+\label{tab:transfer}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Condition} & \textbf{Episode-Level Transfer} & \textbf{Per-Obstacle Transfer} \\
+\hline
+Sparse (2 trees) & 78.82\% & 85.62\% \\
+Dense (3 trees) & 83.03\% & 82.88\% \\
+\hline
+\textbf{Total} & \textbf{81.11\%} & \textbf{84.02\%} \\
+\hline
+\end{tabular}
+\end{table}
 
-\textit{Experimental results will be added here once data collection and analysis are complete.}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=28pt,
+    width=\textwidth,
+    height=6.5cm,
+    ylabel={Transfer Efficiency (\%)},
+    ymin=0, ymax=140,
+    ytick={0,20,40,60,80,100},
+    xtick=data,
+    symbolic x coords={Sparse, Dense, Total},
+    legend style={at={(0.98,0.98)}, anchor=north east},
+    nodes near coords,
+    nodes near coords align={vertical},
+    every node near coord/.append style={font=\small, text=black},
+    enlarge x limits=0.25,
+    grid=major,
+    grid style={dashed,gray!40},
+    yticklabel={\pgfmathprintnumber{\tick}\%},
+]
+\addplot+[fill=blue-green, draw=black] coordinates {
+    (Sparse, 78.82) (Dense, 83.03) (Total, 81.11)
+};
+\addplot+[fill=lavenderpurple, draw=black] coordinates {
+    (Sparse, 85.62) (Dense, 82.88) (Total, 84.02)
+};
+\legend{Episode-Level Transfer, Per-Obstacle Transfer}
+\end{axis}
+\end{tikzpicture}
+\caption{Sim-to-real transfer efficiency by density condition at episode and per-obstacle levels.}
+\label{fig:transfer_bar}
+\end{figure}
+
+The overall episode-level transfer efficiency of 81.11\% indicates that approximately one in five episodes that succeeded in simulation did not succeed in the real world. Per-obstacle transfer of 84.02\% shows the agent retained most of its avoidance capability, with the gap primarily attributable to full-episode failures rather than a general degradation in obstacle avoidance behaviour.
 
 \end{document}

@@ -180,7 +180,7 @@ The model's network consists of the hyperparameters shown in Table \ref{tab:hype
 
 Evaluation is conducted separately under fixed, controlled conditions identical between simulation and the real world, allowing direct performance comparison. The curriculum and its randomisation are not active during evaluation.
 
-The best policy checkpoint was evaluated over 50 episodes per configuration. Conditions are defined by tree spacing: sparse (6\,m, stage 1), medium (4\,m, stage 2), and dense (2\,m, stage 3), combined with a fixed speed within range of 0\,m/s as a minimum and 3\,m/s as a maximum. An episode was counted as successful if and only if the drone reached the goal waypoint without any collision and without leaving the defined corridor ($\pm$3\,m lateral hard kill) \cite{Kabas2022}. The goal distance for the simulation testing corridor, like in training, is 15\,m in length. The testing data structure is shown in Table \ref{tab:data_structure}.
+The best policy checkpoint was evaluated over 50 episodes per configuration. Conditions are defined by the number of trees placed in the 15\,$\times$\,3\,m corridor: sparse (2 trees) and dense (3 trees), combined with a fixed speed within range of 0\,m/s as a minimum and 3\,m/s as a maximum. An episode was counted as successful if and only if the drone reached the goal waypoint without any collision and without leaving the defined corridor ($\pm$3\,m lateral hard kill) \cite{Kabas2022}. The goal distance for the simulation testing corridor, like in training, is 15\,m in length. The testing data structure is shown in Table \ref{tab:data_structure}.
 
 \input{components/tables/table5_data_structure.tex}
 
@@ -230,7 +230,7 @@ With hardware, middleware, and software aligned, the drone is ready for real-wor
 
 Real-world trials were conducted in a forest clearing under controlled weather conditions: wind speed below 3\,m/s, no precipitation, temperature 10--25\textdegree{}C, and daylight. Battery charge was maintained at 80--100\% at the start of each flight. Tree spacing was measured and marked on the ground prior to each session to match the simulation configurations exactly \cite{Loquercio2019,Jang2024}.
 
-The same 50 flights per condition were conducted as in simulation, across identical configurations: sparse (6\,m), medium (4\,m), and dense (2\,m) tree spacing. An obstacle was counted as avoided if the tree entered the 6\,m detection corridor, no physical contact occurred, and the drone maintained forward progress. Collision detection was determined by an accelerometer spike on the Pixhawk IMU exceeding a predefined threshold. Any flight requiring manual RC failsafe activation was recorded as a failure \cite{Azzam2024}. Table \ref{tab:data_structure} retains the same data structure for real-world trials as for simulation.
+The same 50 flights per condition were conducted as in simulation, across identical configurations: sparse (2 trees in corridor) and dense (3 trees in corridor). An obstacle was counted as avoided if the tree entered the 6\,m detection corridor, no physical contact occurred, and the drone maintained forward progress. Collision detection was determined by an accelerometer spike on the Pixhawk IMU exceeding a predefined threshold. Any flight requiring manual RC failsafe activation was recorded as a failure \cite{Azzam2024}. Table \ref{tab:data_structure} retains the same data structure for real-world trials as for simulation.
 
 \subsubsection{Testing --- Sim-to-real transfer}
 
