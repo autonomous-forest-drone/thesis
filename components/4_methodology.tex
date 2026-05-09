@@ -99,7 +99,7 @@ The stages and all other details mentioned in this section are shown in Figures 
 
 \subsubsection{Training in a simulation --- The sensor setup}
 
-The drone sees the world through a single forward-facing camera capturing 128 $\times$ 128 pixel images at 30\,Hz with a 100\textdegree{} field of view, the same resolution, frame rate, and angle as the Arducam IMX477 mounted on the physical drone, ensuring no sensor mismatch between simulation and reality. Matching simulation and physical sensor parameters is a standard practice for minimising the reality gap \cite{Zhao2020,Salvato2021,Loquercio2019}.
+The drone sees the world through a single forward-facing camera capturing 128 $\times$ 128 pixel images at 30\,Hz with a 62\textdegree{} field of view, the same resolution, frame rate, and angle as the Arducam IMX219 mounted on the physical drone, ensuring no sensor mismatch between simulation and reality. Matching simulation and physical sensor parameters is a standard practice for minimising the reality gap \cite{Zhao2020,Salvato2021,Loquercio2019}.
 
 Each raw colour frame goes through three processing steps before it reaches the network.
 
@@ -188,12 +188,12 @@ The best policy checkpoint was evaluated over 50 episodes per configuration. Con
 
 \subsubsection{Preparation --- The hardware setup}
 
-The physical drone used for real-world evaluation was a \textit{Holybro S500 V2} quadcopter (500\,mm wheelbase) with a total all-up weight of approximately 1.75\,kg. The flight controller was a Pixhawk 6C running PX4 firmware v1.14+, operating in altitude control mode. The companion computer was an NVIDIA Jetson Orin Nano (8\,GB), selected for its ability to run TensorRT-optimised inference in real time \cite{Kabas2022}. The camera was an Arducam IMX477 configured to match the simulation sensor parameters exactly: 128 $\times$ 128 pixels, 30\,fps, 100\textdegree{} FOV, following the sensor-matching approach recommended for sim-to-real transfer \cite{Zhao2020,Salvato2021}. Figure \ref{fig:drone_hardware} shows how the setup looks in real life and Table \ref{tab:hardware} lists the key components of the setup.
+The physical drone used for real-world evaluation was a \textit{Holybro S500 V2} quadcopter (500\,mm wheelbase) with a total all-up weight of approximately 1.75\,kg. The flight controller was a Pixhawk 6C running PX4 firmware v1.14+, operating in altitude control mode. The companion computer was an NVIDIA Jetson Orin Nano (8\,GB), selected for its ability to run TensorRT-optimised inference in real time \cite{Kabas2022}. The camera was an Arducam IMX219 configured to match the simulation sensor parameters exactly: 128 $\times$ 128 pixels, 30\,fps, 62\textdegree{} FOV, following the sensor-matching approach recommended for sim-to-real transfer \cite{Zhao2020,Salvato2021}. Figure \ref{fig:drone_hardware} shows how the setup looks in real life and Table \ref{tab:hardware} lists the key components of the setup.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{figures/drone_hardware.png}
-    \caption{The Holybro S500 V2 quadrotor used for real-world evaluation, equipped with the Arducam IMX477 camera, Pixhawk 6C flight controller, and NVIDIA Jetson Orin Nano companion computer.}
+    \caption{The Holybro S500 V2 quadrotor used for real-world evaluation, equipped with the Arducam IMX219 camera, Pixhawk 6C flight controller, and NVIDIA Jetson Orin Nano companion computer.}
     \label{fig:drone_hardware}
 \end{figure}
 
@@ -239,6 +239,6 @@ Transfer efficiency is computed for each matched condition as:
     \text{Transfer Efficiency (\%)} = \frac{\text{Real-world success rate}}{\text{Simulation success rate}} \times 100
 \end{equation}
 
-A value of 100\% indicates no performance loss in transfer; lower values quantify the magnitude of the reality gap \cite{Zhao2020,Salvato2021}. This metric has been used in comparable drone RL transfer studies \cite{Loquercio2019,Azzam2024,Jang2024}. Several design decisions were specifically aimed at minimising this gap: action delay and momentum smoothing simulate real motor lag \cite{Zhao2020,Salvato2021}; Gaussian noise injection replicates physical camera sensor noise \cite{Loquercio2019}; and the simulated sensor parameters exactly match the Arducam IMX477, following the hardware-matching strategy of Kabas \cite{Kabas2022} and Loquercio et al.\ \cite{Loquercio2019}.
+A value of 100\% indicates no performance loss in transfer; lower values quantify the magnitude of the reality gap \cite{Zhao2020,Salvato2021}. This metric has been used in comparable drone RL transfer studies \cite{Loquercio2019,Azzam2024,Jang2024}. Several design decisions were specifically aimed at minimising this gap: action delay and momentum smoothing simulate real motor lag \cite{Zhao2020,Salvato2021}; Gaussian noise injection replicates physical camera sensor noise \cite{Loquercio2019}; and the simulated sensor parameters exactly match the Arducam IMX219, following the hardware-matching strategy of Kabas \cite{Kabas2022} and Loquercio et al.\ \cite{Loquercio2019}.
 
 \end{document}
