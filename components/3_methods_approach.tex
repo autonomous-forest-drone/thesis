@@ -25,7 +25,7 @@ All rewards are normalised online using VecNormalize to keep the signal magnitud
 
 A dual-stream architecture is chosen because the agent receives two fundamentally different types of input that benefit from separate processing before being combined.
 
-The visual stream uses a CNN to process the stacked grayscale camera frames. CNNs are well suited to spatial feature extraction from image data and have been validated for vision-based drone navigation in prior work \cite{Kabas2022,Kalidas2023}. Stacking 8 frames rather than using a single image gives the network implicit motion information --- the agent can infer the direction and speed of approaching obstacles --- without requiring an explicit optical flow computation.
+The visual stream uses a Convolutional Neural Network (CNN) to process the stacked grayscale camera frames. CNNs are well suited to spatial feature extraction from image data and have been validated for vision-based drone navigation in prior work \cite{Kabas2022,Kalidas2023}. Stacking 8 frames rather than using a single image gives the network implicit motion information --- the agent can infer the direction and speed of approaching obstacles --- without requiring an explicit optical flow computation.
 
 The state stream uses a small fully connected network to process the 4-element scalar vector (goal distance, lateral offset, forward speed, lateral speed). Keeping this separate from the image stream avoids the scalar values being lost or overwhelmed when concatenated directly with high-dimensional image features.
 

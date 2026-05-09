@@ -201,11 +201,11 @@ The physical drone used for real-world evaluation was a \textit{Holybro S500 V2}
 
 \subsubsection{Preparation --- The middleware setup}
 
-ROS2 connects all onboard hardware. The camera streams frames to the Jetson over a ROS2 topic, where OpenCV applies CLAHE and Gaussian noise preprocessing before passing frames to the inference node.
+Robot Operating System 2 (ROS2) connects all onboard hardware. The camera streams frames to the Jetson over a ROS2 topic, where OpenCV applies CLAHE and Gaussian noise preprocessing before passing frames to the inference node.
 
-At the same time, ROS2 receives IMU, GPS, and velocity data from the Pixhawk over serial communication.
+At the same time, ROS2 receives Inertial Measurement Unit (IMU), Global Positioning System (GPS), and velocity data from the Pixhawk over serial communication.
 
-The inference node combines both streams into the 8-frame image stack and 4D state vector, runs the PPO policy \cite{Schulman2017}, and publishes velocity commands back to the Pixhawk via MAVLink using MAVSDK-Python in altitude flight mode.
+The inference node combines both streams into the 8-frame image stack and 4D state vector, runs the PPO policy \cite{Schulman2017}, and publishes velocity commands back to the Pixhawk via Micro Air Vehicle Link (MAVLink) using MAVSDK-Python in altitude flight mode.
 
 A ROS2-based middleware architecture of this kind is consistent with approaches used in recent real-world drone RL deployments \cite{Azzam2024,Jang2024}.
 
@@ -220,7 +220,7 @@ The ROS2 middleware architecture is shown in Figure \ref{fig:ros2_pipeline}.
 
 \subsubsection{Preparation --- The software setup}
 
-The trained PPO policy was converted from PyTorch to TensorRT before deployment, bringing inference latency down to 20--30\,ms on the Jetson, fast enough for the 30\,Hz control loop. Velocity commands from the inference node are sent to the Pixhawk via MAVLink using MAVSDK-Python, which executes them in altitude control mode. A QGroundControl ground station on a laptop handled telemetry monitoring and safety override during all flights. Table \ref{tab:software} summarises the full software stack.
+The trained PPO policy was converted from PyTorch to TensorRT (NVIDIA's deep learning inference optimiser) before deployment, bringing inference latency down to 20--30\,ms on the Jetson, fast enough for the 30\,Hz control loop. Velocity commands from the inference node are sent to the Pixhawk via MAVLink using MAVSDK-Python, which executes them in altitude control mode. A QGroundControl ground station on a laptop handled telemetry monitoring and safety override during all flights. Table \ref{tab:software} summarises the full software stack.
 
 With hardware, middleware, and software aligned, the drone is ready for real-world deployment.
 
