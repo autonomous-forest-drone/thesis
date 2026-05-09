@@ -1,0 +1,897 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{Klousek2019}{article}{}
+      \name{author}{6}{}{%
+        {{hash=b4782bfbce2a1e8e461aa5bd1ae61a66}{%
+           family={Kloušek},
+           familyi={K\bibinitperiod},
+           given={Tomáš},
+           giveni={T\bibinitperiod}}}%
+        {{hash=8df8b566c400750ca6f4af214b282c0c}{%
+           family={Komárek},
+           familyi={K\bibinitperiod},
+           given={Jan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=757aea6ea6fdb180c4b41a806348af92}{%
+           family={Surový},
+           familyi={S\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=858c5cf4cc0fe825244fcfca526c2ae0}{%
+           family={Hrach},
+           familyi={H\bibinitperiod},
+           given={Karel},
+           giveni={K\bibinitperiod}}}%
+        {{hash=dcfde1a6268611d471e86b0d0b796984}{%
+           family={Janata},
+           familyi={J\bibinitperiod},
+           given={Pavel},
+           giveni={P\bibinitperiod}}}%
+        {{hash=bdfd0d5d93dabb394ed4bf00599870fe}{%
+           family={Vašíček},
+           familyi={V\bibinitperiod},
+           given={Bohdan},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{62c7282fbaea1bca055b3c9801bafbf2}
+      \strng{fullhash}{cc06353aa6a266bc46fcc99d57b8c597}
+      \strng{bibnamehash}{cc06353aa6a266bc46fcc99d57b8c597}
+      \strng{authorbibnamehash}{cc06353aa6a266bc46fcc99d57b8c597}
+      \strng{authornamehash}{62c7282fbaea1bca055b3c9801bafbf2}
+      \strng{authorfullhash}{cc06353aa6a266bc46fcc99d57b8c597}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Remote Sensing}
+      \field{number}{13}
+      \field{title}{The use of {UAV} mounted sensors for precise detection of bark beetle infestation}
+      \field{volume}{11}
+      \field{year}{2019}
+      \field{pages}{1561}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/rs11131561
+      \endverb
+    \endentry
+    \entry{Bozzini2024}{article}{}
+      \name{author}{7}{}{%
+        {{hash=c05736a8c079a7c54904361317c2d216}{%
+           family={Bozzini},
+           familyi={B\bibinitperiod},
+           given={Valentina},
+           giveni={V\bibinitperiod}}}%
+        {{hash=d6a09d317e0f8aa2b6acf7fedd92a90c}{%
+           family={Colombo},
+           familyi={C\bibinitperiod},
+           given={Roberto},
+           giveni={R\bibinitperiod}}}%
+        {{hash=8b99e039518df75ddf9bae4f251863dc}{%
+           family={Cogliati},
+           familyi={C\bibinitperiod},
+           given={Sergio},
+           giveni={S\bibinitperiod}}}%
+        {{hash=5e7b97c0f38eebbba5258154ce73ac17}{%
+           family={Rascher},
+           familyi={R\bibinitperiod},
+           given={Uwe},
+           giveni={U\bibinitperiod}}}%
+        {{hash=8c38acab8348215b2f6fe349ec8d404c}{%
+           family={Schaepman},
+           familyi={S\bibinitperiod},
+           given={Michael\bibnamedelima E.},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=a6558d614f8049766a2d73e4d03967aa}{%
+           family={Schütz},
+           familyi={S\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+        {{hash=209aca8de3b14e47021d30acbff28ff5}{%
+           family={Kneubühler},
+           familyi={K\bibinitperiod},
+           given={Mathias},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{a89329aa40f0174ad120a1c8fb716851}
+      \strng{fullhash}{432a155a3ed7b2f3edfd2bc45efe1468}
+      \strng{bibnamehash}{a89329aa40f0174ad120a1c8fb716851}
+      \strng{authorbibnamehash}{a89329aa40f0174ad120a1c8fb716851}
+      \strng{authornamehash}{a89329aa40f0174ad120a1c8fb716851}
+      \strng{authorfullhash}{432a155a3ed7b2f3edfd2bc45efe1468}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Forest Ecology and Management}
+      \field{title}{Drone-based early detection of bark beetle infested spruce trees differs in endemic and epidemic situations}
+      \field{volume}{563}
+      \field{year}{2024}
+      \field{pages}{121972}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.foreco.2024.121972
+      \endverb
+    \endentry
+    \entry{Bijou2025}{article}{}
+      \name{author}{4}{}{%
+        {{hash=92a67b6afa20625a6e8971f06e4d1aeb}{%
+           family={Bijou},
+           familyi={B\bibinitperiod},
+           given={Selin},
+           giveni={S\bibinitperiod}}}%
+        {{hash=6389235fb5f1344a9a3b6e8b8bb87416}{%
+           family={Kupková},
+           familyi={K\bibinitperiod},
+           given={Lucie},
+           giveni={L\bibinitperiod}}}%
+        {{hash=234cea696176000851d30a15dac82fb0}{%
+           family={Červená},
+           familyi={Č\bibinitperiod},
+           given={Lucie},
+           giveni={L\bibinitperiod}}}%
+        {{hash=e86b23d3c19c2bb010e2f97a55253572}{%
+           family={Lysák},
+           familyi={L\bibinitperiod},
+           given={Jiří},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{3c3ad4128556ec4cac0cc40cd951aeb0}
+      \strng{fullhash}{7f1904582d4f943f4c8b983ddc4c1be3}
+      \strng{bibnamehash}{7f1904582d4f943f4c8b983ddc4c1be3}
+      \strng{authorbibnamehash}{7f1904582d4f943f4c8b983ddc4c1be3}
+      \strng{authornamehash}{3c3ad4128556ec4cac0cc40cd951aeb0}
+      \strng{authorfullhash}{7f1904582d4f943f4c8b983ddc4c1be3}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Ecological Indicators}
+      \field{title}{Assessing early bark beetle infestation in {Norway} spruce using multitemporal hyperspectral {UAV} imagery: {Is} detection during the green stage always timely?}
+      \field{volume}{178}
+      \field{year}{2025}
+      \field{pages}{113869}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.ecolind.2025.113869
+      \endverb
+    \endentry
+    \entry{Butt2024}{article}{}
+      \name{author}{3}{}{%
+        {{hash=214f6b1ce69186936663f4edd1b1a5cd}{%
+           family={Butt},
+           familyi={B\bibinitperiod},
+           given={Muhammad\bibnamedelima Zohaib},
+           giveni={M\bibinitperiod\bibinitdelim Z\bibinitperiod}}}%
+        {{hash=f05a7895bdb8958c13b9367623ac3480}{%
+           family={Nasir},
+           familyi={N\bibinitperiod},
+           given={Noor},
+           giveni={N\bibinitperiod}}}%
+        {{hash=2a388af52fe7c473928b528ffc6e45f5}{%
+           family={Rashid},
+           familyi={R\bibinitperiod},
+           given={Rao\bibnamedelima Anwer},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{4628d7ec1552e929269d69b7bdd16f9f}
+      \strng{fullhash}{4628d7ec1552e929269d69b7bdd16f9f}
+      \strng{bibnamehash}{4628d7ec1552e929269d69b7bdd16f9f}
+      \strng{authorbibnamehash}{4628d7ec1552e929269d69b7bdd16f9f}
+      \strng{authornamehash}{4628d7ec1552e929269d69b7bdd16f9f}
+      \strng{authorfullhash}{4628d7ec1552e929269d69b7bdd16f9f}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Robotics and Autonomous Systems}
+      \field{title}{A review of perception sensors, techniques, and hardware architectures for autonomous low-altitude {UAVs} in non-cooperative local obstacle avoidance}
+      \field{volume}{174}
+      \field{year}{2024}
+      \field{pages}{104629}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.robot.2024.104629
+      \endverb
+    \endentry
+    \entry{Turkulainen2023}{article}{}
+      \name{author}{12}{}{%
+        {{hash=48e9264000a10bb7fd9b7a573d685896}{%
+           family={Turkulainen},
+           familyi={T\bibinitperiod},
+           given={Eetu},
+           giveni={E\bibinitperiod}}}%
+        {{hash=40b57dcd203eeac017572f477c7e01d1}{%
+           family={Honkavaara},
+           familyi={H\bibinitperiod},
+           given={Eija},
+           giveni={E\bibinitperiod}}}%
+        {{hash=446f53cb2a4fea85df7c314bba53adaa}{%
+           family={Näsi},
+           familyi={N\bibinitperiod},
+           given={Roope},
+           giveni={R\bibinitperiod}}}%
+        {{hash=d237ffe5b37a7268c23e56328674219c}{%
+           family={Oliveira},
+           familyi={O\bibinitperiod},
+           given={Raul\bibnamedelima A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=22aef1c96f396e8d729015a03489d7ff}{%
+           family={Hakala},
+           familyi={H\bibinitperiod},
+           given={Teemu},
+           giveni={T\bibinitperiod}}}%
+        {{hash=c037b5c2a49ccc147740bd68134b553d}{%
+           family={Junttila},
+           familyi={J\bibinitperiod},
+           given={Samuli},
+           giveni={S\bibinitperiod}}}%
+        {{hash=8dea54c2659143d1f44e19392235d7b8}{%
+           family={Karila},
+           familyi={K\bibinitperiod},
+           given={Kirsi},
+           giveni={K\bibinitperiod}}}%
+        {{hash=f081a81cdc279f774d6a41694d349189}{%
+           family={Koivumäki},
+           familyi={K\bibinitperiod},
+           given={Niko},
+           giveni={N\bibinitperiod}}}%
+        {{hash=60926f4c1e875bf27b333780596b5c82}{%
+           family={Pelto-Arvo},
+           familyi={P\bibinithyphendelim A\bibinitperiod},
+           given={Mikko},
+           giveni={M\bibinitperiod}}}%
+        {{hash=f7cf7ea83ed53e08c82c6a6ea6d8fb20}{%
+           family={Tuviala},
+           familyi={T\bibinitperiod},
+           given={Jori},
+           giveni={J\bibinitperiod}}}%
+        {{hash=023e479291de1262454c46e62e12f856}{%
+           family={Su},
+           familyi={S\bibinitperiod},
+           given={Weijie},
+           giveni={W\bibinitperiod}}}%
+        {{hash=98e1538d0f1efc52688be5d2241b8cb8}{%
+           family={Pölönen},
+           familyi={P\bibinitperiod},
+           given={Ilkka},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{541dcc3ef206688efdc1c7aa0ce0cac0}
+      \strng{fullhash}{d8a5e24f866b395715877d439cf9e98c}
+      \strng{bibnamehash}{541dcc3ef206688efdc1c7aa0ce0cac0}
+      \strng{authorbibnamehash}{541dcc3ef206688efdc1c7aa0ce0cac0}
+      \strng{authornamehash}{541dcc3ef206688efdc1c7aa0ce0cac0}
+      \strng{authorfullhash}{d8a5e24f866b395715877d439cf9e98c}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Remote Sensing}
+      \field{number}{20}
+      \field{title}{Comparison of deep neural networks in the classification of bark beetle-induced forest damage}
+      \field{volume}{15}
+      \field{year}{2023}
+      \field{pages}{5253}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/rs15205253
+      \endverb
+    \endentry
+    \entry{Merei2025}{article}{}
+      \name{author}{4}{}{%
+        {{hash=6ad5d790b555c40b25f89a66ea37f734}{%
+           family={Merei},
+           familyi={M\bibinitperiod},
+           given={Ahmad},
+           giveni={A\bibinitperiod}}}%
+        {{hash=ffe37700a42bc42a31e0e77c76bf24ef}{%
+           family={Mcheick},
+           familyi={M\bibinitperiod},
+           given={Hamid},
+           giveni={H\bibinitperiod}}}%
+        {{hash=4008615bdab3412b72255c6d13f14653}{%
+           family={Ghaddar},
+           familyi={G\bibinitperiod},
+           given={Ali},
+           giveni={A\bibinitperiod}}}%
+        {{hash=51b8f834f15abb4cdae781e4668d393d}{%
+           family={Rebaine},
+           familyi={R\bibinitperiod},
+           given={Djamal},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{4fdebf528cfb21a9b9d787e274992f23}
+      \strng{fullhash}{ec1e17d6a5d4577d3397db0cbdac8e37}
+      \strng{bibnamehash}{ec1e17d6a5d4577d3397db0cbdac8e37}
+      \strng{authorbibnamehash}{ec1e17d6a5d4577d3397db0cbdac8e37}
+      \strng{authornamehash}{4fdebf528cfb21a9b9d787e274992f23}
+      \strng{authorfullhash}{ec1e17d6a5d4577d3397db0cbdac8e37}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Drones}
+      \field{number}{3}
+      \field{title}{A survey on obstacle detection and avoidance methods for {UAVs}}
+      \field{volume}{9}
+      \field{year}{2025}
+      \field{pages}{203}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/drones9030203
+      \endverb
+    \endentry
+    \entry{Debnath2024}{article}{}
+      \name{author}{5}{}{%
+        {{hash=f2320937ef4c88115c682a41208dd169}{%
+           family={Debnath},
+           familyi={D\bibinitperiod},
+           given={Dibya},
+           giveni={D\bibinitperiod}}}%
+        {{hash=a8061256845f40b413f211e4661ad95e}{%
+           family={Vanegas},
+           familyi={V\bibinitperiod},
+           given={Fernando},
+           giveni={F\bibinitperiod}}}%
+        {{hash=dc9dd83f298db568d49b9fdf7f6e6e8f}{%
+           family={Sandino},
+           familyi={S\bibinitperiod},
+           given={Juan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=692be66644ccd56222b10e8c038223c5}{%
+           family={Hawary},
+           familyi={H\bibinitperiod},
+           given={Ahmed\bibnamedelima F.},
+           giveni={A\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=75739a822c86b5d25209490a7a7a6d0a}{%
+           family={Gonzalez},
+           familyi={G\bibinitperiod},
+           given={Felipe},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{647e8ccf68946c1e8d42d1e24e47e420}
+      \strng{fullhash}{6eecdf6bc444af1c96b226f287bdc73c}
+      \strng{bibnamehash}{6eecdf6bc444af1c96b226f287bdc73c}
+      \strng{authorbibnamehash}{6eecdf6bc444af1c96b226f287bdc73c}
+      \strng{authornamehash}{647e8ccf68946c1e8d42d1e24e47e420}
+      \strng{authorfullhash}{6eecdf6bc444af1c96b226f287bdc73c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Remote Sensing}
+      \field{number}{21}
+      \field{title}{A review of {UAV} path-planning algorithms and obstacle avoidance methods for remote sensing applications}
+      \field{volume}{16}
+      \field{year}{2024}
+      \field{pages}{4019}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/rs16214019
+      \endverb
+    \endentry
+    \entry{Hrabar2012}{article}{}
+      \name{author}{1}{}{%
+        {{hash=4e28035cbd8a2a91710380d6be2e4607}{%
+           family={Hrabar},
+           familyi={H\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{4e28035cbd8a2a91710380d6be2e4607}
+      \strng{fullhash}{4e28035cbd8a2a91710380d6be2e4607}
+      \strng{bibnamehash}{4e28035cbd8a2a91710380d6be2e4607}
+      \strng{authorbibnamehash}{4e28035cbd8a2a91710380d6be2e4607}
+      \strng{authornamehash}{4e28035cbd8a2a91710380d6be2e4607}
+      \strng{authorfullhash}{4e28035cbd8a2a91710380d6be2e4607}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Field Robotics}
+      \field{number}{2}
+      \field{title}{An evaluation of stereo and laser-based range sensing for rotorcraft unmanned aerial vehicle obstacle avoidance}
+      \field{volume}{29}
+      \field{year}{2012}
+      \field{pages}{215\bibrangedash 239}
+      \range{pages}{25}
+      \verb{doi}
+      \verb 10.1002/rob.21404
+      \endverb
+    \endentry
+    \entry{Schulman2017}{misc}{}
+      \name{author}{5}{}{%
+        {{hash=3e09bd2a25d237ebdaed560a07c0451e}{%
+           family={Schulman},
+           familyi={S\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+        {{hash=674ede0b9cd02a2bf5fc662972efb9f0}{%
+           family={Wolski},
+           familyi={W\bibinitperiod},
+           given={Filip},
+           giveni={F\bibinitperiod}}}%
+        {{hash=4164e43d8cf919f5e3f8d80f5ea23f36}{%
+           family={Dhariwal},
+           familyi={D\bibinitperiod},
+           given={Prafulla},
+           giveni={P\bibinitperiod}}}%
+        {{hash=a812c46caad94fc8701be37871f303ba}{%
+           family={Radford},
+           familyi={R\bibinitperiod},
+           given={Alec},
+           giveni={A\bibinitperiod}}}%
+        {{hash=be38507da6ab98e7ac01ac2c6b7e13eb}{%
+           family={Klimov},
+           familyi={K\bibinitperiod},
+           given={Oleg},
+           giveni={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{b88cba7e9e78fa0e04ba07dccafe7324}
+      \strng{fullhash}{a6c6ed5a5aeb74e536f16291276ae392}
+      \strng{bibnamehash}{a6c6ed5a5aeb74e536f16291276ae392}
+      \strng{authorbibnamehash}{a6c6ed5a5aeb74e536f16291276ae392}
+      \strng{authornamehash}{b88cba7e9e78fa0e04ba07dccafe7324}
+      \strng{authorfullhash}{a6c6ed5a5aeb74e536f16291276ae392}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{arXiv preprint arXiv:1707.06347}
+      \field{title}{Proximal policy optimization algorithms}
+      \field{year}{2017}
+    \endentry
+    \entry{Khanzada2025}{article}{}
+      \name{author}{3}{}{%
+        {{hash=3097372d88ae69de0d3c4508fa029bdb}{%
+           family={Khanzada},
+           familyi={K\bibinitperiod},
+           given={Hamza\bibnamedelima Rashid},
+           giveni={H\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=8b04c25056498db6b95c2f4d27a9bd4b}{%
+           family={Maqsood},
+           familyi={M\bibinitperiod},
+           given={Adnan},
+           giveni={A\bibinitperiod}}}%
+        {{hash=2fadab2b7d5d2a9de37926717d4eb2ae}{%
+           family={Basit},
+           familyi={B\bibinitperiod},
+           given={Abdul},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2ee596eaf43bb22ee7c0533131f20adc}
+      \strng{fullhash}{2ee596eaf43bb22ee7c0533131f20adc}
+      \strng{bibnamehash}{2ee596eaf43bb22ee7c0533131f20adc}
+      \strng{authorbibnamehash}{2ee596eaf43bb22ee7c0533131f20adc}
+      \strng{authornamehash}{2ee596eaf43bb22ee7c0533131f20adc}
+      \strng{authorfullhash}{2ee596eaf43bb22ee7c0533131f20adc}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{PLoS ONE}
+      \field{title}{Reinforcement learning for {UAV} flight controls: {Evaluating} continuous space reinforcement learning algorithms for fixed-wing {UAVs}}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.1371/journal.pone.0334219
+      \endverb
+    \endentry
+    \entry{Vizzotto2025}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=4a3b146683bc0b9039eb4195427672ed}{%
+           family={Vizzotto},
+           familyi={V\bibinitperiod},
+           given={Marcelo\bibnamedelima Rodrigues},
+           giveni={M\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=9239611db6d53fa10273014102759bc6}{%
+           family={Kohl},
+           familyi={K\bibinitperiod},
+           given={Gustavo},
+           giveni={G\bibinitperiod}}}%
+        {{hash=2ddbbfea8e839d57ca38166a1ebb1aad}{%
+           family={Pereira},
+           familyi={P\bibinitperiod},
+           given={Carlos\bibnamedelima Eduardo},
+           giveni={C\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=058b3df70ab4fc0766cf9235aae71929}{%
+           family={Tropea},
+           familyi={T\bibinitperiod},
+           given={Mauro},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a7205a2f9046f8e26472054d2ccc81c3}{%
+           family={Freitas},
+           familyi={F\bibinitperiod},
+           given={Edison\bibnamedelima Pignaton},
+           giveni={E\bibinitperiod\bibinitdelim P\bibinitperiod},
+           prefix={de},
+           prefixi={d\bibinitperiod}}}%
+      }
+      \strng{namehash}{b53fad94758db39f370113e7d44fa08b}
+      \strng{fullhash}{c153338fe4e0774c4043c7dfcce7d85d}
+      \strng{bibnamehash}{c153338fe4e0774c4043c7dfcce7d85d}
+      \strng{authorbibnamehash}{c153338fe4e0774c4043c7dfcce7d85d}
+      \strng{authornamehash}{b53fad94758db39f370113e7d44fa08b}
+      \strng{authorfullhash}{c153338fe4e0774c4043c7dfcce7d85d}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE International Conference on Advanced Robotics (ICAR)}
+      \field{title}{A {DRL}-based trajectory planning strategy for {UAV} navigation: {A} comparison of the {PPO} algorithm with {DDQN}, {DDPG}, and {A*}}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.1109/ICAR65334.2025.11338666
+      \endverb
+    \endentry
+    \entry{Tayar2025}{inproceedings}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=41e2224709b9f1d635ea4d810def3b42}{%
+           family={Tayar},
+           familyi={T\bibinitperiod},
+           given={Mahmoud\bibnamedelima Sami},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \strng{namehash}{4137251611e19a67c04724451177fad5}
+      \strng{fullhash}{4137251611e19a67c04724451177fad5}
+      \strng{bibnamehash}{4137251611e19a67c04724451177fad5}
+      \strng{authorbibnamehash}{4137251611e19a67c04724451177fad5}
+      \strng{authornamehash}{4137251611e19a67c04724451177fad5}
+      \strng{authorfullhash}{4137251611e19a67c04724451177fad5}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE Latin American Robotics Symposium (LARS)}
+      \field{title}{Autonomous {UAV} flight navigation in confined spaces: {A} reinforcement learning approach}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.1109/LARS69345.2025.11273007
+      \endverb
+    \endentry
+    \entry{Kabas2022}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=941d5e2417eaf7a5bfd9deabad67c298}{%
+           family={Kabas},
+           familyi={K\bibinitperiod},
+           given={Burak},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{941d5e2417eaf7a5bfd9deabad67c298}
+      \strng{fullhash}{941d5e2417eaf7a5bfd9deabad67c298}
+      \strng{bibnamehash}{941d5e2417eaf7a5bfd9deabad67c298}
+      \strng{authorbibnamehash}{941d5e2417eaf7a5bfd9deabad67c298}
+      \strng{authornamehash}{941d5e2417eaf7a5bfd9deabad67c298}
+      \strng{authorfullhash}{941d5e2417eaf7a5bfd9deabad67c298}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE Signal Processing and Communications Applications Conference (SIU)}
+      \field{title}{Autonomous {UAV} navigation via deep reinforcement learning using {PPO}}
+      \field{year}{2022}
+      \verb{doi}
+      \verb 10.1109/SIU55565.2022.9864769
+      \endverb
+    \endentry
+    \entry{Kumar2023}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=abe5fd8841c4a608e9680f40bd576b7f}{%
+           family={Kumar},
+           familyi={K\bibinitperiod},
+           given={Rohit},
+           giveni={R\bibinitperiod}}}%
+        {{hash=e0df441636b76c100e34ad819c87a789}{%
+           family={Vanjare},
+           familyi={V\bibinitperiod},
+           given={Ajinkya\bibnamedelima M.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=41e0249b43cfc90a2f0562969f3a06f0}{%
+           family={Omkar},
+           familyi={O\bibinitperiod},
+           given={S.\bibnamedelimi N.},
+           giveni={S\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \strng{namehash}{f467d6a62744c1b70c0eec6950b1b648}
+      \strng{fullhash}{f467d6a62744c1b70c0eec6950b1b648}
+      \strng{bibnamehash}{f467d6a62744c1b70c0eec6950b1b648}
+      \strng{authorbibnamehash}{f467d6a62744c1b70c0eec6950b1b648}
+      \strng{authornamehash}{f467d6a62744c1b70c0eec6950b1b648}
+      \strng{authorfullhash}{f467d6a62744c1b70c0eec6950b1b648}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE International Conference on Advances in Computing, Communication and Applied Informatics (ACCAI)}
+      \field{title}{Autonomous drone navigation using monocular camera and light weight embedded system}
+      \field{year}{2023}
+      \verb{doi}
+      \verb 10.1109/ICONAT57137.2023.10080483
+      \endverb
+    \endentry
+    \entry{Kalidas2023}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=2876785ddc5d2fff6a6fb7df4a5ebb83}{%
+           family={Kalidas},
+           familyi={K\bibinitperiod},
+           given={Arun\bibnamedelima Prasad},
+           giveni={A\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{dcd645f673ded3b831e84fe337b42784}
+      \strng{fullhash}{dcd645f673ded3b831e84fe337b42784}
+      \strng{bibnamehash}{dcd645f673ded3b831e84fe337b42784}
+      \strng{authorbibnamehash}{dcd645f673ded3b831e84fe337b42784}
+      \strng{authornamehash}{dcd645f673ded3b831e84fe337b42784}
+      \strng{authorfullhash}{dcd645f673ded3b831e84fe337b42784}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Drones}
+      \field{number}{4}
+      \field{title}{Deep reinforcement learning for vision-based navigation of {UAVs} in avoiding stationary and mobile obstacles}
+      \field{volume}{7}
+      \field{year}{2023}
+      \field{pages}{245}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/drones7040245
+      \endverb
+    \endentry
+    \entry{Zhao2020}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=0d33642ca0bce16df8565111e5dd3f75}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={Wenshuai},
+           giveni={W\bibinitperiod}}}%
+        {{hash=8695c2a8e948284d473515ae87368a8e}{%
+           family={Queralta},
+           familyi={Q\bibinitperiod},
+           given={Jorge\bibnamedelima Peña},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=b75e9db8d37e84616f4c935075954062}{%
+           family={Westerlund},
+           familyi={W\bibinitperiod},
+           given={Tomi},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{af04416e0a6038e0c7600ae9cb3da102}
+      \strng{fullhash}{af04416e0a6038e0c7600ae9cb3da102}
+      \strng{bibnamehash}{af04416e0a6038e0c7600ae9cb3da102}
+      \strng{authorbibnamehash}{af04416e0a6038e0c7600ae9cb3da102}
+      \strng{authornamehash}{af04416e0a6038e0c7600ae9cb3da102}
+      \strng{authorfullhash}{af04416e0a6038e0c7600ae9cb3da102}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE Symposium Series on Computational Intelligence (SSCI)}
+      \field{title}{Sim-to-real transfer in deep reinforcement learning for robotics: {A} survey}
+      \field{year}{2020}
+      \verb{doi}
+      \verb 10.1109/SSCI47803.2020.9308468
+      \endverb
+    \endentry
+    \entry{Salvato2021}{article}{}
+      \name{author}{4}{}{%
+        {{hash=e5d23cd7b71de50c3fa398b5c5f1fe4e}{%
+           family={Salvato},
+           familyi={S\bibinitperiod},
+           given={Erica},
+           giveni={E\bibinitperiod}}}%
+        {{hash=7c575751560b1e15a32e306f40e46719}{%
+           family={Fenu},
+           familyi={F\bibinitperiod},
+           given={Gianfranco},
+           giveni={G\bibinitperiod}}}%
+        {{hash=db5cd850f4a7baa1e31a4cd416ce6015}{%
+           family={Medvet},
+           familyi={M\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod}}}%
+        {{hash=7e53c1f87d56f920e364cfd09184391c}{%
+           family={Pellegrino},
+           familyi={P\bibinitperiod},
+           given={Felice\bibnamedelima Andrea},
+           giveni={F\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{e03d64d8049d8b6e5bf36b8eb58d0456}
+      \strng{fullhash}{c556da44727505609f77431aec0d178f}
+      \strng{bibnamehash}{c556da44727505609f77431aec0d178f}
+      \strng{authorbibnamehash}{c556da44727505609f77431aec0d178f}
+      \strng{authornamehash}{e03d64d8049d8b6e5bf36b8eb58d0456}
+      \strng{authorfullhash}{c556da44727505609f77431aec0d178f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Access}
+      \field{title}{Crossing the reality gap: {A} survey on sim-to-real transferability of robot controllers in reinforcement learning}
+      \field{volume}{9}
+      \field{year}{2021}
+      \verb{doi}
+      \verb 10.1109/ACCESS.2021.3126658
+      \endverb
+    \endentry
+    \entry{Loquercio2019}{article}{}
+      \name{author}{6}{}{%
+        {{hash=ac29e4e32ee2a5bcaa325934a585b06f}{%
+           family={Loquercio},
+           familyi={L\bibinitperiod},
+           given={Antonio},
+           giveni={A\bibinitperiod}}}%
+        {{hash=67c97d80868fd6b133dedb6e929aac2d}{%
+           family={Kaufmann},
+           familyi={K\bibinitperiod},
+           given={Elia},
+           giveni={E\bibinitperiod}}}%
+        {{hash=f13b87ed1a6410067504966eac03e9a2}{%
+           family={Ranftl},
+           familyi={R\bibinitperiod},
+           given={René},
+           giveni={R\bibinitperiod}}}%
+        {{hash=72308762399d6ab62bbd9391c64c7bfd}{%
+           family={Dosovitskiy},
+           familyi={D\bibinitperiod},
+           given={Alexey},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9025300f43a193cfed8e10e924f2a117}{%
+           family={Koltun},
+           familyi={K\bibinitperiod},
+           given={Vladlen},
+           giveni={V\bibinitperiod}}}%
+        {{hash=dac21ab4ede215439fcc6b051be53a11}{%
+           family={Scaramuzza},
+           familyi={S\bibinitperiod},
+           given={Davide},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{090f8d468d09eb00c20a9005a1f1fab4}
+      \strng{fullhash}{e1ec9133e3f1ee81a28ae6eab3990bae}
+      \strng{bibnamehash}{e1ec9133e3f1ee81a28ae6eab3990bae}
+      \strng{authorbibnamehash}{e1ec9133e3f1ee81a28ae6eab3990bae}
+      \strng{authornamehash}{090f8d468d09eb00c20a9005a1f1fab4}
+      \strng{authorfullhash}{e1ec9133e3f1ee81a28ae6eab3990bae}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Robotics}
+      \field{number}{1}
+      \field{title}{Deep drone racing: {From} simulation to reality with domain randomization}
+      \field{volume}{36}
+      \field{year}{2019}
+      \field{pages}{1\bibrangedash 14}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1109/TRO.2019.2942989
+      \endverb
+    \endentry
+    \entry{Jang2024}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=5da383e2a07cb852da2c693c9f471927}{%
+           family={Jang},
+           familyi={J\bibinitperiod},
+           given={Yoonsoo},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=412c3a01cc1eb9a31e3aff1b976611a4}{%
+           family={Yoon},
+           familyi={Y\bibinitperiod},
+           given={Sooyeon},
+           giveni={S\bibinitperiod}}}%
+        {{hash=022993aaad356ff2797bd65dc53154e2}{%
+           family={Baek},
+           familyi={B\bibinitperiod},
+           given={Joonhee},
+           giveni={J\bibinitperiod}}}%
+        {{hash=f260bf4128185ebe0e34703941875c39}{%
+           family={Han},
+           familyi={H\bibinitperiod},
+           given={Seungyong},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{0f8e657c63180404f873ed2694349ab6}
+      \strng{fullhash}{b54919d25d52255e58273e465f6bf360}
+      \strng{bibnamehash}{b54919d25d52255e58273e465f6bf360}
+      \strng{authorbibnamehash}{b54919d25d52255e58273e465f6bf360}
+      \strng{authornamehash}{0f8e657c63180404f873ed2694349ab6}
+      \strng{authorfullhash}{b54919d25d52255e58273e465f6bf360}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE International Conference on Control, Automation and Systems (ICCAS)}
+      \field{title}{Sim-to-real policy transfer in deep reinforcement learning}
+      \field{year}{2024}
+      \verb{doi}
+      \verb 10.23919/ICCAS63016.2024.10773220
+      \endverb
+    \endentry
+    \entry{Fu2024}{article}{}
+      \name{author}{2}{}{%
+        {{hash=057c0a9b37436b0d5f888dd8416d8eea}{%
+           family={Fu},
+           familyi={F\bibinitperiod},
+           given={Jiajun},
+           giveni={J\bibinitperiod}}}%
+        {{hash=bac6a7a5d8c835c2ebe5288a6fe722b4}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Fan},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{e5297d494511c46500c860811e1d7dd0}
+      \strng{fullhash}{e5297d494511c46500c860811e1d7dd0}
+      \strng{bibnamehash}{e5297d494511c46500c860811e1d7dd0}
+      \strng{authorbibnamehash}{e5297d494511c46500c860811e1d7dd0}
+      \strng{authornamehash}{e5297d494511c46500c860811e1d7dd0}
+      \strng{authorfullhash}{e5297d494511c46500c860811e1d7dd0}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Unmanned Systems}
+      \field{title}{Application of reinforcement learning in {UAV} tasks: {A} survey}
+      \field{year}{2024}
+      \verb{doi}
+      \verb 10.1142/s2301385026300015
+      \endverb
+    \endentry
+    \entry{Azzam2024}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=0e5ea28205e6d74decd72dd141007366}{%
+           family={Azzam},
+           familyi={A\bibinitperiod},
+           given={Randa},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{72dba19622fe590d09be5c13efec791a}
+      \strng{fullhash}{72dba19622fe590d09be5c13efec791a}
+      \strng{bibnamehash}{72dba19622fe590d09be5c13efec791a}
+      \strng{authorbibnamehash}{72dba19622fe590d09be5c13efec791a}
+      \strng{authornamehash}{72dba19622fe590d09be5c13efec791a}
+      \strng{authorfullhash}{72dba19622fe590d09be5c13efec791a}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Aerospace and Electronic Systems}
+      \field{title}{Learning-based navigation and collision avoidance through reinforcement for {UAVs}}
+      \field{year}{2024}
+      \verb{doi}
+      \verb 10.1109/TAES.2023.3294889
+      \endverb
+    \endentry
+  \enddatalist
+  \missing{DelCol2025}
+  \missing{Pinto2017}
+  \missing{Ranftl2022}
+  \missing{Yang2024DepthAnythingV2}
+\endrefsection
+\endinput
+
