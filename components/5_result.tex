@@ -9,27 +9,30 @@ This section presents the experimental results from both the simulation evaluati
 
 \subsection{Training Stability}
 
-Figures \ref{fig:train_success_rate}, \ref{fig:train_value_loss}, and \ref{fig:train_episode_length} show the PPO training curves recorded in TensorBoard over the full training run. The exponential success rate increase (Figure \ref{fig:train_success_rate}) and the value-loss downward curve (Figure \ref{fig:train_value_loss}) demonstrate the characteristic steady improvement and convergence behaviour of PPO \cite{Schulman2017}, with no catastrophic policy collapse observed across the curriculum. Episode length (Figure \ref{fig:train_episode_length}) grows over the course of training, indicating that the drone simply survives longer in the corridor as it learns to avoid early collisions rather than crashing within the first few seconds.
+Figure \ref{fig:tensorboard_training} shows the PPO training curves recorded in TensorBoard over the full training run. The exponential success rate increase (a) and the value-loss downward curve (b) demonstrate the characteristic steady improvement and convergence behaviour of PPO \cite{Schulman2017}, with no catastrophic policy collapse observed across the curriculum. Episode length (c) grows over the course of training, indicating that the drone simply survives longer in the corridor as it learns to avoid early collisions rather than crashing within the first few seconds.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/success-rate.png}
-    \caption{PPO training curve from TensorBoard showing success rate over the full training run, medium stage only over 50 episodes, reaching up to 92\,\% accuracy.}
-    \label{fig:train_success_rate}
-\end{figure}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/success-rate.png}
+        \small (a) Success rate
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/value-loss.png}
+        \small (b) Value loss
+    \end{minipage}
+    \vspace{6pt}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/value-loss.png}
-    \caption{PPO value-loss curve over the full training run.}
-    \label{fig:train_value_loss}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/episode-length.png}
-    \caption{PPO episode-length curve over the full training run.}
-    \label{fig:train_episode_length}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/episode-length.png}
+        \small (c) Episode length
+    \end{minipage}
+    \caption{PPO training curves from TensorBoard over the full training run: (a) success rate, reaching up to 92\% in the dense stage; (b) value loss, showing steady convergence; (c) episode length, growing as the agent learns to survive longer in the corridor.}
+    \label{fig:tensorboard_training}
 \end{figure}
 
 \subsection{Simulation Results}
