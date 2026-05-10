@@ -9,7 +9,7 @@
 
 Unmanned aerial vehicles (UAVs) have become a practical tool for tasks that are dangerous, repetitive, or too large in scale for humans to carry out efficiently. Beyond military and delivery applications, drones are increasingly used for environmental monitoring, search and rescue, infrastructure inspection, and precision agriculture \cite{Butt2024,Fu2024}. What makes this possible is the combination of increasingly capable onboard computers, low-cost sensors, and advances in autonomous navigation software.
 
-Despite this progress, most commercial drone deployments still require a human pilot. Operating autonomously inside a forest, where the environment is unstructured, GPS signal may be degraded, and obstacles appear unpredictably, remains an open research problem \cite{Butt2024,Merei2025,Debnath2024}.
+Despite this progress, most commercial drone deployments still require a human pilot. Operating autonomously inside a forest, where the environment is unstructured and obstacles appear unpredictably, remains an open research problem \cite{Butt2024,Merei2025,Debnath2024}.
 
 Reinforcement learning (RL) has emerged as one of the most promising approaches to this problem. Rather than programming explicit rules for every possible scenario, an RL agent learns a navigation policy through trial and error in a simulated environment, accumulating experience across thousands of episodes \cite{Fu2024,Schulman2017}. Proximal Policy Optimization (PPO) \cite{Schulman2017} is among the most widely used RL algorithms for drone control, valued for its training stability and its ability to handle continuous, high-dimensional observation spaces.
 
