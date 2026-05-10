@@ -5,6 +5,28 @@
 \section{Future Work}
 \justify
 
-\textit{Future Work will be added here. This section will cover limitations of the current work and directions for future research.}
+This section outlines the most meaningful directions for extending the work presented in this thesis, ordered from the most immediate next steps to broader longer-term research directions.
+
+\subsection{Lighter and More Agile Drone Platform}
+
+The most impactful next step is to migrate the navigation system onto a smaller, lighter airframe. The Holybro S500 V2 was chosen for this thesis primarily for convenience and stability, as the focus was on the policy and the sim-to-real pipeline rather than on hardware optimisation. However, the key finding that the Arducam IMX219 --- an extremely small and lightweight camera --- is sufficient for reliable tree avoidance opens the door to a fundamentally different hardware profile.
+
+A smaller drone with less mass and lower inertia would respond to velocity commands faster and more precisely, directly improving avoidance performance without any changes to the policy. The same navigation model could be deployed on a platform weighing a fraction of the S500, making the overall system cheaper, more portable, and scalable to fleet operation. Building a purpose-built lightweight platform around this camera-and-policy stack is therefore the most direct path to improving real-world performance and realising the democratisation goal of this thesis.
+
+\subsection{Application Integration: Forest Monitoring}
+
+This thesis establishes the autonomous navigation capability that makes repeated aerial forest surveys practical. The natural next step is to build a full monitoring application on top of this base. One concrete example is bark beetle detection: by integrating a multispectral or RGB-based infestation detection model alongside the navigation policy, the drone could autonomously survey a forest corridor, avoid obstacles, and simultaneously classify tree health from the same camera feed. This would realise the original BeetleSense use case that motivated this investigation, and the same pattern applies to other forest monitoring applications such as wildfire early detection or biodiversity surveys.
+
+\subsection{Real-World Policy Fine-Tuning}
+
+The policy in this thesis is deployed zero-shot, with no real-world adaptation after simulation training. While the 81\% transfer efficiency achieved here is strong, the remaining gap could be reduced by collecting a small set of real flight episodes and using them to fine-tune the sim-trained policy. Techniques such as domain adaptation and real-world data augmentation have been shown to close the sim-to-real gap significantly with minimal additional data \cite{Qin2025}. Applying these methods to the trained policy would be a low-effort intervention likely to produce a measurable improvement in real-world success rates without requiring a full retraining from scratch.
+
+\subsection{More Complex Environments}
+
+The evaluation in this thesis was conducted on naked cylindrical trunks under controlled conditions. A critical next step is testing the policy in environments that better represent a real operational forest: trees with branches, mixed species with varying bark textures and colours, ground vegetation that partially occludes the lower trunk, and uneven terrain. It is expected that performance would degrade in these settings, and understanding where and why would provide a clear roadmap for the next generation of domain randomisation and training strategies.
+
+\subsection{Full Autonomy Stack}
+
+The obstacle avoidance capability demonstrated in this thesis is one component of a fully autonomous forest drone. A complete system would also require GPS-denied localisation to operate under forest canopy where satellite signals are degraded, waypoint-level path planning to define and execute a survey route across a large area, and return-to-home or safe-landing behaviour on battery or fault events. Integrating the learned avoidance policy into such a full autonomy stack, where it operates as the low-level reactive layer within a higher-level mission planner, is the architectural direction required for operational deployment.
 
 \end{document}
