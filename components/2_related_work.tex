@@ -6,15 +6,13 @@
 \section{Related Work}
 \justify
 
-The papers reviewed here were found through a structured search across Google Scholar, IEEE Xplore, and Semantic Scholar. Five topics matching the thesis -- bark-beetle detection, obstacle avoidance, drone sensors, reinforcement learning for UAVs, and sim-to-real transfer -- gave 15 queries in total, limited to 2019--2025 and sorted by relevance. About 450 results were narrowed to 190 after removing duplicates and papers without an accessible full text, then to 70 after title screening, and to 25 after reading abstracts. Three older papers \cite{Schulman2017,Pinto2017,Hrabar2012} were added by hand because they kept turning up as foundational citations inside the retrieved set, giving 28 references in total.
+A structured search across Google Scholar, IEEE Xplore, and Semantic Scholar over five topics -- bark-beetle detection, obstacle avoidance, drone sensors, reinforcement learning for UAVs, and sim-to-real transfer -- limited to 2019--2025, narrowed about 450 results to 25 after duplicate, title, and abstract screening; three foundational papers \cite{Schulman2017,Pinto2017,Hrabar2012} were added by hand, giving 28 references. Studies are grouped into classical single-camera navigation, deep reinforcement learning (DRL) with vision in simulation, sim-to-real with real flights, and sim-to-real methodology.
 
-This section walks through the studies closest to this thesis, grouped by theme: classical single-camera navigation, deep reinforcement learning (DRL) with vision in simulation, sim-to-real studies with real flights, and general work on moving learned policies from simulation to reality.
-
-The goal of this thesis is to build a low-cost autonomous drone that flies through a forest using only one normal RGB camera with a narrow $62^{\circ}$ field of view, without LiDAR or stereo. To still get depth from a single camera, this thesis runs the Depth Anything model in software on the live image. The drone is a full-size Holybro S500 V2, the learning algorithm is Proximal Policy Optimization (PPO), and the policy is trained in the AirSim simulator with both indoor and outdoor scenes before being tested in a real Swedish forest.
+The thesis goal is a low-cost autonomous drone flying through a forest with one RGB camera ($62^{\circ}$ FOV), no LiDAR or stereo, depth recovered in software with Depth Anything. The platform is a full-size Holybro S500 V2, the algorithm is Proximal Policy Optimization (PPO), and training is in AirSim (indoor + outdoor scenes) before real tests in a Swedish forest.
 
 \subsection{Overview and Research Gap}
 
-Table \ref{tab:related_work} compares the closest studies on four points that matter for this thesis: sensor, algorithm, where the drone was tested, and whether it actually flew in the real world.
+Table \ref{tab:related_work} compares the closest studies along sensor, algorithm, test environment, and whether the drone actually flew.
 
 \begin{table}[H]
 \centering
@@ -38,78 +36,40 @@ Del Col et al.\ \cite{DelCol2025}     & RealSense D435i + T265     & Depth autoe
 }
 \end{table}
 
-Three patterns stand out. First, deep-RL drone-avoidance work is usually only tested in simulation \cite{Kabas2022}. Second, the few studies that fly in the real world either use small racing drones on clean tracks \cite{Loquercio2019} or aerial platforms with stereo and tracking cameras \cite{DelCol2025}. Third, richer sensor stacks are known to work well, but LiDAR (\$1{,}000--\$10{,}000) and stereo cameras (\$300--\$800) are too expensive, heavy, and fiddly to calibrate for routine forest use \cite{Butt2024,Hrabar2012}. As far as we are aware, no earlier study puts together PPO, a single narrow-view RGB camera with software depth from Depth Anything, a full-size quadrotor, training in AirSim, and real flights in a forest. Closing that gap is the contribution of this thesis, aiming to show that one cheap and light camera is enough for avoiding tree trunks and to remove the cost barrier that today blocks routine bark-beetle monitoring.
+Three patterns stand out: deep-RL avoidance is usually only tested in simulation \cite{Kabas2022}; real-world studies use either racing drones on clean tracks \cite{Loquercio2019} or platforms with stereo and tracking cameras \cite{DelCol2025}; and richer sensor stacks work, but LiDAR (\$1{,}000--\$10{,}000) and stereo (\$300--\$800) are too expensive, heavy, and fiddly to calibrate for routine forest use \cite{Butt2024,Hrabar2012}. No earlier study combines PPO, a single narrow-FOV RGB camera with software depth from Depth Anything, a full-size quadrotor, AirSim training, and real forest flights -- the gap this thesis closes to remove the cost barrier to routine bark-beetle monitoring.
 
 \subsection{Classical Single-Camera Navigation}
 
-Getting depth from a single RGB camera in software, instead of from a stereo or LiDAR sensor, is now possible thanks to recent single-image depth models. Ranftl et al.\ \cite{Ranftl2022} showed with MiDaS that training on many different depth datasets with a scale-invariant loss makes the model work on scenes it has never seen -- the same model used by Kumar et al.\ \cite{Kumar2023} in their classical pipeline. Yang et al.\ \cite{Yang2024DepthAnythingV2} pushed this further with Depth Anything V2, which uses a large model trained on synthetic depth labels and pseudo-labelled real images, gives sharper and more reliable depth, and runs more than $10\times$ faster than diffusion-based alternatives. Together these results make software-only depth a real alternative to hardware depth sensors when cost is tight, which is why this thesis pairs a single RGB camera with Depth Anything V2 instead of a stereo rig or LiDAR.
+Software depth from a single RGB camera is now possible thanks to recent monocular depth models. Ranftl et al.\ \cite{Ranftl2022} showed with MiDaS that training across many depth datasets with a scale-invariant loss generalises to unseen scenes. Yang et al.\ \cite{Yang2024DepthAnythingV2} pushed this further with Depth Anything V2, trained on synthetic depth labels and pseudo-labelled real images, giving sharper depth and running $10\times$ faster than diffusion-based alternatives -- making software-only depth a real alternative to hardware sensors when cost is tight.
 
 \paragraph{Kumar et al.\ \cite{Kumar2023} -- single-camera obstacle avoidance on a small onboard computer.}
-Kumar et al.\ built a navigation pipeline that uses image-processing tricks on a small onboard computer fed by a single RGB camera, showing that obstacle avoidance is possible on cheap hardware without LiDAR or stereo, and that the whole system can stay compact when only one camera is used.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.45\textwidth]{figures/kumar-drone.png}
-  \caption{Drones used in the setup \cite{Kumar2023}}\label{fig:}
-\end{figure}
-
-The strength of the work is this hardware minimalism, backed by the use of the MiDaS depth model on the camera image to recover depth -- direct support for the idea, central to this thesis, that one cheap camera can be enough.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.45\textwidth]{figures/midas-example.png}
-  \caption{Example Midas perception capability \cite{Kumar2023}}\label{fig:}
-\end{figure}
-
-The main weakness is that the perception part is built from hand-written image-processing rules rather than a learned policy, and tests stay in tidy indoor spaces, which makes it hard to carry over to a real forest where the lighting, clutter, and tree shapes all change. The authors conclude that classical image processing on lightweight hardware is enough for clean indoor navigation. This thesis replaces the hand-written pipeline with a neural network trained with PPO that learns directly from camera images, still uses a software depth model (Depth Anything V2) just as Kumar's setup uses MiDaS, and is tested outdoors against real tree trunks rather than indoor objects.
-
-
-
+Kumar et al.\ built a navigation pipeline using image-processing rules on a small onboard computer with a single RGB camera and MiDaS for depth -- direct support for the idea that one cheap camera can be enough. Weaknesses are hand-written rules rather than a learned policy and tidy indoor-only tests. This thesis replaces the rule-based pipeline with a CNN policy trained by PPO that learns directly from camera images, swaps MiDaS for Depth Anything V2, and tests outdoors against real tree trunks.
 
 \subsection{DRL with Vision in Simulation}
 
-The closest algorithmic match for this thesis is a recent study that trains a PPO drone controller from camera images in AirSim but never flies it on a real drone. It still works well as a baseline.
-
 \paragraph{Kabas \cite{Kabas2022} -- PPO with a single RGB or depth camera in AirSim corridors.}
-Kabas trained a PPO agent end-to-end in an Unreal Engine + AirSim corridor in which the drone has to fly through round openings without hitting the surrounding blocks.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.45\textwidth]{figures/drone-kabas.png}
-  \caption{Example Airsim training/testing environment \cite{Kabas2022}}\label{fig:}
-\end{figure}
-The agent was trained with both RGB and depth, comparing the two side by side. RGB alone reached a 96\,\% success rate using a stack of grayscale frames passed through a Convolutional Neural Network (CNN), which is direct evidence that one RGB camera plus PPO is enough for a non-trivial obstacle-avoidance task. From the point of view of this thesis, the strength of the study is exactly that it pins down the algorithm--sensor pair (PPO + single camera) and shows it works.
-
-The weaknesses are that the corridor is very regular, only minimal domain randomisation is used, and the policy is never run outside the simulator. The authors conclude that PPO works well for camera-based drone navigation and that RGB images alone carry enough information for the task. This thesis builds on that conclusion and pushes further: it swaps the tidy corridor for irregular outdoor trees, borrows the single-camera software-depth idea from \cite{Kumar2023}, adds heavier domain randomisation in the same simulator (AirSim), keeps a CNN over a stack of frames, and closes the loop with real flights on a real drone.
-
+Kabas trained a PPO agent end-to-end in an Unreal Engine + AirSim corridor with round openings. RGB alone reached 96\,\% success using a stack of grayscale frames through a Convolutional Neural Network (CNN) -- direct evidence that PPO + single camera suffices for non-trivial avoidance. Weaknesses are the regular corridor, minimal domain randomisation, and the policy never running outside simulation. This thesis swaps the corridor for irregular outdoor trees, borrows the software-depth idea from \cite{Kumar2023}, adds heavier domain randomisation in AirSim, keeps a CNN over a frame stack, and closes the loop with real flights.
 
 \subsection{Sim-to-Real Studies with Real Flights}
 
 \paragraph{Loquercio et al.\ \cite{Loquercio2019} -- Deep Drone Racing.}
-Loquercio et al.\ built a modular drone-racing system. A convolutional neural network reads a single forward-facing RGB image at $300\times200$ pixels and outputs a local target direction and a desired speed. A classical planner and controller then turn that target into actual motor commands.
+A CNN reads a single $300\times200$ RGB image and outputs a local target direction and speed; a classical planner and controller produce motor commands. The network is trained by imitation learning on simulator-optimal trajectories with the scene randomised across background, lighting, gate shape, and gate texture. Versus a no-randomisation baseline, performance rose by \textbf{300\,\%} in simulation and \textbf{36\,\%} in the real world, showing zero-shot sim-to-real transfer for fast camera-based flight. An ablation ranks background randomisation essential, lighting second, gate-shape smallest -- evidence that domain randomisation alone can bridge sim and reality with one camera.
 
-The network is trained by imitation learning on optimal trajectories computed in simulation, with the visual scene randomised across background, lighting, gate shape, and gate texture. Compared with their earlier version without randomisation, performance went up by \textbf{300\,\%} in simulation and \textbf{36\,\%} in real-world tests, and they show, for the first time as far as the authors know, zero-shot transfer from simulation to a real drone for fast camera-based flight.
-
-A follow-up test in the same paper checks which randomisation factor matters most: background randomisation is essential -- without it, the policy can't even pass a single gate on a new track -- followed by lighting, with gate-shape randomisation adding the smallest extra gain.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.45\textwidth]{figures/domain-rand.png}
-  \caption{Randomised goal posts for better sim to real transfer \cite{Loquercio2019}}\label{fig:}
-\end{figure}
-
-The strength of this work is solid evidence that domain randomisation alone can bridge the gap between simulation and reality with just one camera. For forest use, the weaknesses are that the test setting is a tidy racing track with bright, easy-to-see gates, the drone is a small fast racer, and the network is trained by copying a pre-computed expert trajectory -- a recipe the authors themselves say does not work when no expert path can be defined.
-
-The authors conclude that combining a learned perception part with a classical planner and controller is a strong way to get robust drone flight in changing environments. This thesis takes a related but different path: it keeps the single-camera, randomised, sim-to-real philosophy but uses PPO instead of imitation learning, because a forest has no gates and no clear optimal path -- exactly the case where Loquercio's expert-trajectory recipe breaks down -- and PPO can learn from a reward signal without a hand-made expert.
-
-The follow-up test above directly shaped the AirSim training used here. This thesis randomises along the three factors that matter most in a forest: \textbf{trunk shape and angle} (the natural analogue of gate shape), \textbf{time of day} (the analogue of lighting randomisation), and \textbf{forest layout, with randomised tree positions} (the analogue of background randomisation, the factor Loquercio identifies as the most important one). Finally, the racing track becomes an unstructured Swedish forest, the small racer becomes a full-size Holybro S500 V2, and high-speed racing becomes safe forest cruise.
-
+Weaknesses for forest use are a tidy track with bright gates, a small racer, and imitation of a pre-computed expert -- a recipe the authors say fails without a defined expert path. This thesis keeps the single-camera, randomised, sim-to-real philosophy but uses PPO instead of imitation learning, since a forest has no gates and no optimal path. Following the ablation, AirSim training randomises three forest analogues: \textbf{trunk shape and angle} (gate shape), \textbf{time of day} (lighting), and \textbf{forest layout with randomised tree positions} (background -- the most important factor). The track becomes an unstructured Swedish forest, the racer a Holybro S500 V2, and high-speed racing a safe forest cruise.
 
 \paragraph{Del Col et al.\ \cite{DelCol2025} -- autonomous drone navigation in Finnish boreal forests.}
-Del Col et al.\ (Finnish Geospatial Research Institute, presented at UAV-g 2025 in Espoo, Finland) built a navigation system specifically for boreal forests. Their drone carries an Intel RealSense D435i stereo depth camera and an Intel RealSense T265 tracking camera, with onboard computation on an NVIDIA Orin NX and a Holybro Pixhawk 6C Mini flight controller. The action space is fully \textbf{discrete}: each motion primitive is defined by a constant forward speed plus one of 8 vertical-speed choices and one of 32 yaw-rate choices, which gives $8\times32=256$ candidate trajectories scored at every step. Importantly, the Collision Prediction Network is trained by \emph{supervised} learning on simulator-generated collision labels, not by reinforcement learning -- the policy never tries its own actions and learns from the consequences, which makes the approach quite different from the PPO-based reactive policy used in this thesis.
+Del Col et al.\ (UAV-g 2025, Espoo) carry an Intel RealSense D435i stereo depth camera and an Intel RealSense T265 tracking camera, with onboard computation on an NVIDIA Orin NX and a Holybro Pixhawk 6C Mini. The action space is \textbf{discrete}: constant forward speed $\times$ 8 vertical-speed $\times$ 32 yaw-rate ($8\times32=256$ trajectories) scored each step. The Collision Prediction Network is trained by \emph{supervised} learning on simulator-generated collision labels (RotorS and Aerial Gym), not RL, and tested in real Finnish forests with autonomous flights around 60\,m in cluttered scenes -- the most directly comparable forest study. Weaknesses are the cost, weight, and calibration of the stereo and tracking cameras (\$300--\$800 \cite{Butt2024,Hrabar2012}).
 
-The system is trained on simulation data from RotorS and Aerial Gym and then tested in real Finnish forests of increasing density, with reported autonomous flights of around 60\,m in cluttered scenes. The strength of this work, and the reason it is the most directly comparable forest study, is that it actually flies a learned policy in real boreal forests with different obstacle densities. The weaknesses, as the authors themselves point out, are the cost, weight, and calibration of the stereo and tracking cameras (\$300--\$800 for stereo \cite{Butt2024,Hrabar2012}).
+The hardware/middleware base matches this thesis: the same Holybro/PX4 family (Pixhawk 6C vs.\ 6C Mini), the same NVIDIA Jetson Orin family (Orin Nano vs.\ Orin NX), and ROS as middleware. This thesis also uses discrete actions, but lets PPO learn which to pick directly from the camera image rather than scoring a fixed motion-primitive grid. The sensor side is deliberately cheaper and lighter: one monocular RGB camera with Depth Anything in software replaces the RealSense D435i + T265 pair.
 
-The hardware, middleware, and software setup closely matches the one used in this thesis: both rely on the same Holybro/PX4 flight-controller family (Pixhawk 6C here, Pixhawk 6C Mini there) and the same NVIDIA Jetson Orin family for onboard computation (Orin Nano here, Orin NX there), and both use ROS as the middleware -- the base layer is shared, even though the perception and learning stack on top is different. This thesis also uses discrete actions during training, the difference being that Del Col et al.\ pre-define a fixed grid of motion primitives while this thesis lets PPO learn which discrete action to pick directly from the camera image. The sensor side is where this thesis goes deliberately cheaper and lighter: one monocular RGB camera with Depth Anything providing depth in software, replacing the RealSense D435i + T265 pair, in exchange for a small expected drop in raw depth accuracy. Like the previous study, this paper also supports the choice of PPO together with a simulator for training.
+\subsection{Sim-to-Real Methodology Studies}
+
+\paragraph{Zhao et al.\ \cite{Zhao2020} and Salvato et al.\ \cite{Salvato2021} -- sim-to-real surveys.}
+Two complementary surveys of sim-to-real transfer in deep RL review the standard toolkit -- domain randomisation, dynamics randomisation, system identification, and observation augmentation -- and single out sensor-noise injection (Gaussian image noise, brightness/contrast jitter, sensor delay, motor-command noise) as one of the cheapest and most reliable ways to harden a policy; neither offers a recipe specific to outdoor UAV flight. This thesis applies the conclusion directly: the sensor pipeline injects per-frame Gaussian image noise, brightness/contrast jitter, motion blur, randomised inference delay, and small action noise during training, tuned for the Depth Anything inference profile on the onboard Jetson.
+
+\paragraph{Jang et al.\ \cite{Jang2024} -- deep-RL policies from simulation to reality.}
+Jang et al.\ treat sim-to-real systematically across robotic platforms, concluding that careful domain randomisation plus manageable real-world tuning usually closes the gap. The case studies are not on outdoor forest flight -- which this thesis re-checks on a full-size drone with a single RGB camera.
+
+No prior work combines PPO, a single narrow-FOV RGB camera with software depth from Depth Anything, asymmetric actor--critic training, and validation in a real forest. The methods chapter describes that combination, and the next subsection sets out the rationale behind each design choice.
 
 \end{document}

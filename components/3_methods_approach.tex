@@ -23,4 +23,11 @@ The network that consumes those signals is built around an asymmetric actor--cri
 
 Put together, the method built from these decisions is a single repeatable pipeline. A low-cost drone with one forward-facing RGB camera feeds each frame into a software depth model and a stack of recent grayscale images. A PPO policy, trained from scratch in a domain-randomised simulator with respawn-on-collision corridor episodes, reads that combined input and chooses among a small set of discrete actions. The whole stack runs on a familiar Holybro/PX4 + Jetson Orin + ROS base, and the same evaluation protocol is used in simulation and in a real Swedish forest. The next chapter gives the concrete implementation values for each component.
 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{figures/method.png}
+  \caption{Simulation training setup in Cosys-Airsim with Unreal Engine 5.5}\label{fig:}
+\end{figure}
+
 \end{document}

@@ -2365,30 +2365,29 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">components/references.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1" intorder="1">Klousek2019</bcf:citekey>
-    <bcf:citekey order="1" intorder="2">Bozzini2024</bcf:citekey>
-    <bcf:citekey order="2" intorder="1">Bozzini2024</bcf:citekey>
-    <bcf:citekey order="3" intorder="1">Klousek2019</bcf:citekey>
-    <bcf:citekey order="3" intorder="2">Bozzini2024</bcf:citekey>
-    <bcf:citekey order="4" intorder="1">Klousek2019</bcf:citekey>
-    <bcf:citekey order="4" intorder="2">Bozzini2024</bcf:citekey>
-    <bcf:citekey order="4" intorder="3">Bijou2025</bcf:citekey>
-    <bcf:citekey order="5" intorder="1">Bozzini2024</bcf:citekey>
-    <bcf:citekey order="5" intorder="2">Bijou2025</bcf:citekey>
-    <bcf:citekey order="6" intorder="1">Klousek2019</bcf:citekey>
-    <bcf:citekey order="6" intorder="2">Butt2024</bcf:citekey>
-    <bcf:citekey order="7" intorder="1">Klousek2019</bcf:citekey>
-    <bcf:citekey order="7" intorder="2">Turkulainen2023</bcf:citekey>
-    <bcf:citekey order="7" intorder="3">Bozzini2024</bcf:citekey>
-    <bcf:citekey order="8" intorder="1">Bozzini2024</bcf:citekey>
-    <bcf:citekey order="8" intorder="2">Bijou2025</bcf:citekey>
+    <bcf:citekey order="1" intorder="1">Butt2024</bcf:citekey>
+    <bcf:citekey order="1" intorder="2">Fu2024</bcf:citekey>
+    <bcf:citekey order="2" intorder="1">Butt2024</bcf:citekey>
+    <bcf:citekey order="2" intorder="2">Merei2025</bcf:citekey>
+    <bcf:citekey order="2" intorder="3">Debnath2024</bcf:citekey>
+    <bcf:citekey order="3" intorder="1">Fu2024</bcf:citekey>
+    <bcf:citekey order="3" intorder="2">Schulman2017</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">Schulman2017</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="5" intorder="2">Zhao2020</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">Butt2024</bcf:citekey>
+    <bcf:citekey order="6" intorder="2">Hrabar2012</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">Butt2024</bcf:citekey>
+    <bcf:citekey order="7" intorder="2">Fu2024</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">Klousek2019</bcf:citekey>
+    <bcf:citekey order="8" intorder="2">Bozzini2024</bcf:citekey>
     <bcf:citekey order="9" intorder="1">Bozzini2024</bcf:citekey>
     <bcf:citekey order="9" intorder="2">Bijou2025</bcf:citekey>
-    <bcf:citekey order="10" intorder="1">Butt2024</bcf:citekey>
-    <bcf:citekey order="10" intorder="2">Merei2025</bcf:citekey>
-    <bcf:citekey order="10" intorder="3">Debnath2024</bcf:citekey>
-    <bcf:citekey order="11" intorder="1">Butt2024</bcf:citekey>
-    <bcf:citekey order="11" intorder="2">Hrabar2012</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">Klousek2019</bcf:citekey>
+    <bcf:citekey order="10" intorder="2">Turkulainen2023</bcf:citekey>
+    <bcf:citekey order="10" intorder="3">Bozzini2024</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">Fu2024</bcf:citekey>
+    <bcf:citekey order="11" intorder="2">Schulman2017</bcf:citekey>
     <bcf:citekey order="12" intorder="1">Schulman2017</bcf:citekey>
     <bcf:citekey order="13" intorder="1">Khanzada2025</bcf:citekey>
     <bcf:citekey order="13" intorder="2">Vizzotto2025</bcf:citekey>
@@ -2401,30 +2400,109 @@
     <bcf:citekey order="15" intorder="2">Salvato2021</bcf:citekey>
     <bcf:citekey order="15" intorder="3">Loquercio2019</bcf:citekey>
     <bcf:citekey order="15" intorder="4">Jang2024</bcf:citekey>
-    <bcf:citekey order="16" intorder="1">Butt2024</bcf:citekey>
-    <bcf:citekey order="16" intorder="2">Hrabar2012</bcf:citekey>
-    <bcf:citekey order="17" intorder="1">Zhao2020</bcf:citekey>
-    <bcf:citekey order="17" intorder="2">Salvato2021</bcf:citekey>
-    <bcf:citekey order="18" intorder="1">Bozzini2024</bcf:citekey>
-    <bcf:citekey order="18" intorder="2">Bijou2025</bcf:citekey>
-    <bcf:citekey order="19" intorder="1">Butt2024</bcf:citekey>
-    <bcf:citekey order="19" intorder="2">Merei2025</bcf:citekey>
-    <bcf:citekey order="19" intorder="3">Debnath2024</bcf:citekey>
-    <bcf:citekey order="20" intorder="1">Zhao2020</bcf:citekey>
-    <bcf:citekey order="20" intorder="2">Salvato2021</bcf:citekey>
-    <bcf:citekey order="21" intorder="1">Fu2024</bcf:citekey>
-    <bcf:citekey order="21" intorder="2">Khanzada2025</bcf:citekey>
-    <bcf:citekey order="22" intorder="1">Schulman2017</bcf:citekey>
-    <bcf:citekey order="22" intorder="2">Pinto2017</bcf:citekey>
-    <bcf:citekey order="22" intorder="3">Hrabar2012</bcf:citekey>
-    <bcf:citekey order="23" intorder="1">Kumar2023</bcf:citekey>
-    <bcf:citekey order="24" intorder="1">Kabas2022</bcf:citekey>
-    <bcf:citekey order="25" intorder="1">Loquercio2019</bcf:citekey>
-    <bcf:citekey order="26" intorder="1">Jang2024</bcf:citekey>
+    <bcf:citekey order="16" intorder="1">Yang2024DepthAnythingV2</bcf:citekey>
+    <bcf:citekey order="17" intorder="1">Butt2024</bcf:citekey>
+    <bcf:citekey order="17" intorder="2">Merei2025</bcf:citekey>
+    <bcf:citekey order="17" intorder="3">Debnath2024</bcf:citekey>
+    <bcf:citekey order="18" intorder="1">Zhao2020</bcf:citekey>
+    <bcf:citekey order="18" intorder="2">Salvato2021</bcf:citekey>
+    <bcf:citekey order="19" intorder="1">Schulman2017</bcf:citekey>
+    <bcf:citekey order="19" intorder="2">Pinto2017</bcf:citekey>
+    <bcf:citekey order="19" intorder="3">Hrabar2012</bcf:citekey>
+    <bcf:citekey order="20" intorder="1">Kumar2023</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="23" intorder="1">Jang2024</bcf:citekey>
+    <bcf:citekey order="24" intorder="1">DelCol2025</bcf:citekey>
+    <bcf:citekey order="25" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="26" intorder="1">Loquercio2019</bcf:citekey>
     <bcf:citekey order="27" intorder="1">DelCol2025</bcf:citekey>
-    <bcf:citekey order="28" intorder="1">Kabas2022</bcf:citekey>
-    <bcf:citekey order="29" intorder="1">Loquercio2019</bcf:citekey>
-    <bcf:citekey order="30" intorder="1">DelCol2025</bcf:citekey>
-    <bcf:citekey order="31" intorder="1">Butt2024</bcf:citekey>
-    <bcf:citekey order="31" intorder="2">Hrabar2012</bcf:citekey>
-    <bcf:citekey order="32" intorder="1">Ranftl20
+    <bcf:citekey order="28" intorder="1">Butt2024</bcf:citekey>
+    <bcf:citekey order="28" intorder="2">Hrabar2012</bcf:citekey>
+    <bcf:citekey order="29" intorder="1">Ranftl2022</bcf:citekey>
+    <bcf:citekey order="30" intorder="1">Yang2024DepthAnythingV2</bcf:citekey>
+    <bcf:citekey order="31" intorder="1">Kumar2023</bcf:citekey>
+    <bcf:citekey order="32" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="33" intorder="1">Kumar2023</bcf:citekey>
+    <bcf:citekey order="34" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="35" intorder="1">DelCol2025</bcf:citekey>
+    <bcf:citekey order="36" intorder="1">Butt2024</bcf:citekey>
+    <bcf:citekey order="36" intorder="2">Hrabar2012</bcf:citekey>
+    <bcf:citekey order="37" intorder="1">Zhao2020</bcf:citekey>
+    <bcf:citekey order="38" intorder="1">Salvato2021</bcf:citekey>
+    <bcf:citekey order="39" intorder="1">Jang2024</bcf:citekey>
+    <bcf:citekey order="40" intorder="1">Schulman2017</bcf:citekey>
+    <bcf:citekey order="41" intorder="1">Pinto2017</bcf:citekey>
+    <bcf:citekey order="42" intorder="1">Yang2024DepthAnythingV2</bcf:citekey>
+    <bcf:citekey order="43" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="44" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="45" intorder="1">DelCol2025</bcf:citekey>
+    <bcf:citekey order="46" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="47" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="48" intorder="1">Yang2024DepthAnythingV2</bcf:citekey>
+    <bcf:citekey order="49" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="50" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="50" intorder="2">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="51" intorder="1">DelCol2025</bcf:citekey>
+    <bcf:citekey order="52" intorder="1">Schulman2017</bcf:citekey>
+    <bcf:citekey order="52" intorder="2">Kabas2022</bcf:citekey>
+    <bcf:citekey order="53" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="54" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="55" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="56" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="57" intorder="1">DelCol2025</bcf:citekey>
+    <bcf:citekey order="58" intorder="1">Pinto2017</bcf:citekey>
+    <bcf:citekey order="59" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="60" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="61" intorder="1">Schulman2017</bcf:citekey>
+    <bcf:citekey order="61" intorder="2">Pinto2017</bcf:citekey>
+    <bcf:citekey order="62" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="63" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="64" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="64" intorder="2">Zhao2020</bcf:citekey>
+    <bcf:citekey order="65" intorder="1">Yang2024DepthAnythingV2</bcf:citekey>
+    <bcf:citekey order="66" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="67" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="67" intorder="2">Zhao2020</bcf:citekey>
+    <bcf:citekey order="68" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="68" intorder="2">Zhao2020</bcf:citekey>
+    <bcf:citekey order="68" intorder="3">Salvato2021</bcf:citekey>
+    <bcf:citekey order="69" intorder="1">Schulman2017</bcf:citekey>
+    <bcf:citekey order="69" intorder="2">Kabas2022</bcf:citekey>
+    <bcf:citekey order="69" intorder="3">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="69" intorder="4">DelCol2025</bcf:citekey>
+    <bcf:citekey order="70" intorder="1">Kabas2022</bcf:citekey>
+    <bcf:citekey order="71" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="72" intorder="1">Schulman2017</bcf:citekey>
+    <bcf:citekey order="73" intorder="1">Pinto2017</bcf:citekey>
+    <bcf:citekey order="74" intorder="1">Pinto2017</bcf:citekey>
+    <bcf:citekey order="75" intorder="1">Butt2024</bcf:citekey>
+    <bcf:citekey order="75" intorder="2">Hrabar2012</bcf:citekey>
+    <bcf:citekey order="76" intorder="1">Schulman2017</bcf:citekey>
+    <bcf:citekey order="77" intorder="1">Zhao2020</bcf:citekey>
+    <bcf:citekey order="77" intorder="2">Salvato2021</bcf:citekey>
+    <bcf:citekey order="78" intorder="1">Loquercio2019</bcf:citekey>
+    <bcf:citekey order="78" intorder="2">Jang2024</bcf:citekey>
+    <bcf:citekey order="78" intorder="3">Azzam2024</bcf:citekey>
+    <bcf:citekey order="79" intorder="1">Qin2025</bcf:citekey>
+  </bcf:section>
+  <!-- SORTING TEMPLATES -->
+  <bcf:sortingtemplate name="none">
+    <bcf:sort order="1">
+      <bcf:sortitem order="1">citeorder</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="2">
+      <bcf:sortitem order="1">intciteorder</bcf:sortitem>
+    </bcf:sort>
+  </bcf:sortingtemplate>
+  <!-- DATALISTS -->
+  <bcf:datalist section="0"
+                name="none/global//global/global"
+                type="entry"
+                sortingtemplatename="none"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
+</bcf:controlfile>
