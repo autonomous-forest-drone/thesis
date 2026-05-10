@@ -7,94 +7,71 @@
 
 \subsection{Background}
 
-\subsubsection{The bark beetle crisis}
+Unmanned aerial vehicles (UAVs) have become a practical tool for tasks that are dangerous, repetitive, or too large in scale for humans to carry out efficiently. Beyond military and delivery applications, drones are increasingly used for environmental monitoring, search and rescue, infrastructure inspection, and precision agriculture \cite{Butt2024,Fu2024}. What makes this possible is the combination of increasingly capable onboard computers, low-cost sensors, and advances in autonomous navigation software.
 
-The European spruce bark beetle (\textit{Ips typographus}) is among the most destructive threats to coniferous forests in the Northern Hemisphere. 
+Despite this progress, most commercial drone deployments still require a human pilot. Operating autonomously inside a forest, where the environment is unstructured, GPS signal may be degraded, and obstacles appear unpredictably, remains an open research problem \cite{Butt2024,Merei2025,Debnath2024}.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/beetle_attack.png}
-    \caption{Bark beetle attacks on a tree. Source: \url{https://forest.fi/article/natural-enemies-may-prevent-damage-by-spruce-bark-beetle-researcher-explains-how/}}
-    \label{fig:beetle_attack}
-\end{figure}
+Reinforcement learning (RL) has emerged as one of the most promising approaches to this problem. Rather than programming explicit rules for every possible scenario, an RL agent learns a navigation policy through trial and error in a simulated environment, accumulating experience across thousands of episodes \cite{Fu2024,Schulman2017}. Proximal Policy Optimization (PPO) \cite{Schulman2017} is among the most widely used RL algorithms for drone control, valued for its training stability and its ability to handle continuous, high-dimensional observation spaces.
 
-The beetle has been responsible for the loss of over 150 million cubic metres of timber across Europe in recent decades, with particularly severe outbreaks recorded in Central and Northern Europe following drought years that weaken tree defences \cite{Klousek2019,Bozzini2024}. Sweden alone has seen infestations accelerate sharply since 2018, with the Swedish Forest Agency reporting damage on a scale not seen in modern forestry history \cite{Bozzini2024}. This is further shown in a map in Figure \ref{fig:beetle_europe}.
+A key practical challenge is bridging the gap between simulation and the real world. A policy trained entirely in simulation will encounter visual and physical conditions in deployment that differ from what it was trained on. Domain randomisation \cite{Loquercio2019,Zhao2020} is the standard strategy for closing this gap: by varying lighting, obstacles, sensor noise, and other environmental parameters during training, the agent is forced to learn a policy that generalises rather than memorises.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.4\textwidth]{figures/beetle_europe.png}
-    \caption{Bark beetle infestations in Europe. Source: \url{https://link.springer.com/article/10.1007/s40725-021-00142-x}}
-    \label{fig:beetle_europe}
-\end{figure}
+A second and equally important challenge is cost. Most autonomous navigation systems rely on LiDAR sensors (\$1,000--\$10,000) or stereo cameras (\$300--\$800) \cite{Butt2024,Hrabar2012}. These costs make fleet-scale deployment impractical and limit autonomous drones to well-funded research or industrial settings. This thesis takes a different position: if a single standard RGB camera, costing under \$80, can provide sufficient perceptual information for obstacle avoidance when paired with a learned policy and a software depth model, then the barrier to deploying autonomous drones at scale collapses. Smaller, lighter, and cheaper drones become viable. The same platform can be replicated and deployed in large numbers without sensor budgets that dwarf the cost of the airframe itself. This democratisation of autonomous navigation is a central motivation of this work.
 
-Infestations kill trees at scale, causing significant economic losses to the timber industry and disrupting forest ecosystems through impacts on the water cycle, carbon storage, and biodiversity \cite{Klousek2019,Bozzini2024}. The danger is compounded by the biology of the infestation: attacked trees pass through a green-attack stage in which the crown appears entirely healthy despite active colonisation beneath the bark. By the time visible symptoms appear in the yellow, red, and grey stages, the beetles have already dispersed to surrounding trees \cite{Klousek2019,Bozzini2024,Bijou2025}. The green-attack stage is therefore the only critical window for effective intervention, yet it is also the hardest to detect \cite{Bozzini2024,Bijou2025}. (Figure \ref{fig:infestation_stages}) (Figure \ref{fig:beetle_attack})
+\subsection{Motivation}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/infestation_stages.png}
-    \caption{Bark beetle infestation stages. Source: \url{https://www.sciencedirect.com/science/article/pii/S0034425721002807}}
-    \label{fig:infestation_stages}
-\end{figure}
+Drone-based surveillance and monitoring is increasingly relevant across a wide range of high-impact applications. UAVs are being deployed for wildfire early detection, where aerial coverage over large terrain is critical and ground access is dangerous. They are used in avalanche rescue operations to locate survivors in areas that are inaccessible on foot. They assist in power-line and pipeline inspection, flood mapping, and coastal erosion monitoring \cite{Butt2024,Fu2024}. What these applications share is a need for autonomous flight in environments that are unstructured, dynamic, and difficult to map in advance.
 
-\subsubsection{The limits of traditional monitoring}
+Forest environments present a particularly challenging case. The obstacles are irregular and densely packed, the lighting changes constantly, and the visual appearance varies significantly with species, season, and weather. Yet forest monitoring is an area of growing urgency. One specific example is the spread of bark beetle infestations across European forests. The European spruce bark beetle (\textit{Ips typographus}) has been responsible for the loss of over 150 million cubic metres of timber in recent decades \cite{Klousek2019,Bozzini2024}, with infestations accelerating across Sweden and Central Europe. Early detection is critical: the green-attack stage, when intervention is still effective, is invisible to the naked eye and requires repeated aerial surveys at weekly intervals \cite{Bozzini2024,Bijou2025}. UAVs equipped with multispectral sensors can detect infestations with accuracies of 88--96\% \cite{Klousek2019,Turkulainen2023,Bozzini2024}, but the required flight frequency makes manual piloting impractical at scale.
 
-Traditional detection relies on ground surveys by trained forestry personnel, which are labour-intensive, costly, and physically limited in the area that can be covered, which is a serious constraint when monitoring forests spanning hundreds or thousands of hectares \cite{Klousek2019,Butt2024}. Unmanned Aerial Vehicles (UAVs) equipped with multispectral or hyperspectral sensors offer a practical alternative, enabling large areas to be surveyed quickly and repeatedly with detection accuracies of 88--96\% depending on sensor type and infestation stage \cite{Klousek2019,Turkulainen2023,Bozzini2024}. However, effective early detection requires flights at weekly intervals \cite{Bozzini2024,Bijou2025}, making manual piloting impractical at the required frequency and scale.
+This thesis originated from a collaboration with BeetleSense, a forest monitoring company whose co-founder Christo van Syl proposed investigating autonomous drone navigation in forest environments. The bark beetle use case provided a concrete starting point, but the broader question is whether a drone can navigate a forest using only a standard, low-cost RGB camera with no LiDAR or stereo rig. If so, autonomous navigation stops being gated by hardware cost, making it possible to deploy fleets of small, cheap drones where today only expensive, sensor-heavy platforms can operate.
 
-\subsubsection{The need for autonomous navigation}
+As we began reviewing the research landscape, it became clear that reinforcement learning was the most appropriate framework for this problem. Forest navigation requires making accurate, real-time decisions in an environment that is unpredictable and impossible to fully specify in advance. Classical rule-based approaches cannot generalise to the variability of a real forest. Supervised learning requires labelled trajectory data that does not exist at scale. RL, by contrast, allows the agent to develop navigation behaviour through experience, adapting to obstacle configurations it has never seen before \cite{Fu2024,Schulman2017}. This combination of requirements and literature evidence pointed clearly toward a PPO-based RL approach trained in simulation and transferred to a real platform.
 
-Fully autonomous drone navigation is therefore essential for scalable bark beetle monitoring \cite{Bozzini2024,Bijou2025}. This introduces a key technical challenge: the drone must navigate through complex, unstructured forest environments, avoiding irregular obstacles such as tree trunks without human intervention \cite{Butt2024,Merei2025,Debnath2024}. Existing autonomous navigation solutions capable of handling such environments typically rely on expensive sensor arrays, stereoscopic cameras costing \$300--\$800, or Light Detection and Ranging (LiDAR) systems costing \$1,000--\$10,000 or more \cite{Butt2024,Hrabar2012}, creating a cost barrier that makes widespread deployment impractical. This thesis is developed in collaboration with BeetleSense, a forest monitoring company building bark beetle detection systems, whose operational requirements directly motivate the need for a low-cost autonomous navigation solution.
+\subsection{Objectives}
+
+The objectives of this thesis are:
+
+\begin{itemize}
+    \item To investigate whether a single low-cost RGB camera, combined with a software depth estimation model, provides sufficient perceptual information for autonomous obstacle avoidance in a forest environment.
+    \item To design and implement a PPO-based reinforcement learning agent capable of navigating through a simulated forest corridor and avoiding tree trunk obstacles.
+    \item To study sim-to-real transfer methods and evaluate how well a policy trained entirely in simulation transfers to a physical drone without fine-tuning.
+    \item To gain practical experience with real drone hardware, from flight controller integration and onboard compute to real-world testing in a forest environment.
+    \item To quantitatively evaluate the system's performance across sparse and dense obstacle configurations in both simulation and real-world trials.
+\end{itemize}
 
 \subsection{Problem Statement}
 
-\subsubsection{The research gap}
+Recent advances in deep RL, and in PPO in particular \cite{Schulman2017}, have demonstrated strong results for vision-based drone navigation in indoor and structured environments \cite{Khanzada2025,Vizzotto2025,Tayar2025,Kabas2022}. Monocular RGB cameras have been shown to provide sufficient visual information for obstacle avoidance without depth sensors \cite{Kumar2023,Kalidas2023,Kabas2022}. Sim-to-real transfer via domain randomisation has been validated for drone control tasks \cite{Zhao2020,Salvato2021,Loquercio2019,Jang2024}. However, to the best of the authors' knowledge, no existing work combines all of these elements in a forest-specific context: a PPO agent, a single low-cost RGB camera with software depth estimation, training in a forest simulator, and deployment on a real quadrotor. This leads to the following research question:
 
-Recent advances in deep reinforcement learning (RL), and in Proximal Policy Optimization (PPO) in particular \cite{Schulman2017}, have demonstrated strong results for vision-based drone navigation in indoor and structured environments \cite{Khanzada2025,Vizzotto2025,Tayar2025,Kabas2022}. Monocular RGB cameras have been shown to provide sufficient visual information for obstacle avoidance without depth sensors \cite{Kumar2023,Kalidas2023,Kabas2022}. Sim-to-real transfer via domain randomisation has been validated for drone control tasks \cite{Zhao2020,Salvato2021,Loquercio2019,Jang2024}. However, to the best of the authors' knowledge, no existing work combines all of these elements in a forest-specific context.
+\begin{quote}
+    \textbf{How effectively can a PPO-based reinforcement learning agent, trained entirely in simulation using only a single RGB camera with software depth estimation, perform autonomous obstacle avoidance when deployed on a real drone in a forest environment, across sparse and dense tree configurations?}
+\end{quote}
 
-\subsubsection{Practical consequence}
+\subsection{Contributions}
 
-This gap has direct consequences for bark beetle monitoring. A navigation system that requires expensive LiDAR \cite{Butt2024,Hrabar2012}, or that cannot leave simulation \cite{Zhao2020,Salvato2021}, is not deployable at the scale or cost required for weekly forest inspections \cite{Bozzini2024,Bijou2025}. The contribution of this thesis is to build and evaluate exactly the system that is missing: a low-cost, camera-only, PPO-trained drone that navigates a real forest after being trained entirely in simulation.
-
-\subsection{Research Questions}
-
-\subsubsection{Primary research question}
-
-How can Proximal Policy Optimization reinforcement learning enable autonomous drone navigation around trees through effective obstacle avoidance using a standard RGB camera?
-
-\subsubsection{Sub-questions}
-
-The following sub-questions were derived from the primary question into measurable experimental objectives:
+The main contributions of this thesis are:
 
 \begin{itemize}
-    \item Can a PPO agent learn to avoid tree-trunk obstacles using only monocular camera input in a simulated forest environment?
-    \item How does the agent's performance change across different tree densities (sparse: 2 trees, dense: 3 trees in the 15\,$\times$\,3\,m corridor) and flight speeds within range from 0\,m/s to 3\,m/s?
-    \item How well does the learned policy transfer from simulation to a real quadrotor, and what is the sim-to-real transfer efficiency?
+    \item \textbf{A PPO-CNN navigation policy for forest obstacle avoidance.} We design, train, and evaluate a dual-stream PPO agent that processes depth-converted camera images through a CNN alongside a scalar state vector, and demonstrate that this architecture achieves over 89\% episode-level success in simulation and 72\% in real-world forest trials.
+    \item \textbf{A reward system configuration for forest navigation.} We design and validate a reward function combining dense progress shaping, time penalties, lateral offset penalties, and asymmetric terminal signals that enables stable PPO convergence across a two-stage curriculum. The specific configuration and its effect on training stability constitute a novel contribution in the context of forest obstacle avoidance.
+    \item \textbf{Depth estimation from a single RGB camera using an open-source model.} We demonstrate that replacing a hardware depth sensor with Depth Anything V2 \cite{Yang2024DepthAnythingV2}, an open-source monocular depth estimation model, is a viable strategy for low-cost autonomous drone navigation. This finding lowers the hardware barrier for forest drone deployment significantly.
+    \item \textbf{A quantitative sim-to-real evaluation in a real forest.} We conduct a controlled evaluation of 100 real-world flights across two density configurations, providing a sim-to-real transfer efficiency of 81\% as a reproducible benchmark for future work in this area.
 \end{itemize}
 
 \subsection{Scope and Limitations}
 
 \subsubsection{Scope}
 
-This thesis focuses specifically on the obstacle avoidance component of autonomous forest navigation. Evaluation is conducted on cylindrical tree trunks without branches, under controlled weather conditions (wind below 3\,m/s, daylight, no precipitation). The physical platform is the Holybro S500 V2 quadrotor. Navigation is restricted to a fixed cruise altitude of 1.5\,m within a defined lateral corridor. This thesis does not address bark beetle detection itself, only the autonomous navigation capability that would enable repeated detection flights. The thesis topic was originally proposed in collaboration with BeetleSense, a forest monitoring company developing bark beetle detection systems.
+This thesis focuses on the obstacle avoidance component of autonomous drone navigation in forest environments. The system is trained in simulation and evaluated in both simulation and real-world trials. The physical platform is the Holybro S500 V2 quadrotor equipped with an Arducam IMX219 RGB camera and an NVIDIA Jetson Orin Nano companion computer. Trials are conducted under controlled weather conditions: wind below 3\,m/s, daylight, and no precipitation. The thesis does not address bark beetle detection, path planning, or multi-drone coordination; only the navigation capability that makes autonomous forest flight possible.
 
 \subsubsection{Limitations}
 
-The controlled tree geometry does not capture the full complexity of a real forest \cite{Butt2024,Merei2025,Debnath2024}. Results may not generalise directly to denser or more structurally varied environments, dynamic obstacles, or significantly different weather conditions \cite{Zhao2020,Salvato2021}.
+The evaluation environment uses naked tree trunks with diameters of 0.3--0.8\,m and heights of at least 3--5\,m, without branches. Birch trees are excluded due to their distinct white bark. These conditions are more controlled than a real operational forest, and results may not generalise directly to environments with branching trees, ground vegetation, mixed species, or more complex obstacle geometry \cite{Butt2024,Merei2025,Debnath2024}.
 
-The sim-to-real transfer is evaluated on a single physical platform and a limited set of real-world configurations.
-
-Since evaluation will be done on trunks the test will be performed on a limited thickness of the trunks 0.3--0.8\,m.
-
-The branches will not be used; the drone avoids naked trunks only.
-
-Birch trees will be excluded from the testing with their distinct white colour in this thesis.
-
-The test will be mostly done on any type of tree containing a naked trunk without containing any substantial branches coming out of it. The naked trunk is minimum 3--5\,m tall.
-
-PPO-specific findings may not extend to other RL algorithms without additional validation \cite{Fu2024,Khanzada2025}.
+The study evaluates two density configurations (sparse and dense) across a fixed 15\,m corridor. Performance across longer corridors, higher densities, or variable flight altitudes is not assessed. Sim-to-real transfer is evaluated on a single physical platform, limiting the generalisability of the transfer efficiency findings \cite{Zhao2020,Salvato2021}.
 
 \subsection{Thesis Structure}
 
-This thesis is organised as follows. Section 1 introduces the background, problem statement, research questions, and scope. Section 2 surveys the related work. Section 3 describes the methods and approach, covering the rationale for the chosen algorithm stack and reward design. Section 4 details the methodology and experimental setup, covering the simulation environment, PPO training pipeline, hardware platform, and evaluation protocol. Section 5 presents the experimental results. Section 6 analyses and discusses the findings in relation to the research questions. Section 7 states the conclusions, and Section 8 outlines directions for future work.
-
+This thesis is organised as follows. Section 1 introduces the background, motivation, objectives, problem statement, contributions, and scope. Section 2 surveys the related work. Section 3 describes the methods and approach, covering the rationale for the chosen algorithm stack and reward design. Section 4 details the methodology and experimental setup, covering the simulation environment, PPO training pipeline, hardware platform, and evaluation protocol. Section 5 presents the experimental results. Section 6 analyses and discusses the findings in relation to the research question. Section 7 states the conclusions, and Section 8 outlines directions for future work.
 
 \end{document}
