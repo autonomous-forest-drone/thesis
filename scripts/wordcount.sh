@@ -11,7 +11,7 @@ count() {
 WC_ABSTRACT=$(count abstract.tex)
 WC_INTRO=$(count 1_introduction.tex)
 WC_RELATED=$(count 2_related_work.tex)
-WC_METHOD=$(count 3_methods_approach.tex)
+WC_METHOD=$(count 3_design_methods.tex)
 WC_METHODOLOGY=$(count 4_experimental_setup.tex)
 WC_RESULT=$(count 5_result.tex)
 WC_DISCUSSION=$(count 6_discussion.tex)
