@@ -61,7 +61,7 @@ These noise sources are derived from the sim-to-real strategies in \cite{Loquerc
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.45\textwidth]{figures/sim-camera.png}
+  \includegraphics[width=0.65\textwidth]{figures/sim-camera.png}
   \caption{Image example in the simulation, together with the applied noise and 62 degree FOV}\label{fig:midas_example}
 \end{figure}
 \subsection{Reward, Corridor Constraint, and Episode Termination}
@@ -139,14 +139,14 @@ The same policy is then deployed without fine-tuning on the physical drone, with
 
 \begin{figure}[H]
   \centering
-  \begin{minipage}{0.48\textwidth}
+  \begin{minipage}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/sim-corridor.png}
+    \includegraphics[height=7cm]{figures/sim-corridor-narrow.png}
     \subcaption{Simulated corridor (AirSim).}
   \end{minipage}\hfill
-  \begin{minipage}{0.48\textwidth}
+  \begin{minipage}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/real-corridor.png}
+    \includegraphics[height=7cm]{figures/real-corridor.png}
     \subcaption{Real Swedish forest corridor.}
   \end{minipage}
   \vspace{1cm}
@@ -155,12 +155,12 @@ The same policy is then deployed without fine-tuning on the physical drone, with
 
 \begin{figure}[H]
   \centering
-  \begin{minipage}{0.48\textwidth}
+  \begin{minipage}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{figures/side-by-side.png}
     \subcaption{Simulated first-person view.}
   \end{minipage}\hfill
-  \begin{minipage}{0.48\textwidth}
+  \begin{minipage}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{figures/drone-fpv.png}
     \subcaption{Real first-person view with discrete-action arrow (left/straight/right) and the Depth Anything depth image.}
@@ -171,14 +171,14 @@ The same policy is then deployed without fine-tuning on the physical drone, with
 
 \begin{figure}[H]
   \centering
-  \begin{minipage}{0.48\textwidth}
+  \begin{minipage}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/sim-drone-flight.png}
+    \includegraphics[height=7cm]{figures/sim-drone-flight.png}
     \subcaption{Simulated drone in AirSim.}
   \end{minipage}\hfill
-  \begin{minipage}{0.48\textwidth}
+  \begin{minipage}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/drone-flight.png}
+    \includegraphics[height=7cm]{figures/drone-flight.png}
     \subcaption{Real Holybro S500 V2 in flight.}
   \end{minipage}
   \vspace{1cm}
