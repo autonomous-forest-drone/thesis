@@ -12,3 +12,4 @@
 *.run.xml
 *-blx.bib
 .DS_Store
+wordcount.tex
