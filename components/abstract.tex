@@ -7,7 +7,7 @@
 Autonomous drone navigation in forest environments faces significant challenges due to dense obstacles and the expensive cost of traditional sensing systems (Light Detection and Ranging (LiDAR): \$1,000--10,000+; stereoscopic cameras: \$300--800), limiting scalable adoption for forest health monitoring applications such as bark beetle detection. This thesis investigates whether Proximal Policy Optimization (PPO) reinforcement learning can enable effective tree obstacle avoidance using only low-cost RGB camera input, with quantitative evaluation of sim-to-real transfer efficiency.
 
 \justifying\noindent
-We developed a PPO-based navigation policy trained in AirSim forest simulations and deployed it on a Holybro S500 V2 quadcopter equipped with an NVIDIA Jetson Orin Nano companion computer and Arducam IMX219 RGB camera. The system was evaluated across three tree density configurations (sparse: 6\,m spacing, medium: 4\,m, dense: 2\,m) in both simulation and real-world field trials.
+We developed a PPO-based navigation policy trained in AirSim forest simulations and deployed it on a Holybro S500 V2 quadcopter equipped with an NVIDIA Jetson Orin Nano companion computer and Arducam IMX219 RGB camera. The system was evaluated across two tree density configurations (sparse: 2 trees in corridor, dense: 3 trees in corridor) in both simulation and real-world field trials.
 
 \justifying\noindent
 Results demonstrated X\% obstacle avoidance success in sparse simulation environments and X\% in real-world deployment, achieving X\% sim-to-real transfer efficiency. Performance degraded predictably with increasing tree density, with collision rates rising from X\% (sparse) to X\% (dense) in real-world trials.

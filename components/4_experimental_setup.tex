@@ -19,7 +19,7 @@ The training curriculum has \textbf{two difficulty stages}, both inside the same
 
 \begin{itemize}
   \item \textbf{Sparse} -- 2 trees inside the corridor, placed at random positions.
-  \item \textbf{Medium} -- 3 trees inside the corridor, placed at random positions.
+  \item \textbf{Dense} -- 3 trees inside the corridor, placed at random positions.
 \end{itemize}
 
 Across both stages, the in-corridor trees and the surrounding background trees are spawned in a random order, with random angles (tilted up to roughly $\pm 30^{\circ}$--$45^{\circ}$ off vertical) and random trunk thickness drawn within stage-specific bounds. Background trees outside the corridor are placed throughout the visible area so that domain randomisation does not just affect the obstacles themselves but also the visual context the camera sees \cite{Loquercio2019}.
@@ -74,7 +74,7 @@ Yaw is locked to the direction of travel so the camera always faces forward, and
 
 \subsection{Simulation Evaluation}
 
-After training, the policy is evaluated under fixed, deterministic conditions: noise and randomisation are disabled, and the curriculum is fixed. \textbf{50 episodes are run in the sparse stage and 50 episodes in the medium stage}, giving 100 simulation evaluation episodes in total. An episode is counted as successful if the drone reaches the end of the corridor without colliding with any tree and without leaving the corridor laterally.
+After training, the policy is evaluated under fixed, deterministic conditions: noise and randomisation are disabled, and the curriculum is fixed. \textbf{50 episodes are run in the sparse stage and 50 episodes in the dense stage}, giving 100 simulation evaluation episodes in total. An episode is counted as successful if the drone reaches the end of the corridor without colliding with any tree and without leaving the corridor laterally.
 
 \subsection{Real-World Hardware}
 
@@ -92,15 +92,15 @@ The same middleware stack is used in simulation and on the real drone, which kee
 
 \subsection{Real-World Evaluation}
 
-Real-world evaluation mirrors the simulation evaluation. \textbf{50 flights per stage} are conducted in a Swedish forest of naked tree trunks, with each flight set up in a different physical corridor so that no two episodes share exactly the same tree configuration. The two stages -- sparse and medium -- are matched as closely as possible to their simulation counterparts in terms of the average inter-trunk spacing measured before each session.
+Real-world evaluation mirrors the simulation evaluation. \textbf{50 flights per stage} are conducted in a Swedish forest of naked tree trunks, with each flight set up in a different physical corridor so that no two episodes share exactly the same tree configuration. The two stages -- sparse and dense -- are matched as closely as possible to their simulation counterparts in terms of the average inter-trunk spacing measured before each session.
 
 The flights are conducted under controlled but realistic outdoor conditions: wind speed below $3$\,m/s, no precipitation, and at any time of day with sufficient daylight. An episode is recorded as a success if the drone clears the corridor without any tree contact, without any out-of-bounds excursion, and without manual safety override.
 
 \subsection{Variables}
 
-The variables recorded in this thesis mirror the per-episode results table given in the appendix, and the same set of variables is recorded in simulation and in the real-world flights so the two can be compared directly. For every episode (sparse or medium, simulation or real forest), the following are logged: the \textbf{tree density} (sparse / medium), the \textbf{trees in corridor} (2 or 3), the \textbf{trees avoided} (0--3), and the \textbf{episode result} (success or fail).
+The variables recorded in this thesis mirror the per-episode results table given in the appendix, and the same set of variables is recorded in simulation and in the real-world flights so the two can be compared directly. For every episode (sparse or medium, simulation or real forest), the following are logged: the \textbf{tree density} (sparse / dense), the \textbf{trees in corridor} (2 or 3), the \textbf{trees avoided} (0--3), and the \textbf{episode result} (success or fail).
 
-The independent variables are \textit{tree density} (sparse, medium) and \textit{environment} (simulation, real forest). The dependent variables, derived from the per-episode log, are the avoidance rate (trees avoided over trees in corridor) and the success rate (successful episodes over total). Drone hardware, camera parameters, control frequency, weather, drone speed, and cruise altitude are treated as control variables and held constant across conditions.
+The independent variables are \textit{tree density} (sparse, dense) and \textit{environment} (simulation, real forest). The dependent variables, derived from the per-episode log, are the avoidance rate (trees avoided over trees in corridor) and the success rate (successful episodes over total). Drone hardware, camera parameters, control frequency, weather, drone speed, and cruise altitude are treated as control variables and held constant across conditions.
 
 The sim-to-real transfer ratio is computed using the same formula introduced in the results section, namely the real-world success rate divided by the simulation success rate at the matching density. The full variable definitions, the hyperparameter table, and the per-episode result tables are listed in the appendix.
 

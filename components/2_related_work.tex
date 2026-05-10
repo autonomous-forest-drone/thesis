@@ -112,12 +112,4 @@ The system is trained on simulation data from RotorS and Aerial Gym and then tes
 
 The hardware, middleware, and software setup closely matches the one used in this thesis: both rely on the same Holybro/PX4 flight-controller family (Pixhawk 6C here, Pixhawk 6C Mini there) and the same NVIDIA Jetson Orin family for onboard computation (Orin Nano here, Orin NX there), and both use ROS as the middleware -- the base layer is shared, even though the perception and learning stack on top is different. This thesis also uses discrete actions during training, the difference being that Del Col et al.\ pre-define a fixed grid of motion primitives while this thesis lets PPO learn which discrete action to pick directly from the camera image. The sensor side is where this thesis goes deliberately cheaper and lighter: one monocular RGB camera with Depth Anything providing depth in software, replacing the RealSense D435i + T265 pair, in exchange for a small expected drop in raw depth accuracy. Like the previous study, this paper also supports the choice of PPO together with a simulator for training.
 
-\subsection{Sim-to-Real Methodology Studies}
-
-\paragraph{Jang et al.\ \cite{Jang2024} -- moving deep-RL policies from simulation to the real world.}
-Jang et al.\ wrote a methodology study on how to move deep-RL policies from simulation to reality, going through randomisation and adaptation techniques and showing where they work and where they don't. The strength of the work is that it treats the transfer problem in a systematic way, with general principles that apply across robotic platforms. The weakness is that the case studies are not about outdoor drone flight in forests, so the conclusions still need to be checked in that setting. The authors conclude that careful domain randomisation, plus a manageable amount of real-world tuning, is usually enough to close the gap between simulation and reality for deep-RL policies. This thesis applies that idea to the specific forest case and reports how well the transfer worked on a full-size drone with a single RGB camera.
-
-
-Across the studies reviewed in this section, no prior work combines PPO, a single narrow-FOV RGB camera with software depth from Depth Anything, asymmetric actor--critic training, and validation in a real forest. The methods chapter that follows describes exactly that combination, while the next subsection sets out the rationale behind each design choice.
-
 \end{document}
