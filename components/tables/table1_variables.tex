@@ -1,20 +1,25 @@
 \begin{table}[H]
     \small
     \centering
-    \caption{Independent, dependent, and control variables.}
+    \caption{Independent, dependent, and control variables. Logged identically in simulation and in the real-world flights.}
     \label{tab:variables}
     \begin{tabular}{p{3cm} p{4cm} p{6cm}}
         \hline\hline
         \rowcolor{lightgray}\textbf{Variable type} & \textbf{Variable} & \textbf{Values / Range} \\\hline
-        Independent & Tree spacing & Sparse 6\,m / Medium 4\,m / Dense 2\,m \\
-        \rowcolor{lightlightgray} Dependent & Avoidance rate & Trees avoided / Trees detected $\times$ 100 \\
-        Dependent & Collision rate & Episodes with collision / Total $\times$ 100 \\
-        \rowcolor{lightlightgray} Dependent & Goal reached & Boolean, goal reached without collision \\
-        Control & Flight speed & $\leq$3\,m/s \\
+        Independent & Tree density & Sparse (2 trees) / Medium (3 trees) \\
+        \rowcolor{lightlightgray} Independent & Environment & Simulation / Real forest \\
+        Dependent & Trees avoided & 0--3 (per episode) \\
+        \rowcolor{lightlightgray} Dependent & Episode result & Success / Fail \\
+        Dependent & Avoidance rate & Trees avoided / Trees in corridor $\times$ 100 \\
+        \rowcolor{lightlightgray} Dependent & Success rate & Successful episodes / Total episodes $\times$ 100 \\
+        Dependent & Sim-to-real ratio & Real success rate / Sim success rate (per density) \\
+        \rowcolor{lightlightgray} Control & Forward cruise speed & 1.0\,m/s \\
+        Control & Lateral avoidance speed & 2.0\,m/s \\
         \rowcolor{lightlightgray} Control & Cruise altitude & 1.5\,m \\
-        Control & Camera resolution & 128$\times$128\,px @ 30\,Hz \\
-        \rowcolor{lightlightgray} Control & Control frequency & 30\,Hz \\
-        Control & Weather conditions & Wind $<$ 3\,m/s, daylight, no precipitation \\
+        Control & Camera FOV & 62$^{\circ}$ \\
+        \rowcolor{lightlightgray} Control & Camera resolution & 126$\times$224\,px \\
+        Control & Control frequency & $\sim$10\,Hz \\
+        \rowcolor{lightlightgray} Control & Weather conditions & Wind $<$ 3\,m/s, daylight, no precipitation \\
         \hline
     \end{tabular}
 \end{table}

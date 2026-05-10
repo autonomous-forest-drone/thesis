@@ -5,240 +5,105 @@
 \section{Methodology/Experimental Setup}
 \justify
 
-This section describes the research design and all practical steps taken to answer the three research questions. It covers the overall experimental strategy, the simulation environment, the PPO training pipeline \cite{Schulman2017}, the physical drone platform, and the evaluation protocol used in both simulation and real-world trials.
+This chapter describes the concrete setup that turns the approach in the previous chapter into a working system. It covers the simulator, the corridor used for training and evaluation, the tree spawning, the camera and depth pipeline, the asymmetric actor--critic policy and action space, the simulation and real-world evaluation protocols, and the physical drone built to match the simulated platform.
 
-\subsection{Research Design}
+\subsection{Simulation Environment}
 
-\subsubsection{Overview}
+All training and evaluation in simulation is run in \textit{Cosys-AirSim}, a community fork of \textit{Microsoft AirSim} \cite{Kabas2022}, on top of \textit{Unreal Engine 5.5}. Cosys-AirSim is used specifically because it exposes \texttt{simSetObjectPose} and \texttt{simSetObjectScale}, which allow tree positions, angles, and sizes to be changed between episodes without reloading the scene -- this is what makes the heavy domain randomisation in this work practical.
 
-This thesis adopts a quantitative experimental design. The goal is to measure, under controlled and reproducible conditions, whether a PPO agent trained exclusively on monocular camera observations in simulation can perform effective obstacle avoidance in a real forest environment. Two experimental phases are used: a simulation training plus evaluation phase and a real-world validation phase.
+The simulated forest is a \textbf{15\,m long, 4\,m wide corridor} placed inside an Unreal scene built from a redwood texture pack. Since this thesis evaluates on naked tree trunks only, the specific tree species or texture is not central to the method; the texture pack provides a visually consistent set of trunks while still varying in shape and bark detail. Trees inside the corridor act as obstacles and trees placed outside the corridor act as visual background.
 
-\subsubsection{Variables}
+\subsection{Tree Spawning and Difficulty Stages}
 
-The independent variables are tree count and density. The dependent variables are obstacle avoidance success rate, collision rate, and goal reached. All other factors --- drone hardware, camera parameters, control frequency, weather conditions, drone speed and cruise altitude --- are treated as control variables and held constant across conditions. Table \ref{tab:variables} summarises all three variable categories.
+The training curriculum has \textbf{two difficulty stages}, both inside the same 15\,m corridor:
 
-This design allows direct comparison between simulation and real-world performance, and supports a quantitative answer to whether PPO-based vision-only navigation is viable for forest monitoring applications.
+\begin{itemize}
+  \item \textbf{Sparse} -- 2 trees inside the corridor, placed at random positions.
+  \item \textbf{Medium} -- 3 trees inside the corridor, placed at random positions.
+\end{itemize}
 
-\input{components/tables/table1_variables.tex}
+Across both stages, the in-corridor trees and the surrounding background trees are spawned in a random order, with random angles (tilted up to roughly $\pm 30^{\circ}$--$45^{\circ}$ off vertical) and random trunk thickness drawn within stage-specific bounds. Background trees outside the corridor are placed throughout the visible area so that domain randomisation does not just affect the obstacles themselves but also the visual context the camera sees \cite{Loquercio2019}.
 
-\subsection{Simulation}
+\subsection{Camera, Frame Stack, and Depth Pipeline}
 
-\subsubsection{Training in a simulation --- The environment}
+The simulated camera matches the physical sensor exactly. It is a single forward-facing camera with a $62^{\circ}$ field of view, the same FOV as the Arducam camera mounted on the real drone, so there is no FOV mismatch between simulation and reality \cite{Loquercio2019,Zhao2020}. Each captured frame is resized to $126 \times 224$\,px and pushed through Depth Anything V2 \cite{Yang2024DepthAnythingV2}, which produces a depth image at the same resolution.
 
-All training and evaluation was conducted in \textit{Cosys-AirSim}, a community-maintained fork of \textit{Microsoft AirSim}, running on \textit{Unreal Engine 5.5}. \textit{Cosys-AirSim} was chosen specifically because it exposes runtime object manipulation APIs, \texttt{simSetObjectPose} and \texttt{simSetObjectScale}, which allow tree positions and scales to be updated between episodes without reloading the scene. The simulator provides a high-fidelity physics engine, realistic aerodynamic modelling, and configurable realistic sensor readings \cite{Kabas2022,Loquercio2019}, and the drone model closely matches the physical \textit{Holybro S500 V2} platform used in real-world trials. Figure \ref{fig:airsim_env} demonstrates how realistic the simulated drone environment looks.
+The policy does not see a single frame. It sees a \textbf{3-frame stack of depth images}, with frames sampled \textbf{5 control steps apart}; at the $\sim$10\,Hz control rate of the agent, this means each new depth frame is roughly $0.5$\,s and $\sim 0.5$\,m of forward motion older than the next, so the 3-frame stack covers about a metre of recent motion. This gives the network implicit motion information without any optical-flow computation \cite{Kabas2022}.
 
-The forest environment is built from Unreal Engine static mesh trees textured with realistic tree assets. Using a texture pack means the agent is trained on a visually consistent trunk appearance, an intentional simplification consistent with domain randomisation strategies reported in the literature \cite{Loquercio2019,Jang2024}, keeping the visual domain focused on trunk geometry rather than species-specific bark detail. (Figure \ref{fig:texture_pack})
+To make the policy robust to the differences between simulation and reality, several types of randomisation and noise are applied to this pipeline at training time:
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{airsim_env.png}
-    \caption{Demonstration of the Cosys-AirSim simulation environment used for training and evaluation. Source: \url{https://www.researchgate.net/figure/Airsim-Simulator-images-with-a-drone12_fig3_363486862}}
-    \label{fig:airsim_env}
-\end{figure}
+\begin{itemize}
+  \item \textbf{Image noise.} Per-frame Gaussian noise with standard deviation drawn uniformly from $[0.01,\,0.03]$, plus per-episode brightness and contrast jitter \cite{Loquercio2019,Zhao2020}.
+  \item \textbf{Motion blur.} Directional smear scaled by the recent lateral action, replicating the motion blur of a real camera during sharp avoidance manoeuvres.
+  \item \textbf{Camera-mounting jitter.} The simulated camera is offset by a small random rotation per episode, replicating imperfect mounting on the real airframe.
+  \item \textbf{Spawn yaw jitter.} The drone does not always start perfectly aligned with the corridor axis.
+  \item \textbf{Velocity drift.} A small random drift (up to $0.3$\,m/s) is added to baseline velocities.
+  \item \textbf{Inference / pipeline delay.} The action chosen at step $t$ is not executed until step $t+\Delta$, with $\Delta$ randomly fixed to 1 or 2 control steps ($\sim$100--200\,ms) per episode, replicating real-world Depth Anything inference latency on the onboard Jetson.
+  \item \textbf{Action noise.} Small noise is also injected into the discrete-action selection during training to keep the policy from over-fitting to perfect, instantaneous responses.
+\end{itemize}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{texture_pack.png}
-    \caption{Example image of the redwood forest texture pack used in the simulation. Source: \url{https://www.fab.com/listings/a9135a3b-ce12-4648-88df-b84b1445de8a}}
-    \label{fig:texture_pack}
-\end{figure}
+These noise sources are derived from the sim-to-real strategies in \cite{Loquercio2019,Zhao2020,Salvato2021}, with the specific configuration of pipeline delay and motion blur tailored to the Depth Anything inference profile observed on the target Jetson hardware.
 
-With the environment in place, the next step is defining how each training episode runs inside it.
+\subsection{Reward, Corridor Constraint, and Episode Termination}
 
-\subsubsection{Training in a simulation --- The curriculum}
+The reward function is the dense-plus-sparse design described in Section~3 (forward-progress shaping, time penalty, centerline bonus, lateral penalty, terminal goal/collision/efficiency rewards \cite{Schulman2017,Kabas2022,Loquercio2019,DelCol2025}). On top of that, the \textbf{corridor itself is a hard constraint}: the drone is allowed to move freely within the $15\times4$\,m corridor, but any lateral excursion outside the corridor immediately ends the episode.
 
-Each training episode begins with the drone spawning at a fixed position and a goal placed exactly 15 metres ahead.
+An episode therefore ends in one of three ways: \textit{success} (the drone reaches the end of the corridor), \textit{collision} (any contact with a tree), or \textit{out-of-bounds} (the drone leaves the corridor sideways). All three trigger a respawn at the corridor entrance for the next episode. This respawn-on-failure / respawn-on-success structure is the same training pattern Kabas \cite{Kabas2022} used for AirSim corridor episodes and that Loquercio et al.\ \cite{Loquercio2019} used during DAgger-style trajectory recovery.
 
-The curriculum consists of three stages that vary tree density, size, and spacing rather than distance, since obstacle avoidance is a local skill that does not depend on how far the goal is.
+\subsection{Asymmetric Actor--Critic and Action Space}
 
-Stage 1 uses sparse small trees with an average spacing of 6 metres and a cap of 8 trees, giving the agent room to learn basic lateral corrections.
+The policy is trained with PPO \cite{Schulman2017} in an asymmetric actor--critic configuration \cite{Pinto2017}. The two networks see different things on purpose:
 
-Stage 2 increases density to one tree every 4 metres with up to 12 trees of medium size, forcing the agent to make faster decisions.
+\begin{itemize}
+  \item \textbf{Actor (the student).} Receives only the 3-frame depth stack from the camera. It runs a CNN over those depth images and outputs a categorical distribution over 3 discrete actions. The actor never sees tree positions, drone pose, or any other privileged simulator state.
+  \item \textbf{Critic (the teacher).} Receives a 66-dimensional privileged vector containing the drone's position and velocity, the goal location, and the position and scale of up to 20 nearest trees. It does not see any image. Its only job is to provide a high-quality value estimate that the actor can learn from.
+\end{itemize}
 
-Stage 3 places up to 20 trees at 2-metre average spacing with varied scales, representing a dense forest corridor.
+Because the actor only ever sees what will be available on the real drone (a depth-converted camera image), the policy never becomes dependent on signals that vanish at deployment. Because the critic exploits the full simulator state, it provides a tighter value baseline than an image-only critic could, which is the main argument of the asymmetric setup in Pinto et al.\ \cite{Pinto2017}.
 
-All trees are constrained to a 6-metre-wide corridor aligned with the spawn-to-goal axis, ensuring obstacles are always in the drone's path.
+The actor's discrete action space is $\{\text{Left},\ \text{Straight},\ \text{Right}\}$. These map to a velocity command:
 
-A 2-metre spawn clearance is enforced so the drone always takes off into open space.
+\begin{itemize}
+  \item \textbf{Straight} -- forward $1.0$\,m/s, lateral $0$\,m/s. Cruise.
+  \item \textbf{Left / Right} -- forward $0$\,m/s, lateral $\pm 2.0$\,m/s. Hard avoidance step.
+\end{itemize}
 
-Remaining tree assets are placed outside the corridor but within the flight radius to maintain visual realism for better generalisation of the training without interfering with the avoidance task.
+The forward-only $1$\,m/s cruise is intentionally conservative for forest flight, while the $\pm 2$\,m/s lateral commit is sharp enough to clear a trunk before the drone passes it. The control loop runs at approximately $10$\,Hz effective decision rate (the $30$\,Hz physics simulation is queried with a frame-skip of 3). This rate is what makes the $\sim$100--200\,ms randomised pipeline delay above realistic.
 
-The curriculum is intentionally randomised to support domain randomisation \cite{Zhao2020,Salvato2021,Loquercio2019}. Lighting conditions are varied during training by simulating different times of day, which alters sun position and changes the appearance of the environment across episodes.
+Yaw is locked to the direction of travel so the camera always faces forward, and altitude is held by an external P-controller, so altitude is not part of the RL action space.
 
-In addition, the stage progression is random each episode, exposing the agent to all difficulty stages (Stages 1, 2, and 3) throughout training.
+\subsection{Simulation Evaluation}
 
-The stages and all other details mentioned in this section are shown in Figures \ref{fig:lighting_variation} to \ref{fig:stage_views}.
+After training, the policy is evaluated under fixed, deterministic conditions: noise and randomisation are disabled, and the curriculum is fixed. \textbf{50 episodes are run in the sparse stage and 50 episodes in the medium stage}, giving 100 simulation evaluation episodes in total. An episode is counted as successful if the drone reaches the end of the corridor without colliding with any tree and without leaving the corridor laterally.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{lighting_variation.png}
-    \caption{The drone operates under different random lighting positions.}
-    \label{fig:lighting_variation}
-\end{figure}
+\subsection{Real-World Hardware}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{goal_view.png}
-    \caption{View below the drone with a marked yellow square as the goal, the green line is the optimal path and the orange circle is the area where the goal can be randomly placed.}
-    \label{fig:goal_view}
-\end{figure}
+The physical drone is a \textbf{Holybro S500 V2} quadrotor (500\,mm wheelbase, $\sim 1.75$\,kg all-up weight), chosen because its airframe comfortably accommodates the NVIDIA Jetson Orin Nano companion computer used for inference and because its dimensions match the simulated drone in Cosys-AirSim. Compute is split between the Jetson, which runs Depth Anything V2 inference and the PPO policy, and a \textbf{Pixhawk 6C} flight controller (running PX4) which receives velocity commands from the Jetson and produces the actual motor outputs. The Jetson talks to the Pixhawk over MAVLink.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{spawn_clearance.png}
-    \caption{The trees are spawned while maintaining a 2\,m clearance for the spawned drone to start manoeuvring.}
-    \label{fig:spawn_clearance}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.95\textwidth]{stage_views.png}
-    \caption{The simulated drone's view of Stage 1 (6\,m average tree spacing, left), Stage 2 (4\,m average tree spacing, centre), and Stage 3 (2\,m average tree spacing, right).}
-    \label{fig:stage_views}
-\end{figure}
-
-\subsubsection{Training in a simulation --- The sensor setup}
-
-The drone sees the world through a single forward-facing camera capturing 128 $\times$ 128 pixel images at 30\,Hz with a 62\textdegree{} field of view, the same resolution, frame rate, and angle as the Arducam IMX219 mounted on the physical drone, ensuring no sensor mismatch between simulation and reality. Matching simulation and physical sensor parameters is a standard practice for minimising the reality gap \cite{Zhao2020,Salvato2021,Loquercio2019}.
-
-Each raw colour frame goes through three processing steps before it reaches the network.
-
-First, it is converted to grayscale, removing colour information the agent does not need and reducing sensitivity to lighting differences between simulation and the real world \cite{Loquercio2019}. (Figure \ref{fig:grayscale})
-
-Second, CLAHE (Contrast Limited Adaptive Histogram Equalisation) is applied, enhancing local contrast so that dark tree trunks stand out against bright sky backgrounds regardless of overall scene brightness. (Figure \ref{fig:clahe})
-
-Third, a small amount of Gaussian noise is added to replicate the sensor noise present in real camera images; injecting noise during training is a form of domain randomisation that prevents the agent from overfitting to the clean images a simulator produces \cite{Zhao2020,Salvato2021,Loquercio2019}. (Figure \ref{fig:gaussian_noise})
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{grayscale.png}
-    \caption{Raw colour image captured by the simulated camera and the grayscale conversion of the raw camera frame.}
-    \label{fig:grayscale}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.60\textwidth]{clahe.png}
-    \caption{Frame after CLAHE preprocessing, showing enhanced local contrast.}
-    \label{fig:clahe}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.60\textwidth]{gaussian_noise.png}
-    \caption{Frame after CLAHE preprocessing plus added Gaussian noise.}
-    \label{fig:gaussian_noise}
-\end{figure}
-
-\subsubsection{Training in a simulation --- Observation and action states}
-
-The drone observes (observation space) an 8-frame stack of converted grayscale camera images (128 $\times$ 128) so it can sense motion, plus a small 4-number state vector telling it how far the goal is, how far off-centre it is, and its current forward and lateral speeds.
-
-With this observation space, the drone outputs two values: how much to dodge left or right (up to $\pm$1.5\,m/s), and how fast to fly forward (between 0.4 and 0.75\,m/s). (Table \ref{tab:obs_action})
-
-\input{components/tables/table2_obs_action.tex}
-
-\subsubsection{Training in a simulation --- Reward system}
-
-The reward function implementation is as follows. Table \ref{tab:reward} lists every component with its value.
-
-The progress term awards $+$25 per metre of forward progress toward the goal.
-
-The time penalty applies $-$0.2 per step.
-
-A soft lateral offset penalty is applied proportionally when the drone drifts more than 0.5\,m perpendicular to the spawn-to-goal axis.
-
-A goal bonus of $+$100 is awarded on successful arrival, supplemented by an efficiency bonus of up to $+$20 that scales with how quickly the episode was completed relative to the step budget.
-
-A uniform collision penalty of $-$50 terminates the episode immediately on physical contact with any tree.
-
-A timeout penalty of $-$20 is applied if the drone fails to reach the goal within the allocated step budget.
-
-All rewards are normalised online using VecNormalize to keep the signal stable across the three curriculum stages.
-
-\input{components/tables/table3_reward.tex}
-
-\subsubsection{Training in a simulation --- The model network}
-
-The actor uses a dual-stream network as described in the Methods/Approach section. The implementation details are as follows.
-
-The visual stream applies a CNN to the 8-frame grayscale stack (128$\times$128 per frame), producing a compact visual feature vector.
-
-The state stream applies a small fully connected network to the 4-element scalar vector.
-
-Both outputs are concatenated and fed into policy and value heads trained end-to-end using PPO \cite{Schulman2017}.
-
-The critic uses two fully connected layers of 128 units each. Specific layer sizes and all hyperparameters are listed in Table \ref{tab:hyperparameters}.
-
-\subsubsection{Preparation --- The model hyperparameters}
-
-The model's network consists of the hyperparameters shown in Table \ref{tab:hyperparameters}.
-
-\input{components/tables/table4_hyperparameters.tex}
-
-\subsubsection{Testing in a simulation --- Evaluation protocol}
-
-Evaluation is conducted separately under fixed, controlled conditions identical between simulation and the real world, allowing direct performance comparison. The curriculum and its randomisation are not active during evaluation.
-
-The best policy checkpoint was evaluated over 50 episodes per configuration. Conditions are defined by the number of trees placed in the 15\,$\times$\,3\,m corridor: sparse (2 trees) and dense (3 trees), combined with a fixed speed within range of 0\,m/s as a minimum and 3\,m/s as a maximum. An episode was counted as successful if and only if the drone reached the goal waypoint without any collision and without leaving the defined corridor ($\pm$3\,m lateral hard kill) \cite{Kabas2022}. The goal distance for the simulation testing corridor, like in training, is 15\,m in length. The testing data structure is shown in Table \ref{tab:data_structure}.
-
-\input{components/tables/table5_data_structure.tex}
-
-\subsection{Real-World}
-
-\subsubsection{Preparation --- The hardware setup}
-
-The physical drone used for real-world evaluation was a \textit{Holybro S500 V2} quadcopter (500\,mm wheelbase) with a total all-up weight of approximately 1.75\,kg. The flight controller was a Pixhawk 6C running PX4 firmware v1.14+, operating in altitude control mode. The companion computer was an NVIDIA Jetson Orin Nano (8\,GB), selected for its ability to run TensorRT-optimised inference in real time \cite{Kabas2022}. The camera was an Arducam IMX219 configured to match the simulation sensor parameters exactly: 128 $\times$ 128 pixels, 30\,fps, 62\textdegree{} FOV, following the sensor-matching approach recommended for sim-to-real transfer \cite{Zhao2020,Salvato2021}. Figure \ref{fig:drone_hardware} shows how the setup looks in real life and Table \ref{tab:hardware} lists the key components of the setup.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.65\textwidth]{drone_hardware.png}
-    \caption{The Holybro S500 V2 quadrotor used for real-world evaluation, equipped with the Arducam IMX219 camera, Pixhawk 6C flight controller, and NVIDIA Jetson Orin Nano companion computer.}
-    \label{fig:drone_hardware}
-\end{figure}
+The camera is an Arducam IMX-series module configured to a $62^{\circ}$ horizontal field of view, the same FOV as the simulated camera. At a unit price of around \$20, it is the cheapest perception sensor on the platform by a wide margin compared with stereo (\$300--800) or LiDAR (\$1{,}000--10{,}000) alternatives \cite{Butt2024,Hrabar2012}. Table \ref{tab:hardware} lists every component.
 
 \input{components/tables/table6_hardware.tex}
 
-\subsubsection{Preparation --- The middleware setup}
+\subsection{Middleware and Software}
 
-Robot Operating System 2 (ROS2) connects all onboard hardware. The camera streams frames to the Jetson over a ROS2 topic, where OpenCV applies CLAHE and Gaussian noise preprocessing before passing frames to the inference node.
-
-At the same time, ROS2 receives Inertial Measurement Unit (IMU), Global Positioning System (GPS), and velocity data from the Pixhawk over serial communication.
-
-The inference node combines both streams into the 8-frame image stack and 4D state vector, runs the PPO policy \cite{Schulman2017}, and publishes velocity commands back to the Pixhawk via Micro Air Vehicle Link (MAVLink) using MAVSDK-Python in altitude flight mode.
-
-A ROS2-based middleware architecture of this kind is consistent with approaches used in recent real-world drone RL deployments \cite{Azzam2024,Jang2024}.
-
-The ROS2 middleware architecture is shown in Figure \ref{fig:ros2_pipeline}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{ros2_pipeline.png}
-    \caption{ROS2 onboard data pipeline. The camera stream and Pixhawk sensor data are combined by the inference node, which runs the PPO policy and publishes velocity commands back to the Pixhawk via MAVLink.}
-    \label{fig:ros2_pipeline}
-\end{figure}
-
-\subsubsection{Preparation --- The software setup}
-
-The trained PPO policy was converted from PyTorch to TensorRT (NVIDIA's deep learning inference optimiser) before deployment, bringing inference latency down to 20--30\,ms on the Jetson, fast enough for the 30\,Hz control loop. Velocity commands from the inference node are sent to the Pixhawk via MAVLink using MAVSDK-Python, which executes them in altitude control mode. A QGroundControl ground station on a laptop handled telemetry monitoring and safety override during all flights. Table \ref{tab:software} summarises the full software stack.
-
-With hardware, middleware, and software aligned, the drone is ready for real-world deployment.
+The same middleware stack is used in simulation and on the real drone, which keeps the codebase between the two environments as close to identical as possible. ROS\,2 connects the Jetson to the rest of the system. The camera publishes frames on a ROS\,2 topic, which an inference node consumes, runs through Depth Anything V2 and the PPO policy, and republishes as velocity commands. \textbf{MAVROS} bridges those ROS\,2 commands to MAVLink and into the Pixhawk's velocity-control mode, and the same MAVROS bridge is used in simulation, where the Cosys-AirSim drone exposes a MAVLink-compatible interface. The result is that the inference graph that runs in simulation is the same graph that runs in the real forest -- only the producer of the camera feed differs.
 
 \input{components/tables/table7_software.tex}
 
-\subsubsection{Testing --- Real world}
+\subsection{Real-World Evaluation}
 
-Real-world trials were conducted in a forest clearing under controlled weather conditions: wind speed below 3\,m/s, no precipitation, temperature 10--25\textdegree{}C, and daylight. Battery charge was maintained at 80--100\% at the start of each flight. Tree spacing was measured and marked on the ground prior to each session to match the simulation configurations exactly \cite{Loquercio2019,Jang2024}.
+Real-world evaluation mirrors the simulation evaluation. \textbf{50 flights per stage} are conducted in a Swedish forest of naked tree trunks, with each flight set up in a different physical corridor so that no two episodes share exactly the same tree configuration. The two stages -- sparse and medium -- are matched as closely as possible to their simulation counterparts in terms of the average inter-trunk spacing measured before each session.
 
-The same 50 flights per condition were conducted as in simulation, across identical configurations: sparse (2 trees in corridor) and dense (3 trees in corridor). An obstacle was counted as avoided if the tree entered the 6\,m detection corridor, no physical contact occurred, and the drone maintained forward progress. Collision detection was determined by an accelerometer spike on the Pixhawk IMU exceeding a predefined threshold. Any flight requiring manual RC failsafe activation was recorded as a failure \cite{Azzam2024}. Table \ref{tab:data_structure} retains the same data structure for real-world trials as for simulation.
+The flights are conducted under controlled but realistic outdoor conditions: wind speed below $3$\,m/s, no precipitation, and at any time of day with sufficient daylight. An episode is recorded as a success if the drone clears the corridor without any tree contact, without any out-of-bounds excursion, and without manual safety override.
 
-\subsubsection{Testing --- Sim-to-real transfer}
+\subsection{Variables}
 
-Transfer efficiency is computed for each matched condition as:
-\begin{equation}
-    \text{Transfer Efficiency (\%)} = \frac{\text{Real-world success rate}}{\text{Simulation success rate}} \times 100
-\end{equation}
+The variables recorded in this thesis mirror the per-episode results table given in the appendix, and the same set of variables is recorded in simulation and in the real-world flights so the two can be compared directly. For every episode (sparse or medium, simulation or real forest), the following are logged: the \textbf{tree density} (sparse / medium), the \textbf{trees in corridor} (2 or 3), the \textbf{trees avoided} (0--3), and the \textbf{episode result} (success or fail).
 
-A value of 100\% indicates no performance loss in transfer; lower values quantify the magnitude of the reality gap \cite{Zhao2020,Salvato2021}. This metric has been used in comparable drone RL transfer studies \cite{Loquercio2019,Azzam2024,Jang2024}. Several design decisions were specifically aimed at minimising this gap: action delay and momentum smoothing simulate real motor lag \cite{Zhao2020,Salvato2021}; Gaussian noise injection replicates physical camera sensor noise \cite{Loquercio2019}; and the simulated sensor parameters exactly match the Arducam IMX219, following the hardware-matching strategy of Kabas \cite{Kabas2022} and Loquercio et al.\ \cite{Loquercio2019}.
+The independent variables are \textit{tree density} (sparse, medium) and \textit{environment} (simulation, real forest). The dependent variables, derived from the per-episode log, are the avoidance rate (trees avoided over trees in corridor) and the success rate (successful episodes over total). Drone hardware, camera parameters, control frequency, weather, drone speed, and cruise altitude are treated as control variables and held constant across conditions.
+
+The sim-to-real transfer ratio is computed using the same formula introduced in the results section, namely the real-world success rate divided by the simulation success rate at the matching density. The full variable definitions, the hyperparameter table, and the per-episode result tables are listed in the appendix.
+
+\input{components/tables/table1_variables.tex}
 
 \end{document}
