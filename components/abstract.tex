@@ -4,16 +4,16 @@
 
 \raggedright\textbf{Abstract}\\
 \justifying\noindent
-Autonomous drone navigation in forest environments faces significant challenges due to dense obstacles and the expensive cost of traditional sensing systems (Light Detection and Ranging (LiDAR): \$1,000--10,000+; stereoscopic cameras: \$300--800), limiting scalable adoption for forest health monitoring applications such as bark beetle detection. This thesis investigates whether Proximal Policy Optimization (PPO) reinforcement learning can enable effective tree obstacle avoidance using only low-cost RGB camera input, with quantitative evaluation of sim-to-real transfer efficiency.
+Autonomous drone navigation in forest environments faces significant challenges due to dense, unpredictable obstacles and the high cost of traditional sensing systems (Light Detection and Ranging (LiDAR): \$1,000--10,000+; stereoscopic cameras: \$300--800), limiting scalable deployment for applications such as bark beetle monitoring. This thesis investigates whether a PPO-based reinforcement learning agent, trained entirely in simulation using only a single low-cost RGB camera with software depth estimation, can perform effective obstacle avoidance when deployed on a real drone in a forest environment.
 
 \justifying\noindent
-We developed a PPO-based navigation policy trained in AirSim forest simulations and deployed it on a Holybro S500 V2 quadcopter equipped with an NVIDIA Jetson Orin Nano companion computer and Arducam IMX219 RGB camera. The system was evaluated across two tree density configurations (sparse: 2 trees in corridor, dense: 3 trees in corridor) in both simulation and real-world field trials.
+The system uses an asymmetric actor--critic PPO architecture in which the actor receives only a stacked depth image produced by Depth Anything V2 from a single Arducam IMX219 camera, while the critic has access to privileged simulator state during training. The policy was trained in Cosys-AirSim with extensive domain randomisation and deployed without fine-tuning on a Holybro S500 V2 quadrotor equipped with an NVIDIA Jetson Orin Nano. Evaluation covered two tree density configurations (sparse: 2 trees, dense: 3 trees) in a 15\,m corridor across 100 simulation and 100 real-world episodes.
 
 \justifying\noindent
-Results demonstrated 93.88\% obstacle avoidance success in sparse simulation environments and 74.00\% in real-world deployment, achieving 81.11\% sim-to-real transfer efficiency. Performance degraded predictably with increasing tree density, with collision rates rising from 26.00\% (sparse) to 30.00\% (dense) in real-world trials.
+In simulation, the policy achieved an episode-level success rate of 94.00\% (sparse) and 84.00\% (dense), with a combined rate of 89.11\% and a per-obstacle success rate of 95.60\%. In real-world trials, episode-level success was 74.00\% (sparse) and 70.00\% (dense), yielding an overall sim-to-real transfer efficiency of 81.11\% at the episode level and 84.02\% per obstacle.
 
 \justifying\noindent
-The findings confirm that PPO-based RGB-only navigation enables cost-effective autonomous forest flight under controlled conditions, providing a practical foundation for scalable forest monitoring systems while highlighting the importance of reward design and environmental complexity in sim-to-real deployment.\vspace{5mm}
+The results confirm that a single \$20 RGB camera, combined with a software depth model and a domain-randomised PPO policy, is sufficient for autonomous forest obstacle avoidance at a transfer efficiency competitive with sensor-heavy alternatives. The findings provide a reproducible benchmark for low-cost sim-to-real drone navigation in unstructured environments.\vspace{5mm}
 
 \raggedright\textbf{Keywords}\\
 \noindent
