@@ -5,22 +5,24 @@
 \section{Experimental Setup}
 \justify
 
-This chapter describes the concrete setup that turns the approach in the previous chapter into a working system. It covers the simulator, the corridor used for training and evaluation, the tree spawning, the camera and depth pipeline, the asymmetric actor--critic policy and action space, the simulation and real-world evaluation protocols, and the physical drone built to match the simulated platform.
+This chapter describes the concrete setup that turns the approach in the previous chapter into a working system. It covers the simulator, the corridor used for training and evaluation, the tree spawning, the camera and depth pipeline, the asymmetric actor--critic policy and action space, the simulation and real-world evaluation protocols, and the physical drone built to match the simulated platform. Figure~\ref{fig:exp_overview} provides a high-level view of the full experimental setup.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=1\textwidth]{figures/methodology.png}
-  \caption{Simulation training setup in Cosys-Airsim with Unreal Engine 5.5}\label{fig:}
+  \caption{High-level overview of the experimental setup, showing the simulation environment, the onboard inference pipeline, and the real-world deployment platform.}
+  \label{fig:exp_overview}
 \end{figure}
 
 \subsection{Simulation Environment}
 
-All training and evaluation in simulation is run in \textit{Cosys-AirSim}, a community fork of \textit{Microsoft AirSim} \cite{Kabas2022}, on top of \textit{Unreal Engine 5.5}. Cosys-AirSim is used specifically because it exposes \texttt{simSetObjectPose} and \texttt{simSetObjectScale}, which allow tree positions, angles, and sizes to be changed between episodes without reloading the scene -- this is what makes the heavy domain randomisation in this work practical.
-\newpage
+All training and evaluation in simulation is run in \textit{Cosys-AirSim}, a community fork of \textit{Microsoft AirSim} \cite{Kabas2022}, on top of \textit{Unreal Engine 5.5}. Cosys-AirSim is used specifically because it exposes \texttt{simSetObjectPose} and \texttt{simSetObjectScale}, which allow tree positions, angles, and sizes to be changed between episodes without reloading the scene -- this is what makes the heavy domain randomisation in this work practical. Figure~\ref{fig:sim_forest} shows the simulated forest scene.
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=1\textwidth]{figures/sim-forest.png}
-  \caption{Simulation training setup in Cosys-Airsim with Unreal Engine 5.5}\label{fig:}
+  \caption{The simulated forest corridor in Cosys-AirSim, rendered in Unreal Engine 5.5 using a redwood texture pack.}
+  \label{fig:sim_forest}
 \end{figure}
 
 The simulated forest is a \textbf{15\,m long, 4\,m wide corridor} placed inside an Unreal scene built from a redwood texture pack. Since this thesis evaluates on naked tree trunks only, the specific tree species or texture is not central to the method; the texture pack provides a visually consistent set of trunks while still varying in shape and bark detail. Trees inside the corridor act as obstacles and trees placed outside the corridor act as visual background.
@@ -57,24 +59,25 @@ To make the policy robust to the differences between simulation and reality, sev
   \item \textbf{Action noise.} Small noise is also injected into the discrete-action selection during training to keep the policy from over-fitting to perfect, instantaneous responses.
 \end{itemize}
 
-These noise sources are derived from the sim-to-real strategies in \cite{Loquercio2019,Zhao2020,Salvato2021}, with the specific configuration of pipeline delay and motion blur tailored to the Depth Anything inference profile observed on the target Jetson hardware.
+These noise sources are derived from the sim-to-real strategies in \cite{Loquercio2019,Zhao2020,Salvato2021}, with the specific configuration of pipeline delay and motion blur tailored to the Depth Anything inference profile observed on the target Jetson hardware. Figure~\ref{fig:sim_camera} shows an example of the simulated camera output after augmentation.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.65\textwidth]{figures/sim-camera.png}
-  \caption{Image example in the simulation, together with the applied noise and 62 degree FOV}\label{fig:midas_example}
+  \caption{Example simulated camera frame after noise augmentation, showing the $62^{\circ}$ FOV and the Depth Anything V2 depth map alongside the RGB input.}
+  \label{fig:sim_camera}
 \end{figure}
 \subsection{Reward, Corridor Constraint, and Episode Termination}
 
 The reward function is the dense-plus-sparse design described in Section~3 (forward-progress shaping, time penalty, centerline bonus, lateral penalty, terminal goal/collision/efficiency rewards \cite{Schulman2017,Kabas2022,Loquercio2019,DelCol2025}). On top of that, the \textbf{corridor itself is a hard constraint}: the drone is allowed to move freely within the $15\times4$\,m corridor, but any lateral excursion outside the corridor immediately ends the episode.
 
-An episode therefore ends in one of three ways: \textit{success} (the drone reaches the end of the corridor), \textit{collision} (any contact with a tree), or \textit{out-of-bounds} (the drone leaves the corridor sideways). All three trigger a respawn at the corridor entrance for the next episode. This respawn-on-failure / respawn-on-success structure is the same training pattern Kabas \cite{Kabas2022} used for AirSim corridor episodes and that Loquercio et al.\ \cite{Loquercio2019} used during DAgger-style trajectory recovery.
-
+An episode therefore ends in one of three ways: \textit{success} (the drone reaches the end of the corridor), \textit{collision} (any contact with a tree), or \textit{out-of-bounds} (the drone leaves the corridor sideways). All three trigger a respawn at the corridor entrance for the next episode. This respawn-on-failure / respawn-on-success structure is the same training pattern Kabas \cite{Kabas2022} used for AirSim corridor episodes and that Loquercio et al.\ \cite{Loquercio2019} used during DAgger-style trajectory recovery. Figure~\ref{fig:sim_corridor_annotated} shows the corridor with its termination boundaries marked.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=1\textwidth]{figures/sim-corridor.png}
-  \caption{The 15x4m corridor labelled in blue, termination happens when the corridor end is crossed, corridor sides, or trees behaving as obstacles}\label{fig:midas_example}
+  \caption{The 15\,m\,$\times$\,4\,m simulated corridor with termination boundaries annotated: the corridor end (success), the lateral walls (out-of-bounds), and tree trunks (collision).}
+  \label{fig:sim_corridor_annotated}
 \end{figure}
 
 
@@ -106,12 +109,13 @@ Yaw is locked to the direction of travel so the camera always faces forward, and
 
 \subsection{Real-World Hardware}
 
-The physical drone is a \textbf{Holybro S500 V2} quadrotor (500\,mm wheelbase, $\sim 1.75$\,kg all-up weight), chosen because its airframe comfortably accommodates the NVIDIA Jetson Orin Nano companion computer used for inference and because its dimensions match the simulated drone in Cosys-AirSim. Compute is split between the Jetson, which runs Depth Anything V2 inference and the PPO policy, and a \textbf{Pixhawk 6C} flight controller (running PX4) which receives velocity commands from the Jetson and produces the actual motor outputs. The Jetson talks to the Pixhawk over MAVLink.
+The physical drone is a \textbf{Holybro S500 V2} quadrotor (500\,mm wheelbase, $\sim 1.75$\,kg all-up weight), chosen because its airframe comfortably accommodates the NVIDIA Jetson Orin Nano companion computer used for inference and because its dimensions match the simulated drone in Cosys-AirSim. Compute is split between the Jetson, which runs Depth Anything V2 inference and the PPO policy, and a \textbf{Pixhawk 6C} flight controller (running PX4) which receives velocity commands from the Jetson and produces the actual motor outputs. The Jetson talks to the Pixhawk over MAVLink. The assembled platform is shown in Figure~\ref{fig:real_drone}.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\textwidth]{figures/real-drone.png}
-  \caption{Physical drone, that includes the mentioned Jetson onboar computer, IMX219 camera, Pixhawk 6c flight controller}\label{fig:}
+  \caption{The physical Holybro S500 V2 drone with the Jetson Orin Nano companion computer, Arducam IMX219 camera, and Pixhawk 6C flight controller.}
+  \label{fig:real_drone}
 \end{figure}
 \vspace{1cm}
 The camera is an Arducam IMX-series module configured to a $62^{\circ}$ horizontal field of view, the same FOV as the simulated camera. At a unit price of around \$20, it is the cheapest perception sensor on the platform by a wide margin compared with stereo (\$300--800) or LiDAR (\$1{,}000--10{,}000) alternatives \cite{Butt2024,Hrabar2012}. Table \ref{tab:hardware} lists every component.
@@ -120,12 +124,13 @@ The camera is an Arducam IMX-series module configured to a $62^{\circ}$ horizont
 
 \subsection{Middleware and Software}
 
-The same middleware stack is used in simulation and on the real drone, which keeps the codebase between the two environments as close to identical as possible. ROS\,2 connects the Jetson to the rest of the system. The camera publishes frames on a ROS\,2 topic, which an inference node consumes, runs through Depth Anything V2 and the PPO policy, and republishes as velocity commands. \textbf{MAVROS} bridges those ROS\,2 commands to MAVLink and into the Pixhawk's velocity-control mode, and the same MAVROS bridge is used in simulation, where the Cosys-AirSim drone exposes a MAVLink-compatible interface. The result is that the inference graph that runs in simulation is the same graph that runs in the real forest -- only the producer of the camera feed differs.
+The same middleware stack is used in simulation and on the real drone, which keeps the codebase between the two environments as close to identical as possible. ROS\,2 connects the Jetson to the rest of the system. The camera publishes frames on a ROS\,2 topic, which an inference node consumes, runs through Depth Anything V2 and the PPO policy, and republishes as velocity commands. \textbf{MAVROS} bridges those ROS\,2 commands to MAVLink and into the Pixhawk's velocity-control mode, and the same MAVROS bridge is used in simulation, where the Cosys-AirSim drone exposes a MAVLink-compatible interface. The result is that the inference graph that runs in simulation is the same graph that runs in the real forest -- only the producer of the camera feed differs. The ROS\,2 pipeline is illustrated in Figure~\ref{fig:ros2_pipeline}, and the full software stack is listed in Table~\ref{tab:software}.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.45\textwidth]{figures/ros2_pipeline.png}
-  \caption{Middleware setup of real drone used in this paper}\label{fig:}
+  \caption{The ROS\,2 inference pipeline: camera frames flow through Depth Anything V2 and the PPO policy node, with velocity commands forwarded to the Pixhawk via MAVROS.}
+  \label{fig:ros2_pipeline}
 \end{figure}
 \vspace{1cm}
 
@@ -135,7 +140,7 @@ The same middleware stack is used in simulation and on the real drone, which kee
 
 Simulation and real-world trials follow the same protocol so the two can be compared directly. In simulation, the policy is evaluated under fixed, deterministic conditions with noise and randomisation disabled and the curriculum fixed: \textbf{50 episodes in the sparse stage and 50 in the dense stage}, giving 100 simulation episodes.
 
-The same policy is then deployed without fine-tuning on the physical drone, with \textbf{50 flights per stage} conducted in a Swedish forest of naked tree trunks; each flight uses a different physical corridor so no two episodes share the same tree configuration, and the two stages are matched to their simulation counterparts by average inter-trunk spacing measured before each session. Real flights run under controlled but realistic outdoor conditions (wind below $3$\,m/s, no precipitation, sufficient daylight). An episode counts as a success, in either environment, if the drone clears the corridor without tree contact, without leaving the corridor laterally, and -- in the real world -- without manual safety override.
+The same policy is then deployed without fine-tuning on the physical drone, with \textbf{50 flights per stage} conducted in a Swedish forest of naked tree trunks; each flight uses a different physical corridor so no two episodes share the same tree configuration, and the two stages are matched to their simulation counterparts by average inter-trunk spacing measured before each session. Real flights run under controlled but realistic outdoor conditions (wind below $3$\,m/s, no precipitation, sufficient daylight). An episode counts as a success, in either environment, if the drone clears the corridor without tree contact, without leaving the corridor laterally, and -- in the real world -- without manual safety override. Figure~\ref{fig:corridor_sxs} shows the simulated and real corridors side by side. Figure~\ref{fig:fpv_sxs} shows the first-person view in both environments, and Figure~\ref{fig:drone_sxs} shows the simulated and physical drone platforms.
 
 \begin{figure}[H]
   \centering
@@ -187,7 +192,7 @@ The same policy is then deployed without fine-tuning on the physical drone, with
 
 \subsection{Variables}
 
-The same set of variables is logged in simulation and in real flights so the two can be compared directly. For every episode (sparse or dense, simulation or real forest), the following are recorded: the \textbf{tree density} (sparse / dense), the \textbf{trees in corridor} (2 or 3), the \textbf{trees avoided} (0--3), and the \textbf{episode result} (success or fail). The independent variables are \textit{tree density} (sparse, dense) and \textit{environment} (simulation, real forest). The dependent variables, derived from the per-episode log, are the avoidance rate (trees avoided over trees in corridor) and the success rate (successful episodes over total). Drone hardware, camera parameters, control frequency, weather, drone speed, and cruise altitude are treated as control variables and held constant across conditions. The sim-to-real transfer ratio is computed as the real-world success rate divided by the simulation success rate at the matching density. The full variable definitions, the hyperparameter table, and the per-episode result tables are listed in the appendix.
+The same set of variables is logged in simulation and in real flights so the two can be compared directly. For every episode (sparse or dense, simulation or real forest), the following are recorded: the \textbf{tree density} (sparse / dense), the \textbf{trees in corridor} (2 or 3), the \textbf{trees avoided} (0--3), and the \textbf{episode result} (success or fail). The independent variables are \textit{tree density} (sparse, dense) and \textit{environment} (simulation, real forest). The dependent variables, derived from the per-episode log, are the avoidance rate (trees avoided over trees in corridor) and the success rate (successful episodes over total). Drone hardware, camera parameters, control frequency, weather, drone speed, and cruise altitude are treated as control variables and held constant across conditions. The sim-to-real transfer ratio is computed as the real-world success rate divided by the simulation success rate at the matching density. Table~\ref{tab:variables} summarises all variables. The per-episode result tables are listed in the appendix.
 
 \input{components/tables/table1_variables.tex}
 
