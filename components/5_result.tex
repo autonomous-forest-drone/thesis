@@ -51,7 +51,7 @@ The trained policy was evaluated over 100 episodes in simulation: 50 sparse (2 t
 Sparse (2 trees) & 50 & 94.00\% & 97.00\% \\
 Dense (3 trees) & 50 & 84.00\% & 94.67\% \\
 \hline
-\textbf{Total} & \textbf{100} & \textbf{89.11\%} & \textbf{95.60\%} \\
+\textbf{Total} & \textbf{100} & \textbf{89.00\%} & \textbf{95.60\%} \\
 \hline
 \end{tabular}
 \end{table}
@@ -78,7 +78,7 @@ Dense (3 trees) & 50 & 84.00\% & 94.67\% \\
     grid style={dashed,gray!40},
 ]
 \addplot+[fill=lightblue, draw=black] coordinates {
-    (Sparse, 94.00) (Dense, 84.00) (Total, 89.11)
+    (Sparse, 94.00) (Dense, 84.00) (Total, 89.00)
 };
 \addplot+[fill=lavenderpurple, draw=black] coordinates {
     (Sparse, 97.00) (Dense, 94.67) (Total, 95.60)
@@ -106,9 +106,9 @@ The same policy was deployed without fine-tuning on the physical Holybro S500 V2
 \textbf{Condition} & \textbf{Episodes} & \textbf{Episode Success Rate} & \textbf{Per-Obstacle Success Rate} \\
 \hline
 Sparse (2 trees) & 50 & 74.00\% & 83.00\% \\
-Dense (3 trees) & 50 & 70.00\% & 78.52\% \\
+Dense (3 trees) & 50 & 70.00\% & 78.00\% \\
 \hline
-\textbf{Total} & \textbf{100} & \textbf{72.28\%} & \textbf{80.32\%} \\
+\textbf{Total} & \textbf{100} & \textbf{72.00\%} & \textbf{80.00\%} \\
 \hline
 \end{tabular}
 \end{table}
@@ -135,10 +135,10 @@ Dense (3 trees) & 50 & 70.00\% & 78.52\% \\
     grid style={dashed,gray!40},
 ]
 \addplot+[fill=lightblue, draw=black] coordinates {
-    (Sparse, 74.00) (Dense, 70.00) (Total, 72.28)
+    (Sparse, 74.00) (Dense, 70.00) (Total, 72.00)
 };
 \addplot+[fill=lavenderpurple, draw=black] coordinates {
-    (Sparse, 83.00) (Dense, 78.52) (Total, 80.32)
+    (Sparse, 83.00) (Dense, 78.00) (Total, 80.00)
 };
 \legend{Episode Success, Per-Obstacle Success}
 \end{axis}
@@ -173,10 +173,10 @@ Figure \ref{fig:comparison_bar} directly compares episode-level success rates be
     grid style={dashed,gray!40},
 ]
 \addplot+[fill=blue-green, draw=black] coordinates {
-    (Sparse, 94.00) (Dense, 84.00) (Total, 89.11)
+    (Sparse, 94.00) (Dense, 84.00) (Total, 89.00)
 };
 \addplot+[fill=lightgray, draw=black] coordinates {
-    (Sparse, 74.00) (Dense, 70.00) (Total, 72.28)
+    (Sparse, 74.00) (Dense, 70.00) (Total, 72.00)
 };
 \legend{Simulation, Real-World}
 \end{axis}
@@ -199,9 +199,9 @@ Transfer efficiency is computed as the real-world success rate divided by the si
 \textbf{Condition} & \textbf{Episode-Level Transfer} & \textbf{Per-Obstacle Transfer} \\
 \hline
 Sparse (2 trees) & 78.72\% & 85.57\% \\
-Dense (3 trees) & 83.33\% & 82.95\% \\
+Dense (3 trees) & 83.33\% & 82.39\% \\
 \hline
-\textbf{Total} & \textbf{81.11\%} & \textbf{84.02\%} \\
+\textbf{Total} & \textbf{80.90\%} & \textbf{83.68\%} \\
 \hline
 \end{tabular}
 \end{table}
@@ -229,10 +229,10 @@ Dense (3 trees) & 83.33\% & 82.95\% \\
     yticklabel={\pgfmathprintnumber{\tick}\%},
 ]
 \addplot+[fill=blue-green, draw=black] coordinates {
-    (Sparse, 78.72) (Dense, 83.33) (Total, 81.11)
+    (Sparse, 78.72) (Dense, 83.33) (Total, 80.90)
 };
 \addplot+[fill=lavenderpurple, draw=black] coordinates {
-    (Sparse, 85.57) (Dense, 82.95) (Total, 84.02)
+    (Sparse, 85.57) (Dense, 82.39) (Total, 83.68)
 };
 \legend{Episode-Level Transfer, Per-Obstacle Transfer}
 \end{axis}
@@ -241,6 +241,6 @@ Dense (3 trees) & 83.33\% & 82.95\% \\
 \label{fig:transfer_bar}
 \end{figure}
 
-The overall episode-level transfer efficiency of 81.11\% indicates that approximately one in five episodes that succeeded in simulation did not succeed in the real world. Per-obstacle transfer of 84.02\% shows the agent retained most of its avoidance capability, with the gap primarily attributable to full-episode failures rather than a general degradation in obstacle avoidance behaviour.
+The overall episode-level transfer efficiency of 80.90\% indicates that approximately one in five episodes that succeeded in simulation did not succeed in the real world. Per-obstacle transfer of 83.68\% shows the agent retained most of its avoidance capability, with the gap primarily attributable to full-episode failures rather than a general degradation in obstacle avoidance behaviour.
 
 \end{document}
