@@ -35,7 +35,7 @@ The objectives of this thesis are:
     \item To investigate whether a single low-cost RGB camera, combined with a software depth estimation model, provides sufficient perceptual information for autonomous obstacle avoidance in a forest environment.
     \item To design and implement a PPO-based reinforcement learning agent capable of navigating through a simulated forest corridor and avoiding tree trunk obstacles.
     \item To study sim-to-real transfer methods and evaluate how well a policy trained entirely in simulation transfers to a physical drone without fine-tuning.
-    \item To gain practical experience with real drone hardware, from flight controller integration and onboard compute to real-world testing in a forest environment.
+    \item To deploy the trained policy on a physical drone platform and conduct real-world flight trials in a forest environment.
     \item To quantitatively evaluate the system's performance across sparse and dense obstacle configurations in both simulation and real-world trials.
 \end{itemize}
 
@@ -61,7 +61,9 @@ The main contributions of this thesis are:
 
 \subsubsection{Scope}
 
-This thesis focuses on the obstacle avoidance component of autonomous drone navigation in forest environments. The system is trained in simulation and evaluated in both simulation and real-world trials. The physical platform is the Holybro S500 V2 quadrotor equipped with an Arducam IMX219 RGB camera and an NVIDIA Jetson Orin Nano companion computer. Trials are conducted under controlled weather conditions: wind below 3\,m/s, daylight, and no precipitation. The thesis does not address bark beetle detection, path planning, or multi-drone coordination; only the navigation capability that makes autonomous forest flight possible.
+This thesis focuses on the obstacle avoidance component of autonomous drone navigation in forest environments. The system is trained in simulation and evaluated in both simulation and real-world trials. Trials are conducted under controlled weather conditions: wind below 3\,m/s, daylight, and no precipitation. The thesis does not address bark beetle detection, path planning, or multi-drone coordination; only the navigation capability that makes autonomous forest flight possible.
+
+The physical drone platform -- a Holybro S500 V2 quadrotor equipped with an Arducam IMX219 RGB camera, an NVIDIA Jetson Orin Nano companion computer, and a Pixhawk 6C flight controller -- was assembled and integrated as part of a parallel Systems Engineering course. This thesis takes the assembled platform as given and focuses exclusively on the navigation software: the PPO policy, the depth estimation pipeline, the simulation training, and the real-world evaluation. Hardware design, component selection, and mechanical assembly are outside the scope of this thesis.
 
 \subsubsection{Limitations}
 

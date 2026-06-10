@@ -109,6 +109,8 @@ Yaw is locked to the direction of travel so the camera always faces forward, and
 
 \subsection{Real-World Hardware}
 
+The drone platform used in this thesis was assembled and integrated as part of a parallel Systems Engineering course; the hardware design and component selection are not contributions of this thesis. The following describes the platform as used for the navigation experiments.
+
 The physical drone is a \textbf{Holybro S500 V2} quadrotor (500\,mm wheelbase, $\sim 1.75$\,kg all-up weight), chosen because its airframe comfortably accommodates the NVIDIA Jetson Orin Nano companion computer used for inference and because its dimensions match the simulated drone in Cosys-AirSim. Compute is split between the Jetson, which runs Depth Anything V2 inference and the PPO policy, and a \textbf{Pixhawk 6C} flight controller (running PX4) which receives velocity commands from the Jetson and produces the actual motor outputs. The Jetson talks to the Pixhawk over MAVLink. The assembled platform is shown in Figure~\ref{fig:real_drone}.
 
 \begin{figure}[h]
