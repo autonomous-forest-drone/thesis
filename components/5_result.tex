@@ -11,27 +11,27 @@ The per-obstacle avoidance probability is estimated as the maximum likelihood es
 
 \subsection{Training Stability}
 
-Figure \ref{fig:tensorboard_training} shows the PPO training curves recorded in TensorBoard. In all three subplots the x-axis is training timesteps and the y-axis is the quantity labelled on each subplot. Training proceeds in two curriculum stages: a sparse stage (2-tree corridor) followed by a dense stage (3-tree corridor), with the policy checkpoint from the sparse stage used to initialise the dense stage. Subplot (a) shows episode success rate climbing steadily and plateauing, reaching up to 92\,\% during the dense stage. Subplot (b) shows value loss falling and stabilising, confirming that the PPO critic's value estimates converge without collapse \cite{Schulman2017}. Subplot (c) shows mean episode length increasing over the course of training, indicating that the drone survives progressively longer in the corridor as it learns to avoid early collisions.
+Figure \ref{fig:tensorboard_training} shows the PPO training curves recorded in TensorBoard. In all three subplots the x-axis is training timesteps. Training proceeds in two curriculum stages: a sparse stage (2-tree corridor) followed by a dense stage (3-tree corridor), with the policy checkpoint from the sparse stage used to initialise the dense stage. Subplot (a) shows episode success rate --- the fraction of episodes completed without a collision (y-axis) --- climbing steadily and plateauing, reaching up to 92\,\% during the dense stage. Subplot (b) shows value loss --- the PPO critic's value-prediction error (y-axis) --- falling and stabilising, confirming that the PPO critic's value estimates converge without collapse \cite{Schulman2017}. Subplot (c) shows mean episode length --- the average number of steps before the episode ends (y-axis) --- increasing over the course of training, indicating that the drone survives progressively longer in the corridor as it learns to avoid early collisions.
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/success-rate.png}
-        \small (a) Episode success rate --- rises steadily, reaching up to 92\,\% in the dense stage
+        \small (a) Episode success rate (y-axis) vs.\ training timesteps (x-axis) --- the y-axis is the fraction of episodes completed without a collision; it rises steadily, reaching up to 92\,\% in the dense stage
     \end{minipage}
     \hfill
     \begin{minipage}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/value-loss.png}
-        \small (b) Value loss --- falls and stabilises, confirming PPO critic convergence
+        \small (b) Value loss (y-axis) vs.\ training timesteps (x-axis) --- the y-axis is the PPO critic's value-prediction error; it falls and stabilises, confirming critic convergence
     \end{minipage}
     \vspace{6pt}
 
     \begin{minipage}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/episode-length.png}
-        \small (c) Mean episode length --- grows as the agent survives progressively longer before colliding
+        \small (c) Mean episode length (y-axis) vs.\ training timesteps (x-axis) --- the y-axis is the average number of steps before the episode ends; it grows as the agent survives progressively longer before colliding
     \end{minipage}
     \caption{PPO training curves from TensorBoard (x-axis: training timesteps). Training proceeds in two sequential curriculum stages (sparse then dense); the dense stage is initialised from the sparse-stage checkpoint.}
     \label{fig:tensorboard_training}
