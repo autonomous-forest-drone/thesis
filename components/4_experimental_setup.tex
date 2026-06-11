@@ -113,7 +113,7 @@ The drone platform used in this thesis was assembled and integrated as part of a
 
 The physical drone is a Holybro S500 V2 quadrotor (500\,mm wheelbase, $\sim 1.75$\,kg all-up weight), chosen because its airframe comfortably accommodates the NVIDIA Jetson Orin Nano companion computer used for inference and because its dimensions match the simulated drone in Cosys-AirSim. Compute is split between the Jetson, which runs Depth Anything V2 inference and the PPO policy, and a Pixhawk 6C flight controller (running PX4) which receives velocity commands from the Jetson and produces the actual motor outputs. The Jetson talks to the Pixhawk over MAVLink. The assembled platform is shown in Figure~\ref{fig:real_drone}.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{figures/real-drone.png}
   \caption{The physical Holybro S500 V2 drone with the Jetson Orin Nano companion computer, Arducam IMX219 camera, and Pixhawk 6C flight controller.}
