@@ -17,7 +17,7 @@ WC_RESULT=$(count 5_result.tex)
 WC_DISCUSSION=$(count 6_discussion.tex)
 WC_CONCLUSION=$(count 7_conclusion.tex)
 WC_FUTURE=$(count 8_future_work.tex)
-WC_TOTAL=$((WC_ABSTRACT + WC_INTRO + WC_RELATED + WC_METHOD + WC_METHODOLOGY + WC_RESULT + WC_DISCUSSION + WC_CONCLUSION + WC_FUTURE))
+WC_TOTAL=$((WC_INTRO + WC_RELATED + WC_METHOD + WC_METHODOLOGY + WC_RESULT + WC_DISCUSSION + WC_CONCLUSION + WC_FUTURE))
 
 cat > "$DIR/wordcounts.tex" << EOF
 \newcommand{\wcAbstract}{$WC_ABSTRACT}
