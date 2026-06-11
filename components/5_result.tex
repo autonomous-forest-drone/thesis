@@ -5,7 +5,9 @@
 \section{Results}
 \justify
 
-This section presents the experimental results from both the simulation evaluation and the real-world flight trials. Results are reported at two levels: episode-level success rate (the drone completes the full 15\,m corridor without any collision) and per-obstacle success rate (individual trees successfully avoided out of total trees encountered). All conditions were evaluated over 50 episodes per density configuration. The full episode-by-episode datasets for both simulation and real-world trials are available in Appendix A.
+This section presents the experimental results from both the simulation evaluation and the real-world flight trials. Results are reported at two levels: episode-level success rate (the drone completes the full 15\,m corridor without any collision) and per-obstacle avoidance probability. All conditions were evaluated over 50 episodes per density configuration. The full episode-by-episode datasets for both simulation and real-world trials are available in Appendix A.
+
+The per-obstacle avoidance probability is estimated as the maximum likelihood estimator (MLE) of the truncated geometric distribution: $\hat{p} = N_{\text{avoided}} / (N_{\text{avoided}} + N_{\text{fail}})$, where $N_{\text{avoided}}$ is the total number of trees successfully avoided across all episodes and $N_{\text{fail}}$ is the total number of failed episodes. This treats each tree encounter as an independent Bernoulli trial with success probability $p$, with each episode stopping at the first collision. The 95\,\% confidence intervals are computed as $\hat{p} \pm 1.96\,\mathrm{SE}$, where $\mathrm{SE} = \sqrt{\hat{p}(1-\hat{p})/N}$ and $N = N_{\text{avoided}} + N_{\text{fail}}$. Episode-level success rates are treated as binomial proportions and use the same normal-approximation formula with $N$ equal to the number of episodes.
 
 \subsection{Training Stability}
 
@@ -44,16 +46,18 @@ The trained policy was evaluated over 100 episodes in simulation: 50 sparse (2 t
 \centering
 \caption{Simulation evaluation results across density conditions.}
 \label{tab:sim_results}
-\begin{tabular}{|l|c|c|c|}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|}
 \hline
-\textbf{Condition} & \textbf{Episodes} & \textbf{Episode Success Rate} & \textbf{Per-Obstacle Success Rate} \\
+\textbf{Condition} & \textbf{Episodes} & \textbf{Episode Success Rate} & \textbf{95\% CI} & \textbf{Per-Obs.\ $\hat{p}$} & \textbf{95\% CI} \\
 \hline
-Sparse (2 trees) & 50 & 94.00\% & 97.00\% \\
-Dense (3 trees) & 50 & 84.00\% & 94.67\% \\
+Sparse (2 trees) & 50 & 94.00\% & {[87.4,\,100]\%} & 97.00\% & {[93.7,\,100]\%} \\
+Dense (3 trees) & 50 & 84.00\% & {[73.8,\,94.2]\%} & 94.67\% & {[91.1,\,98.3]\%} \\
 \hline
-\textbf{Total} & \textbf{100} & \textbf{89.00\%} & \textbf{95.60\%} \\
+\textbf{Total} & \textbf{100} & \textbf{89.00\%} & \textbf{[82.9,\,95.1]\%} & \textbf{95.60\%} & \textbf{[93.1,\,98.1]\%} \\
 \hline
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \begin{figure}[H]
@@ -72,21 +76,25 @@ Dense (3 trees) & 50 & 84.00\% & 94.67\% \\
     legend style={at={(0.98,0.98)}, anchor=north east},
     nodes near coords,
     nodes near coords align={vertical},
-    every node near coord/.append style={font=\small, text=black},
+    every node near coord/.append style={font=\small, text=black, anchor=north, yshift=-4pt},
     enlarge x limits=0.25,
     grid=major,
     grid style={dashed,gray!40},
 ]
-\addplot+[fill=lightblue, draw=black] coordinates {
-    (Sparse, 94.00) (Dense, 84.00) (Total, 89.00)
+\addplot+[fill=lightblue, draw=black,
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={draw=black, line width=0.8pt}] coordinates {
+    (Sparse, 94.00) +- (0, 6.58) (Dense, 84.00) +- (0, 10.16) (Total, 89.00) +- (0, 6.13)
 };
-\addplot+[fill=lavenderpurple, draw=black] coordinates {
-    (Sparse, 97.00) (Dense, 94.67) (Total, 95.60)
+\addplot+[fill=lavenderpurple, draw=black,
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={draw=black, line width=0.8pt}] coordinates {
+    (Sparse, 97.00) +- (0, 3.34) (Dense, 94.67) +- (0, 3.59) (Total, 95.60) +- (0, 2.54)
 };
-\legend{Episode Success, Per-Obstacle Success}
+\legend{Episode Success, Per-Obs.\ $\hat{p}$}
 \end{axis}
 \end{tikzpicture}
-\caption{Simulation episode-level and per-obstacle success rates by tree density.}
+\caption{Simulation episode-level and per-obstacle success rates by tree density. Error bars show 95\,\% confidence intervals.}
 \label{fig:sim_bar}
 \end{figure}
 
@@ -101,16 +109,18 @@ The same policy was deployed without fine-tuning on the physical Holybro S500 V2
 \centering
 \caption{Real-world flight results across density conditions.}
 \label{tab:real_results}
-\begin{tabular}{|l|c|c|c|}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|}
 \hline
-\textbf{Condition} & \textbf{Episodes} & \textbf{Episode Success Rate} & \textbf{Per-Obstacle Success Rate} \\
+\textbf{Condition} & \textbf{Episodes} & \textbf{Episode Success Rate} & \textbf{95\% CI} & \textbf{Per-Obs.\ $\hat{p}$} & \textbf{95\% CI} \\
 \hline
-Sparse (2 trees) & 50 & 74.00\% & 83.00\% \\
-Dense (3 trees) & 50 & 70.00\% & 78.00\% \\
+Sparse (2 trees) & 50 & 74.00\% & {[61.8,\,86.2]\%} & 86.46\% & {[79.6,\,93.3]\%} \\
+Dense (3 trees) & 50 & 70.00\% & {[57.3,\,82.7]\%} & 88.64\% & {[83.2,\,94.1]\%} \\
 \hline
-\textbf{Total} & \textbf{100} & \textbf{72.00\%} & \textbf{80.00\%} \\
+\textbf{Total} & \textbf{100} & \textbf{72.00\%} & \textbf{[63.2,\,80.8]\%} & \textbf{87.72\%} & \textbf{[83.5,\,92.0]\%} \\
 \hline
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \begin{figure}[H]
@@ -129,21 +139,25 @@ Dense (3 trees) & 50 & 70.00\% & 78.00\% \\
     legend style={at={(0.98,0.98)}, anchor=north east},
     nodes near coords,
     nodes near coords align={vertical},
-    every node near coord/.append style={font=\small, text=black},
+    every node near coord/.append style={font=\small, text=black, anchor=north, yshift=-4pt},
     enlarge x limits=0.25,
     grid=major,
     grid style={dashed,gray!40},
 ]
-\addplot+[fill=lightblue, draw=black] coordinates {
-    (Sparse, 74.00) (Dense, 70.00) (Total, 72.00)
+\addplot+[fill=lightblue, draw=black,
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={draw=black, line width=0.8pt}] coordinates {
+    (Sparse, 74.00) +- (0, 12.16) (Dense, 70.00) +- (0, 12.70) (Total, 72.00) +- (0, 8.80)
 };
-\addplot+[fill=lavenderpurple, draw=black] coordinates {
-    (Sparse, 83.00) (Dense, 78.00) (Total, 80.00)
+\addplot+[fill=lavenderpurple, draw=black,
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={draw=black, line width=0.8pt}] coordinates {
+    (Sparse, 86.46) +- (0, 6.84) (Dense, 88.64) +- (0, 5.41) (Total, 87.72) +- (0, 4.26)
 };
-\legend{Episode Success, Per-Obstacle Success}
+\legend{Episode Success, Per-Obs.\ $\hat{p}$}
 \end{axis}
 \end{tikzpicture}
-\caption{Real-world episode-level and per-obstacle success rates by tree density.}
+\caption{Real-world episode-level success rates and per-obstacle avoidance probabilities (geometric MLE) by tree density. Error bars show 95\,\% confidence intervals.}
 \label{fig:real_bar}
 \end{figure}
 
@@ -167,21 +181,25 @@ Figure \ref{fig:comparison_bar} directly compares episode-level success rates be
     legend style={at={(0.98,0.98)}, anchor=north east},
     nodes near coords,
     nodes near coords align={vertical},
-    every node near coord/.append style={font=\small, text=black},
+    every node near coord/.append style={font=\small, text=black, anchor=north, yshift=-4pt},
     enlarge x limits=0.25,
     grid=major,
     grid style={dashed,gray!40},
 ]
-\addplot+[fill=blue-green, draw=black] coordinates {
-    (Sparse, 94.00) (Dense, 84.00) (Total, 89.00)
+\addplot+[fill=blue-green, draw=black,
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={draw=black, line width=0.8pt}] coordinates {
+    (Sparse, 94.00) +- (0, 6.58) (Dense, 84.00) +- (0, 10.16) (Total, 89.00) +- (0, 6.13)
 };
-\addplot+[fill=lightgray, draw=black] coordinates {
-    (Sparse, 74.00) (Dense, 70.00) (Total, 72.00)
+\addplot+[fill=lightgray, draw=black,
+    error bars/.cd, y dir=both, y explicit,
+    error bar style={draw=black, line width=0.8pt}] coordinates {
+    (Sparse, 74.00) +- (0, 12.16) (Dense, 70.00) +- (0, 12.70) (Total, 72.00) +- (0, 8.80)
 };
 \legend{Simulation, Real-World}
 \end{axis}
 \end{tikzpicture}
-\caption{Episode-level success rate comparison between simulation and real-world across density conditions.}
+\caption{Episode-level success rate comparison between simulation and real-world across density conditions. Error bars show 95\,\% confidence intervals.}
 \label{fig:comparison_bar}
 \end{figure}
 
@@ -198,10 +216,10 @@ Transfer efficiency is computed as the real-world success rate divided by the si
 \hline
 \textbf{Condition} & \textbf{Episode-Level Transfer} & \textbf{Per-Obstacle Transfer} \\
 \hline
-Sparse (2 trees) & 78.72\% & 85.57\% \\
-Dense (3 trees) & 83.33\% & 82.39\% \\
+Sparse (2 trees) & 78.72\% & 89.13\% \\
+Dense (3 trees) & 83.33\% & 93.63\% \\
 \hline
-\textbf{Total} & \textbf{80.90\%} & \textbf{83.68\%} \\
+\textbf{Total} & \textbf{80.90\%} & \textbf{91.76\%} \\
 \hline
 \end{tabular}
 \end{table}
@@ -222,7 +240,7 @@ Dense (3 trees) & 83.33\% & 82.39\% \\
     legend style={at={(0.98,0.98)}, anchor=north east},
     nodes near coords,
     nodes near coords align={vertical},
-    every node near coord/.append style={font=\small, text=black},
+    every node near coord/.append style={font=\small, text=black, anchor=north, yshift=-4pt},
     enlarge x limits=0.25,
     grid=major,
     grid style={dashed,gray!40},
@@ -232,7 +250,7 @@ Dense (3 trees) & 83.33\% & 82.39\% \\
     (Sparse, 78.72) (Dense, 83.33) (Total, 80.90)
 };
 \addplot+[fill=lavenderpurple, draw=black] coordinates {
-    (Sparse, 85.57) (Dense, 82.39) (Total, 83.68)
+    (Sparse, 89.13) (Dense, 93.63) (Total, 91.76)
 };
 \legend{Episode-Level Transfer, Per-Obstacle Transfer}
 \end{axis}
@@ -241,6 +259,6 @@ Dense (3 trees) & 83.33\% & 82.39\% \\
 \label{fig:transfer_bar}
 \end{figure}
 
-The overall episode-level transfer efficiency of 80.90\% indicates that approximately one in five episodes that succeeded in simulation did not succeed in the real world. Per-obstacle transfer of 83.68\% shows the agent retained most of its avoidance capability, with the gap primarily attributable to full-episode failures rather than a general degradation in obstacle avoidance behaviour.
+The overall episode-level transfer efficiency of 80.90\% indicates that approximately one in five episodes that succeeded in simulation did not succeed in the real world. The per-obstacle transfer of 91.76\% is considerably higher than the episode-level figure, showing that the agent retained most of its single-tree avoidance capability; the larger episode-level gap is the expected cumulative effect of needing to avoid multiple trees in sequence.
 
 \end{document}
